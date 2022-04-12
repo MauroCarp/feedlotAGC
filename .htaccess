@@ -1,0 +1,8 @@
+Options All -Indexes
+
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^(www\.)?barloventosrl\.site
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,QSA]
+
+RewriteRule ^([-a-zA-Z0-9]+)$ index.php?ruta=$1

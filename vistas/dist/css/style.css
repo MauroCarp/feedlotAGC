@@ -1,0 +1,38 @@
+.modalComparar{
+    position: absolute;
+    top:0;
+    left:610px;
+}
+
+.botonComparar{
+    border: 0.5px solid rgb(192, 192, 192);
+    border-radius: 3px;
+    margin-top:10px;
+    padding: 3px;
+    padding-left:5px;
+    display: inline-block;
+    background-color: azure;
+    margin-left: 10px;
+}
+
+.selectPC{
+        display: grid;
+}
+
+.badge.bg-blue{
+
+    font-size: 15px;
+
+}
+
+#editarPlanilla input{
+
+    font-size: 1.1em;
+
+}
+
+.hide{
+
+    display:none;
+
+}
