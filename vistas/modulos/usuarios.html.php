@@ -221,9 +221,9 @@ MODAL AGREGAR USUARIO
 
                   <option value="Administrador">Administrador</option>
 
-                  <option value="Especial">Especial</option>
+                  <option value="Ganadero">Ganadero</option>
 
-                  <option value="Vendedor">Vendedor</option>
+                  <option value="Agro">Agro</option>
 
                 </select>
 

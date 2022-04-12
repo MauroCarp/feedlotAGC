@@ -26,7 +26,7 @@
       
       <?php
 
-      if($_SESSION["perfil"] =="Administrador" OR $_SESSION["perfil"] =="Especial"){
+      if($_SESSION["perfil"] =="Administrador" OR $_SESSION["perfil"] =="Ganadero"){
 
         include "inicio/cajas-superiores.php";
 
