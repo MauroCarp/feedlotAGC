@@ -30,43 +30,43 @@
 
         include "inicio/cajas-superiores.php";
 
-      ?>
+        ?>
 
-    </div> 
+        </div> 
 
-     <div class="row">
-       
-        <div class="col-md-4">
-          <?php
+        <div class="row">
+          
+            <div class="col-md-4">
+              <?php
 
-            include "inicio/rankingConsignatarios.php";
+                include "inicio/rankingConsignatarios.php";
 
-          ?>
-        </div>  
-        
-        <div class="col-md-4">
-          <?php
+              ?>
+            </div>  
+            
+            <div class="col-md-4">
+              <?php
 
-            include "inicio/rankingProveedores.php";
+                include "inicio/rankingProveedores.php";
 
-          ?>
-        </div>  
-        
-        <div class="col-md-4">
+              ?>
+            </div>  
+            
+            <div class="col-md-4">
 
-          <?php
+              <?php
 
-            include "inicio/rankingTropas.php";
+                include "inicio/rankingTropas.php";
 
-          ?>
+              ?>
 
-        </div>  
+            </div>  
 
-     </div>
+        </div>
 
-    <?php
+        <?php
 
-    }
+      }
 
     ?>
 

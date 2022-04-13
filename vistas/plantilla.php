@@ -227,6 +227,19 @@ CUERPO DOCUMENTO
 
 <script src="vistas/js/plantilla.js"></script>
 <script src="vistas/js/usuarios.js"></script>
+
+<?php
+if($_SESSION["perfil"] == 'Agro' OR $_SESSION["perfil"] == "Administrador" OR $_SESSION["perfil"] == "Master"){
+?>
+
+<script src="vistas/js/agro/agro.js"></script>
+
+<?php
+}
+
+if($_SESSION["perfil"] == 'Ganadaero' OR $_SESSION["perfil"] == "Administrador" OR $_SESSION["perfil"] == "Master"){
+?>
+
 <script src="vistas/js/compras.js"></script>
 <script src="vistas/js/muertes.js"></script>
 <script src="vistas/js/ventas.js"></script>
@@ -236,6 +249,11 @@ CUERPO DOCUMENTO
 <script src="vistas/js/reportesMuertes.js"></script>
 <script src="vistas/js/conversion.js"></script>
 <script src="vistas/js/piri.js"></script>
+
+<?php
+}
+?>
+
 <script src="vistas/js/archivos.js"></script>
 
 </body>
