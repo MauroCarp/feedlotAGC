@@ -4,7 +4,7 @@
 
     <div class="modal-content">
 
-      <form role="form" method="post" enctype="multipart/form-data" action="cargar-agro.php">
+      <form role="form" method="post" enctype="multipart/form-data" id="formAgro">
 
         <!--=====================================
         CABEZA DEL MODAL
@@ -59,6 +59,7 @@
   </div>
 
 </div>
+
 <?php
 
 $cargarArchivo = new ControladorAgro();
