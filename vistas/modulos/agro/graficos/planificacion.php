@@ -16,7 +16,7 @@
       
                 <div class="chart">
             
-                    <canvas id="<?php echo $idGraficoPlanificacion;?>" style="height:230px"></canvas>
+                    <canvas id="<?php echo $idGraficoPlanificacion;?>"></canvas>
             
                 </div>
       

@@ -79,7 +79,7 @@ fetch(url,{
         datasets: [
           {
             type: 'line',
-            label: 'Inversión',
+            label: 'Inversión U$D',
             borderColor: window.chartColors.red,
             fill:false,
             yAxisID: 'A',
