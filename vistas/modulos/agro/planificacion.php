@@ -68,10 +68,14 @@
                 
                 <div class="info-box">
 
-                    <span class="info-box-icon bg-aqua"><i class="fa fa-map-o"></i></span>
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-map-o"></i></span>      
+
                     <div class="info-box-content">
-                    <span class="info-box-text">Hectareas Totales</span>
-                    <span class="info-box-number">1100</span>
+
+                        <span class="info-box-text">Hectareas Totales</span>
+                        
+                        <span class="info-box-number">1100 Has.</span>
+
                     </div>
         
                 </div>

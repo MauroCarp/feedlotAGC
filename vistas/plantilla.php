@@ -160,7 +160,8 @@ CUERPO DOCUMENTO
     /*=============================================
     CONTENIDO
     =============================================*/
-    if($_SESSION["perfil"] == 'Ganadero'){
+    
+    if($_SESSION["perfil"] != 'Agro'){
 
       if(isset($_GET["ruta"])){
 
@@ -211,7 +212,7 @@ CUERPO DOCUMENTO
 
     }
 
-    if($_SESSION["perfil"] == 'Agro'){
+    if($_SESSION["perfil"] != 'Ganadero'){
 
       if(isset($_GET["ruta"])){
         

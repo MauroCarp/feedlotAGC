@@ -6,7 +6,7 @@
 
 		<?php
 
-			$inicio = ($_SESSION['perfil'] == 'Agro') ? 'agro/agro' : 'inicio';
+			$inicio = ($_SESSION['perfil'] == 'Agro') ? 'agro' : 'inicio';
 
 			echo '<li class="active">
 
@@ -312,7 +312,7 @@
 					
 				}
 
-				if($_SESSION["perfil"] == "Agro"){
+				if($_SESSION["perfil"] == "Agro" OR $_SESSION["perfil"] == "Master"){
 
 					echo '<li>
 
