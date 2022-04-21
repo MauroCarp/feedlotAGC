@@ -33,27 +33,17 @@ class ModeloAgro{
 	/*=============================================
 	MOSTRAR COSTO
 	=============================================*/
-	static public function mdlMostrarCostos($tabla,$item,$value,$item2,$value2){
-	
-		if($item != null){
+	static public function mdlMostrarCostos($tabla,$item,$value){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
-					
-			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+		$tabla = 'costo'.$tabla;
 
-			$stmt -> execute();
-			
-			return $stmt -> fetch();
-			
-		}else{
-			
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
-			
-			$stmt -> execute();
-			
-			return $stmt -> fetchAll();
-
-		}
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+		
+		$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
+		
+		$stmt -> execute();
+		
+		return $stmt -> fetchAll();
 
 		$stmt -> close();
 
@@ -86,6 +76,40 @@ class ModeloAgro{
 		
 		$stmt = null;
 	
+
+	}
+
+	/*=============================================
+	MOSTRAR DATA
+	=============================================*/
+	static public function mdlMostrarData($tabla,$item,$value,$item2,$value2){
+
+		if($value != ''){
+
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item AND $item2 = :$item2");
+					
+			$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
+			$stmt -> bindParam(":".$item2, $value2, PDO::PARAM_STR);
+
+			$stmt -> execute();
+			
+			return $stmt -> fetchAll();
+			
+		}else{
+			
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE dateTime = (SELECT MAX(dateTime) FROM $tabla) AND $item2 = :$item2");
+
+			$stmt -> bindParam(":".$item2, $value2, PDO::PARAM_STR);
+
+			$stmt -> execute();
+			
+			return $stmt -> fetchAll();
+
+		}
+
+		$stmt -> close();
+
+		$stmt = null;
 
 	}
 

@@ -67,3 +67,14 @@ if(window.matchMedia("(max-width:767px)").matches){
 
 	$("body").addClass('sidebar-collapse');
 }
+
+
+/*=============================================
+PRIMER LETRA MAYUSCULAS
+=============================================*/
+
+const capitalizarPrimeraLetra = (str)=>{
+
+	return str.charAt(0).toUpperCase() + str.slice(1);
+
+}

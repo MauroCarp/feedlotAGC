@@ -53,9 +53,11 @@ class ControladorUsuarios{
 
 						if($ultimoLogin == "ok"){
 
+							$inicio = ($_SESSION['perfil'] == 'Agro') ? 'agro' : 'inicio';
+
 							echo '<script>
 
-								window.location = "inicio";
+								window.location = "'.$inicio.'";
 
 							</script>';
 

@@ -1,10 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 
-require_once('extensiones/excel/php-excel-reader/excel_reader2.php');
-require_once('extensiones/excel/SpreadsheetReader.php');
-require_once('modelos/conexion.php');
-
 function tipoCultivo($cultivo){
 
     switch ($cultivo) {
@@ -36,6 +32,10 @@ class ControladorAgro{
 	=============================================*/
 
 	static public function ctrCargarArchivo(){
+
+        
+        require_once('extensiones/excel/php-excel-reader/excel_reader2.php');
+        require_once('extensiones/excel/SpreadsheetReader.php');
 
         if(isset($_POST['btnCargarAgro'])){
 
@@ -75,7 +75,7 @@ class ControladorAgro{
                                             
                         if($rowNumber < 6){
 
-                            $cultivoCosto[ucfirst($Row[6])] = preg_replace('/[^0-9]/', '', $Row[7]);
+                            $cultivoCosto[icfirst($Row[6])] = trim(preg_replace('/[^0-9]/', '', $Row[7]));
 
                         }
 
@@ -180,7 +180,8 @@ class ControladorAgro{
                                 confirmButtonText: "Cerrar"
                                 }).then(function(result) {
                                 if (result.value) {
-    
+                                    
+                                    
     
                                 }
                             })
@@ -188,7 +189,7 @@ class ControladorAgro{
                         </script>';
 
                 }else{
-                    
+
                     echo'<script>
 
                     swal({
@@ -237,12 +238,22 @@ class ControladorAgro{
 	VER COSTOS
 	=============================================*/
 
-	static public function ctrMostrarCostos($tabla,$item,$value,$item2,$value2){
+	static public function ctrMostrarCostos($tabla,$item,$value){
 
-        return $respuesta = ModeloAgro::mdlMostrarCostos($tabla,$item,$value,$item2,$value2);
+        return $respuesta = ModeloAgro::mdlMostrarCostos($tabla,$item,$value);
 
 	}
 
+    
+    /*=============================================
+	VER DATA
+	=============================================*/
+    
+	static public function ctrMostrarData($tabla,$item,$value,$item2,$value2){
+
+        return $respuesta = ModeloAgro::mdlMostrarData($tabla,$item,$value,$item2,$value2);
+
+	}
 }
 
 	

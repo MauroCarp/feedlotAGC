@@ -160,53 +160,84 @@ CUERPO DOCUMENTO
     /*=============================================
     CONTENIDO
     =============================================*/
-    
-    if(isset($_GET["ruta"])){
+    if($_SESSION["perfil"] == 'Ganadero'){
 
-      if($_GET["ruta"] == "inicio" ||
-         $_GET["ruta"] == "datos" ||
-         $_GET["ruta"] == "datos-compras" ||
-         $_GET["ruta"] == "datos-muertes" ||
-         $_GET["ruta"] == "panelControl" ||
-         $_GET["ruta"] == "resumenConversion" ||
-         $_GET["ruta"] == "piri" ||
-         $_GET["ruta"] == "usuarios" ||
-         $_GET["ruta"] == "archivosCarga" ||
-         $_GET["ruta"] == "generar-reportes" ||
-         $_GET["ruta"] == "cargar-datos-compras" ||
-         $_GET["ruta"] == "reportes-compras" ||
-         $_GET["ruta"] == "reportes-compras.imprimir" ||
-         $_GET["ruta"] == "reportes-muertes" ||
-         $_GET["ruta"] == "reportes-muertes.imprimir" ||
-         $_GET["ruta"] == "reportes-muertesRango.imprimir" ||
-         $_GET["ruta"] == "cargar-datos" ||
-         $_GET["ruta"] == "cargar-datos-ventas" ||
-         $_GET["ruta"] == "cargar-datos-muertes" ||
-         $_GET["ruta"] == "reportes" ||
-         $_GET["ruta"] == "reportes.imprimir" ||
-         $_GET["ruta"] == "reportes/reportesFiltrados" ||
-         $_GET["ruta"] == "reportes/reportesFiltrados.imprimir" ||
-         $_GET["ruta"] == "reportes/reportesFiltradosMuertes" ||
-         $_GET["ruta"] == "reportesRango" ||
-         $_GET["ruta"] == "reportesRango.imprimir" ||
-         $_GET["ruta"] == "reportes/reportes-muertesRango" ||
-         $_GET["ruta"] == "reportes/reportesFiltradosMuertes.imprimir" ||
-         $_GET["ruta"] == "reportes/grafico-general" ||
-         $_GET["ruta"] == "salir"){
+      if(isset($_GET["ruta"])){
 
-        include "modulos/".$_GET["ruta"].".php";
+        if($_GET["ruta"] == "inicio" ||
+          $_GET["ruta"] == "datos" ||
+          $_GET["ruta"] == "datos-compras" ||
+          $_GET["ruta"] == "datos-muertes" ||
+          $_GET["ruta"] == "panelControl" ||
+          $_GET["ruta"] == "resumenConversion" ||
+          $_GET["ruta"] == "piri" ||
+          $_GET["ruta"] == "usuarios" ||
+          $_GET["ruta"] == "archivosCarga" ||
+          $_GET["ruta"] == "generar-reportes" ||
+          $_GET["ruta"] == "cargar-datos-compras" ||
+          $_GET["ruta"] == "reportes-compras" ||
+          $_GET["ruta"] == "reportes-compras.imprimir" ||
+          $_GET["ruta"] == "reportes-muertes" ||
+          $_GET["ruta"] == "reportes-muertes.imprimir" ||
+          $_GET["ruta"] == "reportes-muertesRango.imprimir" ||
+          $_GET["ruta"] == "cargar-datos" ||
+          $_GET["ruta"] == "cargar-datos-ventas" ||
+          $_GET["ruta"] == "cargar-datos-muertes" ||
+          $_GET["ruta"] == "reportes" ||
+          $_GET["ruta"] == "reportes.imprimir" ||
+          $_GET["ruta"] == "reportes/reportesFiltrados" ||
+          $_GET["ruta"] == "reportes/reportesFiltrados.imprimir" ||
+          $_GET["ruta"] == "reportes/reportesFiltradosMuertes" ||
+          $_GET["ruta"] == "reportesRango" ||
+          $_GET["ruta"] == "reportesRango.imprimir" ||
+          $_GET["ruta"] == "reportes/reportes-muertesRango" ||
+          $_GET["ruta"] == "reportes/reportesFiltradosMuertes.imprimir" ||
+          $_GET["ruta"] == "reportes/grafico-general" ||
+          $_GET["ruta"] == "salir"){
+
+          include "modulos/".$_GET["ruta"].".php";
+
+        }else{
+
+          include "modulos/404.php";
+
+        }
 
       }else{
 
-        include "modulos/404.php";
+        include "modulos/inicio.php";
 
       }
 
-    }else{
+    }
 
-      include "modulos/inicio.php";
+    if($_SESSION["perfil"] == 'Agro'){
+
+      if(isset($_GET["ruta"])){
+        
+        if($_GET["ruta"] == "agro/agro" ||
+        $_GET["ruta"] == "agro" ||
+        $_GET["ruta"] == "salir"){
+
+          include "modulos/".$_GET["ruta"].".php";
+          
+        }else{
+          
+          include "modulos/404.php";
+          
+        }
+        
+      }else{
+        
+        include "agro/agro.php";
+
+      }
 
     }
+
+
+
+
 
     /*=============================================
     FOOTER
@@ -222,29 +253,26 @@ CUERPO DOCUMENTO
 
   }
 
-  ?>
+// <!-- SOLO EN AGRO -->
 
+if($_SESSION["perfil"] != 'Ganadero'){
 
-<script src="vistas/js/plantilla.js"></script>
-<script src="vistas/js/usuarios.js"></script>
-
-<?php
-if($_SESSION["perfil"] == 'Agro' OR $_SESSION["perfil"] == "Administrador" OR $_SESSION["perfil"] == "Master"){
 ?>
 
 <script src="vistas/js/agro/agro.js"></script>
+<script src="vistas/js/agro/planificacion.js"></script>
 
 <?php
 }
 
-if($_SESSION["perfil"] == 'Ganadaero' OR $_SESSION["perfil"] == "Administrador" OR $_SESSION["perfil"] == "Master"){
+// SOLO EN GANADERO
+if($_SESSION["perfil"] != 'Agro'){
 ?>
 
 <script src="vistas/js/compras.js"></script>
 <script src="vistas/js/muertes.js"></script>
 <script src="vistas/js/ventas.js"></script>
 <script src="vistas/js/panelControl.js"></script>
-<script src="vistas/js/reportes.js"></script>
 <script src="vistas/js/reportesCompras.js"></script>
 <script src="vistas/js/reportesMuertes.js"></script>
 <script src="vistas/js/conversion.js"></script>
@@ -254,6 +282,10 @@ if($_SESSION["perfil"] == 'Ganadaero' OR $_SESSION["perfil"] == "Administrador" 
 }
 ?>
 
+<!-- EN AMBOS -->
+<script src="vistas/js/plantilla.js"></script>
+<script src="vistas/js/usuarios.js"></script>
+<script src="vistas/js/reportes.js"></script>
 <script src="vistas/js/archivos.js"></script>
 
 </body>

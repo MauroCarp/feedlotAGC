@@ -6,10 +6,11 @@
 
 		<?php
 
+			$inicio = ($_SESSION['perfil'] == 'Agro') ? 'agro/agro' : 'inicio';
 
 			echo '<li class="active">
 
-					<a href="inicio">
+					<a href="'.$inicio.'">
 
 						<i class="fa fa-home"></i>
 						<span>Inicio</span>
