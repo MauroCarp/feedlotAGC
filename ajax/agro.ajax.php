@@ -9,7 +9,9 @@ class AjaxAgro{
 	EDITAR USUARIO
 	=============================================*/	
 
-	public $campania;
+	public $campania1;
+
+	public $campania2;
 
     public $campo;
 
@@ -17,15 +19,21 @@ class AjaxAgro{
 
 	public function ajaxMostrarData(){
 
-		$item = "campania";
-		$valor = $this->campania;
+		$item = "campania1";
+
+		$valor = $this->campania1;
 		
-        $item2 = "campo";
-		$valor2= $this->campo;
+		$item2 = "campania2";
+
+		$valor2 = $this->campania2;
+		
+        $item3 = "campo";
+
+		$valor3= $this->campo;
 
 		$tabla = $this->seccion;
 
-		$respuesta = ControladorAgro::ctrMostrarData($tabla, $item, $valor, $item2, $valor2);
+		$respuesta = ControladorAgro::ctrMostrarData($tabla, $item, $valor, $item2, $valor2, $item3, $valor3);
 		
 		echo json_encode($respuesta);
 
@@ -33,13 +41,17 @@ class AjaxAgro{
 
 	public function ajaxMostrarCostos(){
 
-		$item = "campania";
+		$item = "campania1";
 		
-		$valor = $this->campania;
+		$valor = $this->campania1;
+
+		$item2 = "campania2";
+		
+		$valor2 = $this->campania2;
 
 		$tabla = $this->seccion;
 
-		$respuesta = ControladorAgro::ctrMostrarCostos($tabla, $item, $valor);
+		$respuesta = ControladorAgro::ctrMostrarCostos($tabla, $item, $valor, $item2, $valor2);
 		
 		echo json_encode($respuesta);
 
@@ -67,7 +79,8 @@ if(isset($_POST["accion"])){
 	if($accion == 'mostrarCostos'){
 
 		$mostrarData = new AjaxAgro();
-        $mostrarData -> campania = $_POST["campania"];
+        $mostrarData -> campania1 = $_POST["campania1"];
+        $mostrarData -> campania2 = $_POST["campania2"];
         $mostrarData -> seccion = $_POST["seccion"];
         $mostrarData -> ajaxMostrarCostos();
 

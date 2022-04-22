@@ -253,7 +253,16 @@ CUERPO DOCUMENTO
     include "modulos/login.php";
 
   }
+  ?>
 
+  
+<!-- EN AMBOS -->
+<script src="vistas/js/plantilla.js"></script>
+<script src="vistas/js/usuarios.js"></script>
+<script src="vistas/js/reportes.js"></script>
+<script src="vistas/js/archivos.js"></script>
+
+  <?php
 // <!-- SOLO EN AGRO -->
 
 if($_SESSION["perfil"] != 'Ganadero'){
@@ -283,11 +292,6 @@ if($_SESSION["perfil"] != 'Agro'){
 }
 ?>
 
-<!-- EN AMBOS -->
-<script src="vistas/js/plantilla.js"></script>
-<script src="vistas/js/usuarios.js"></script>
-<script src="vistas/js/reportes.js"></script>
-<script src="vistas/js/archivos.js"></script>
 
 </body>
 </html>

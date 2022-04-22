@@ -72,10 +72,10 @@ class ControladorAgro{
                     $Reader->ChangeSheet($i);
 
                     foreach ($Reader as $Row){
-                                            
+                        
                         if($rowNumber < 6){
 
-                            $cultivoCosto[icfirst($Row[6])] = trim(preg_replace('/[^0-9]/', '', $Row[7]));
+                            $cultivoCosto[lcfirst($Row[6])] = trim(preg_replace('/[^0-9]/', '', $Row[7]));
 
                         }
 
@@ -84,11 +84,9 @@ class ControladorAgro{
                             $rowValida = true;
 
                             $campania = explode('/',$Row[0]);
-                            $anio1 = substr($campania[0],-4,4);
-                            $anio2 = $campania[1];
+                            $campania1 = substr($campania[0],-4,4);
+                            $campania2 = $campania[1];
                             
-                            $campania = "$anio1/$anio2";
-
                         }
 
                         if($Row[0] == 'TOTAL'){
@@ -102,7 +100,7 @@ class ControladorAgro{
                             if($rowNumber != 1 AND $rowNumber != 2 AND $rowNumber != 3 AND $rowNumber != 6 AND $rowNumber != 5){
 
                                 if($rowNumber == 4){
-                                
+
                                     $campo = $Row[0];
                                 
                                 }else{
@@ -120,10 +118,10 @@ class ControladorAgro{
                                         for ($i=0; $i < sizeof($cultivos) ; $i++) { 
                                             
                                             $planificado = trim(strtolower($cultivos[$i]));
-
+                                            
                                             $tipoCultivo = tipoCultivo($planificado);
-
-                                            $data[] = "('$campania','$campo','$tipoCultivo','$lote',$has,'$actual','$planificado','$dateTime')";
+                                            
+                                            $data[] = "('$campania1','$campania2','$campo','$tipoCultivo','$lote',$has,'$actual','$planificado','$dateTime')";
 
                                         }
 
@@ -133,7 +131,7 @@ class ControladorAgro{
                                         
                                         $tipoCultivo = tipoCultivo($planificado);
 
-                                        $data[] = "('$campania','$campo','$tipoCultivo','$lote',$has,'$actual','$planificado','$dateTime')";
+                                        $data[] = "('$campania1','$campania2','$campo','$tipoCultivo','$lote',$has,'$actual','$planificado','$dateTime')";
 
                                     }
                                 
@@ -155,19 +153,19 @@ class ControladorAgro{
                 
                 $tabla = 'costoPlanificacion';
 
-                $item = 'campania';
+                $item = 'cultivo';
+                
+                $item2 = 'campania1';
 
-                $item2 = 'cultivo';
+                $item3 = 'campania2';
 
                 foreach ($cultivoCosto as $cultivo => $costo) {
 
-                    $respuesta = ControladorAgro::ctrCargarCostos($tabla,$item,$campania,$item2,$cultivo,$costo);
+                    $respuesta = ControladorAgro::ctrCargarCostos($tabla,$item,$cultivo,$item2,$campania1,$item3,$campania2,$costo);
 
                     $errors[] = $respuesta;
 
                 }
-
-
 
                 if(in_array('error',$respuesta)){
 
@@ -218,17 +216,17 @@ class ControladorAgro{
 	CARGAR COSTOS
 	=============================================*/
 
-	static public function ctrCargarCostos($tabla,$item,$value,$item2,$value2,$costo){
+	static public function ctrCargarCostos($tabla,$item,$cultivo,$item2,$campania1,$item3,$campania2,$costo){
 
         $respuesta = ControladorAgro::ctrMostrarCostos($tabla,$item,$value,$item2,$value2);
 
         if($respuesta){
 
-            return $respuesta = ModeloAgro::mdlEditarCostos($tabla,$item,$value,$item2,$value2,$costo);
+            return $respuesta = ModeloAgro::mdlEditarCostos($tabla,$item,$cultivo,$item2,$campania1,$item3,$campania2,$costo);
             
         }else{
 
-            return $respuesta = ModeloAgro::mdlCargarCostos($tabla,$item,$value,$item2,$value2,$costo);
+            return $respuesta = ModeloAgro::mdlCargarCostos($tabla,$item,$cultivo,$item2,$campania1,$item3,$campania2,$costo);
 
         }
             
@@ -238,20 +236,19 @@ class ControladorAgro{
 	VER COSTOS
 	=============================================*/
 
-	static public function ctrMostrarCostos($tabla,$item,$value){
+	static public function ctrMostrarCostos($tabla,$item,$value,$item2,$value2){
 
-        return $respuesta = ModeloAgro::mdlMostrarCostos($tabla,$item,$value);
+        return $respuesta = ModeloAgro::mdlMostrarCostos($tabla,$item,$value,$item2,$value2);
 
 	}
 
-    
     /*=============================================
 	VER DATA
 	=============================================*/
     
-	static public function ctrMostrarData($tabla,$item,$value,$item2,$value2){
+	static public function ctrMostrarData($tabla, $item, $valor, $item2, $valor2, $item3, $valor3){
 
-        return $respuesta = ModeloAgro::mdlMostrarData($tabla,$item,$value,$item2,$value2);
+        return $respuesta = ModeloAgro::mdlMostrarData($tabla, $item, $valor, $item2, $valor2, $item3, $valor3);
 
 	}
 }

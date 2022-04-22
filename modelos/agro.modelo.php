@@ -11,7 +11,7 @@ class ModeloAgro{
 		
 		$data = implode(',',$data);
 		
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(campania,campo,tipoCultivo,lote,has,actual,planificado,dateTime) VALUES $data");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(campania1,campania2,campo,tipoCultivo,lote,has,actual,planificado,dateTime) VALUES $data");
 		
 		if($stmt->execute()){
 			
@@ -33,13 +33,14 @@ class ModeloAgro{
 	/*=============================================
 	MOSTRAR COSTO
 	=============================================*/
-	static public function mdlMostrarCostos($tabla,$item,$value){
+	static public function mdlMostrarCostos($tabla,$item,$value,$item2,$value2){
 
 		$tabla = 'costo'.$tabla;
 
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item AND $item2 = :$item2");
 		
 		$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
+		$stmt -> bindParam(":".$item2, $value2, PDO::PARAM_STR);
 		
 		$stmt -> execute();
 		
@@ -54,12 +55,14 @@ class ModeloAgro{
 	/*=============================================
 	CARGAR COSTO
 	=============================================*/
-	static public function mdlCargarCostos($tabla,$item,$value,$item2,$value2,$costo){
-	
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla($item,$item2,costo) VALUES (:$item,:$item2,:costo)");
+
+	static public function mdlCargarCostos($tabla,$item,$value,$item2,$value2,$item3,$value3,$costo){
+				
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla($item,$item2,$item3,costo) VALUES (:$item,:$item2,:$item3,:costo)");
 	
 		$stmt->bindParam(":".$item, $value, PDO::PARAM_STR);
 		$stmt->bindParam(":".$item2, $value2, PDO::PARAM_STR);
+		$stmt->bindParam(":".$item3, $value3, PDO::PARAM_STR);
 		$stmt->bindParam(":costo", $costo, PDO::PARAM_STR);
 
 		if($stmt->execute()){
@@ -82,14 +85,15 @@ class ModeloAgro{
 	/*=============================================
 	MOSTRAR DATA
 	=============================================*/
-	static public function mdlMostrarData($tabla,$item,$value,$item2,$value2){
+	static public function mdlMostrarData($tabla, $item, $value, $item2, $value2, $item3, $value3){
 
 		if($value != ''){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item AND $item2 = :$item2");
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item AND $item2 = :$item2 AND $item3 = :$item3 ");
 					
 			$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
 			$stmt -> bindParam(":".$item2, $value2, PDO::PARAM_STR);
+			$stmt -> bindParam(":".$item3, $value3, PDO::PARAM_STR);
 
 			$stmt -> execute();
 			
@@ -97,9 +101,9 @@ class ModeloAgro{
 			
 		}else{
 			
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE dateTime = (SELECT MAX(dateTime) FROM $tabla) AND $item2 = :$item2");
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item2 = (SELECT MAX($item2) FROM $tabla) AND $item3 = :$item3");
 
-			$stmt -> bindParam(":".$item2, $value2, PDO::PARAM_STR);
+			$stmt -> bindParam(":".$item3, $value3, PDO::PARAM_STR);
 
 			$stmt -> execute();
 			
