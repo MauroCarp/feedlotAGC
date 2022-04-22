@@ -15,13 +15,13 @@
 
         $campo = 'La Bety';
 
-        $campoId = 'laBety';
+        $campoId = 'Bety';
         
         include 'infoPlanificacion.php';
         
         $campo = 'El Pichi';
         
-        $campoId = 'elPichi';
+        $campoId = 'Pichi';
 
         include 'infoPlanificacion.php';
         

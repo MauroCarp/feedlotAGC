@@ -37,11 +37,19 @@ class ModeloAgro{
 
 		$tabla = 'costo'.$tabla;
 
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item AND $item2 = :$item2");
-		
-		$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
-		$stmt -> bindParam(":".$item2, $value2, PDO::PARAM_STR);
-		
+		if($value2 != ''){
+
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item AND $item2 = :$item2");
+
+			$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
+			$stmt -> bindParam(":".$item2, $value2, PDO::PARAM_STR);
+			
+		}else{
+			
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item2 = (SELECT MAX($item2) FROM $tabla)");
+
+		}
+
 		$stmt -> execute();
 		
 		return $stmt -> fetchAll();
@@ -102,7 +110,7 @@ class ModeloAgro{
 		}else{
 			
 			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item2 = (SELECT MAX($item2) FROM $tabla) AND $item3 = :$item3");
-
+			
 			$stmt -> bindParam(":".$item3, $value3, PDO::PARAM_STR);
 
 			$stmt -> execute();

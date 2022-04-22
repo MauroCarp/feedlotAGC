@@ -6,8 +6,8 @@ const cargarGraficoPlanificacion = (props)=>{
   
   let data = new FormData()
   data.append('accion','mostrarDataPlanificacion')
-  data.append('campania1',props.campania2)
-  data.append('campania2',props.campania1)
+  data.append('campania1',props.campania1)
+  data.append('campania2',props.campania2)
   data.append('seccion','planificacion')
   data.append('campo',props.campo)
 
@@ -25,7 +25,8 @@ const cargarGraficoPlanificacion = (props)=>{
           'lote': [],
           'trigo':[],
           'carinata':[],
-          'resto':[]
+          'resto':[],
+          'total':[]
         },
         'has':{
           'lote': [],
@@ -33,8 +34,8 @@ const cargarGraficoPlanificacion = (props)=>{
           'estivales': [],
           'trigo':[],
           'carinata':[],
-          'resto':[]
-
+          'resto':[],
+          'total':0
         },
       }
 
@@ -55,55 +56,26 @@ const cargarGraficoPlanificacion = (props)=>{
             if(registro.planificado == 'trigo')
               datos.has.trigo.push(Number(registro.has))
             
-        
             if(registro.planificado == 'carinata')
               datos.has.carinata.push(Number(registro.has))
               
-            if(registro.planificado != 'trigo' && registro.planificado != 'carinata')
-              datos.has.resto.push(Number(registro.has))
+            if(registro.planificado != 'trigo' && registro.planificado != 'carinata'){
             
+              let cultivoHas = {
+                'cultivo': registro.planificado,
+                'has': Number(registro.has)
+              }  
+
+              datos.has.resto.push(cultivoHas)
+
+            }
+
       });
-
-      console.log(datos)
-      return
-      let labels = []
-      let has = []
-      let hasInvernales = []
-      let hasEstivales = []
-      let hasCultivos = {}
-
-      respuesta.forEach(reg => {
-        
-        labels.push(`${reg.lote} / ${capitalizarPrimeraLetra(reg.planificado)}`)
-
-        has.push(reg.has)
-
-        if(reg.tipocultivo == 'Invernal'){
-
-          hasInvernales.push(reg.has)
-
-        }else if(reg.tipocultivo == 'Estival'){
-
-          hasEstivales.push(reg.has)
-
-        }
-        
-        if(reg.planificado == 'trigo')
-          hasCultivos['trigo'] = Number(reg.has)
-
-
-        if(reg.planificado == 'carinata')
-        hasCultivos['carinata'] = Number(reg.has)
-
-        if(reg.planificado != 'trigo' && reg.planificado != 'carinata')
-          hasCultivos[`${reg.planificado}`] = Number(reg.has)
-
-      });      
-            
+      
       let data = new FormData()
       data.append('accion','mostrarCostos')
-      data.append('campania1',respuesta[0]?.campania1)
-      data.append('campania2',respuesta[0]?.campania2)
+      data.append('campania1',props.campania1)
+      data.append('campania2',props.campania2)
       data.append('seccion','planificacion')
     
       fetch(url,{
@@ -112,127 +84,141 @@ const cargarGraficoPlanificacion = (props)=>{
       }).then(res=>res.json())
       .then(costos=>{
 
-        let totales ={
-          'trigo':{
-            'has': (hasTrigo.length > 0) ? hasTrigo.reduce((accumulator, curr) => Number(accumulator) + Number(curr)) : 0,
-            'costo':0
-          },
-          'carinata':{
-            'has': (hasCarinata.length > 0) ? hasCarinata.reduce((accumulator, curr) => Number(accumulator) + Number(curr)) : 0,  
-            'costo':0
-          },
-          'resto':{
-            'has': (hasResto.length > 0) ? hasResto.reduce((accumulator, curr) => Number(accumulator) + Number(curr)) : 0,
-          }
-        }
+        for (const reg of costos) {
 
-        let costoTotal = []
-
-        for (const reg of respuesta) {
-          
-          let cultivo = (reg.planificado == 'soja') ? 'soja 1era' : reg.planificado
-    
-          let has = reg.has
-
-          for (const costo of costos) {
-            
-            if(costo.cultivo == 'trigo')
-              totales.trigo.costo = totales.trigo.has * costo.costo;
+            if(reg.cultivo == 'trigo'){
               
-            if(costo.cultivo == 'carinata')
-              totales.carinata.costo = totales.carinata.has * costo.costo;
+              let totalHas = (datos.has.trigo.length > 0) ? datos.has.trigo.reduce((acc,cur)=> acc + cur) : 0
+              
+              datos.costos.trigo =  totalHas * reg.costo
+              
+            }
             
-            if(costo.cultivo != 'carinata' && costo.cultivo != 'trigo')     {
+            if(reg.cultivo == 'carinata'){
+              
+              let totalHas = (datos.has.carinata.length > 0) ? datos.has.carinata.reduce((acc,cur)=> acc + cur) : 0
+                
+              datos.costos.carinata =  totalHas * reg.costo
+          
+            }
+
+            for (const cultivo of datos.has.resto) {
             
+              if(cultivo.cultivo == reg.cultivo){              
+
+                datos.costos.resto.push( cultivo.has * reg.costo)
+
+              }
+    
+            }
+            
+          }
+          
+          for (const lote of respuesta) {
+            
+            let cultivo = (lote.planificado == 'soja') ? 'soja 1era' : lote.planificado
+            
+            for (const reg of costos) {
+              
+              if(reg.cultivo == cultivo){
+  
+                datos.costos.lote.push(reg.costo * lote.has);
+  
+              }
 
             }
 
-
-
-
-              if (costo.cultivo == cultivo) {
-                  
-                costoTotal.push(costo.costo * has)
-      
-              }
-
-          }         
-            
-
-    
+          }        
+          console.log(datos);
           
-            
-        }
-        console.log(totales);
+        document.getElementById(`hasInvPlanificacion${props.idInfo}`).innerText = (datos.has.invernales.length > 0) ? datos.has.invernales.reduce((acc,cur)=> acc + cur) : 0;
+        document.getElementById(`hasEstPlanificacion${props.idInfo}`).innerText = (datos.has.estivales.length > 0) ? datos.has.estivales.reduce((acc,cur)=> acc + cur) : 0;
         
-    return        
-        document.getElementById('hasInvPlanificacionlaBety').innerText = '';
+        document.getElementById(`hasTrigoPlanificacion${props.idInfo}`).innerText = (datos.has.trigo.length > 0) ? datos.has.trigo.reduce((acc,cur)=> acc + cur) : 0;
+        document.getElementById(`hasCarinataPlanificacion${props.idInfo}`).innerText = (datos.has.carinata.length > 0) ? datos.has.carinata.reduce((acc,cur)=> acc + cur) : 0;
+        
+        let totalHasResto = 0
+        
+        for(let resto of datos.has.resto) totalHasResto+= resto.has ;
+        document.getElementById(`hasRestoPlanificacion${props.idInfo}`).innerText = totalHasResto
+        
+        document.getElementById(`hasInvPlanificacion${props.idInfo}`).innerText = (datos.has.invernales.length > 0) ? datos.has.invernales.reduce((acc,cur)=> acc + cur) : 0;
+        document.getElementById(`hasEstPlanificacion${props.idInfo}`).innerText = (datos.has.estivales.length > 0) ? datos.has.estivales.reduce((acc,cur)=> acc + cur) : 0;
+        
+        document.getElementById(`totalCostoTrigoPlanificacion${props.idInfo}`).innerText = datos.costos.trigo.toLocaleString('de-DE')
+        document.getElementById(`totalCostoCarinataPlanificacion${props.idInfo}`).innerText = datos.costos.carinata.toLocaleString('de-DE')
+        document.getElementById(`totalCostoRestoPlanificacion${props.idInfo}`).innerText = (datos.costos.resto.length > 0) ? (datos.costos.resto.reduce((acc,cur)=> acc + cur)).toLocaleString('de-DE') : 0;
+ 
+        document.getElementById(`totalHasPlanificadas${props.idInfo}`).innerText = datos.has.lote.reduce((acc,cur)=> acc + cur)
+
+        document.getElementById(`totalInversionPlanificada${props.idInfo}`).innerText = (datos.costos.lote.reduce((acc,cur)=> acc + cur)).toLocaleString('de-DE')
+
 
         let configPlanificacion = {
-          type: 'bar',
-          data: {
-            labels,
-            datasets: [
-              {
-                type: 'line',
-                label: 'Inversión U$D',
-                borderColor: window.chartColors.red,
-                fill:false,
-                yAxisID: 'A',
-                data: costoTotal
-              }
-              ,
-              {
-                label: 'Has.',
-                type: 'bar',
-                backgroundColor: window.chartColors.green,
-                yAxisID: 'B',
-                data: has,
-                borderColor: 'white',
-                borderWidth: 2
-              }
-            ]
-          },
-          options: {
-            scaleShowValues: true,
-            scales: {
-              xAxes: [{
-                display:true,
-                ticks: {
-                  autoSkip: false
+            type: 'bar',
+            data: {
+              labels: datos.label,
+              datasets: [
+                {
+                  type: 'line',
+                  label: 'Inversión U$D',
+                  borderColor: window.chartColors.red,
+                  fill:false,
+                  yAxisID: 'A',
+                  data: datos.costos.lote
                 }
-              }],
-              yAxes: [{
-                id: 'A',
-                type: 'linear',
-                position: 'left',
-              
-              }, {
-                id: 'B',
-                type: 'linear',
-                position: 'right',
-              }]
+                ,
+                {
+                  label: 'Has.',
+                  type: 'bar',
+                  backgroundColor: window.chartColors.green,
+                  yAxisID: 'B',
+                  data: datos.has.lote,
+                  borderColor: 'white',
+                  borderWidth: 2
+                }
+              ]
             },
-            plugins:{
-              labels:{
-                render: 'value'
-              }
-            },
-            legend:{
-              labels: {
-                    boxWidth: 5
+            options: {
+              scaleShowValues: true,
+              scales: {
+                xAxes: [{
+                  display:true,
+                  ticks: {
+                    autoSkip: false
+                  }
+                }],
+                yAxes: [{
+                  id: 'A',
+                  type: 'linear',
+                  position: 'left',
+                
+                }, {
+                  id: 'B',
+                  type: 'linear',
+                  position: 'right',
+                }]
+              },
+              plugins:{
+                labels:{
+                  render: 'value'
+                }
+              },
+              legend:{
+                labels: {
+                      boxWidth: 5
+                }
               }
             }
-          }
-      }
-    
-      generarGraficoBar(props.idGrafico,configPlanificacion,'noOption');
+        }
       
+        generarGraficoBar(props.idGrafico,configPlanificacion,'noOption');
+        
   
-    })
-    .catch(err=>console.log(err))
+      })
+      .catch(err=>console.log(err))
   
-  }
+    }
 
   })
   .catch( err=>console.log(err))
@@ -243,10 +229,14 @@ let campania = getQueryVariable('campania')
 
 if(campania){
 
+  campania = campania.split('/')
+
   let props = {
     campo: 'LA BETY',
     idGrafico: 'graficoPlanifiacionBety',
-    campania
+    idInfo:'Bety',
+    campania1: campania[0],
+    campania2: campania[1]
   }
 
   cargarGraficoPlanificacion(props)
@@ -254,7 +244,9 @@ if(campania){
   props = {
     campo: 'EL PICHI',
     idGrafico: 'graficoPlanifiacionPichi',
-    campania
+    idInfo:'Pichi',
+    campania1: campania[0],
+    campania2: campania[1]
   }
 
   cargarGraficoPlanificacion(props)
@@ -264,7 +256,9 @@ if(campania){
   let props = {
     campo: 'LA BETY',
     idGrafico: 'graficoPlanifiacionBety',
-    campania: ''
+    idInfo:'Bety',
+    campania1: '',
+    campania2: ''
   }
 
   cargarGraficoPlanificacion(props)
@@ -272,7 +266,9 @@ if(campania){
   props = {
     campo: 'EL PICHI',
     idGrafico: 'graficoPlanifiacionPichi',
-    campania: ''
+    idInfo:'Bety',
+    campania1: '',
+    campania2: ''
   }
 
   cargarGraficoPlanificacion(props)

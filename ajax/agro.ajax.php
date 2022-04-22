@@ -52,7 +52,7 @@ class AjaxAgro{
 		$tabla = $this->seccion;
 
 		$respuesta = ControladorAgro::ctrMostrarCostos($tabla, $item, $valor, $item2, $valor2);
-		
+
 		echo json_encode($respuesta);
 
 	}
