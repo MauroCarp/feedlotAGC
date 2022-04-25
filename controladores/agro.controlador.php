@@ -106,18 +106,80 @@ class ControladorAgro{
                                 }else{
 
                                     $lote = $Row[0];
-                                    $has = $Row[1];
-                                    $actual = $Row[2];
-                                    $variedad = $Row[3];
-                                    $dobleCultivoValido = strpos($Row[5],'/');
 
-                                    if($dobleCultivoValido){
+                                    if($lote != 'Lote 8'){
 
-                                        $cultivos = explode('/',$Row[5]);
-
-                                        for ($i=0; $i < sizeof($cultivos) ; $i++) { 
+                                        $has = $Row[1];
+                                        $actual = $Row[2];
+                                        $variedad = $Row[3];
+                                        $dobleCultivoValido = strpos($Row[5],'/');
+    
+                                        if($dobleCultivoValido){
+    
+                                            $cultivos = explode('/',$Row[5]);
+    
+                                            for ($i=0; $i < sizeof($cultivos) ; $i++) { 
+                                                
+                                                $planificado = str_replace(' ','',trim(strtolower($cultivos[$i])));
+                                                
+                                                $tipoCultivo = tipoCultivo($planificado);
+                                                
+                                                $data[] = "('$campania1','$campania2','$campo','$tipoCultivo','$lote',$has,'$actual','$planificado','$dateTime')";
+    
+                                            }
+    
+                                        }else{
+    
+                                            $planificado = str_replace(' ','',trim(strtolower($Row[5])));
                                             
-                                            $planificado = trim(strtolower($cultivos[$i]));
+                                            $tipoCultivo = tipoCultivo($planificado);
+    
+                                            $data[] = "('$campania1','$campania2','$campo','$tipoCultivo','$lote',$has,'$actual','$planificado','$dateTime')";
+    
+                                        }
+
+                                    }else{
+
+                                        $dobleCultivoValido = strpos($Row[5],'/');
+
+                                        if($dobleCultivoValido){
+
+                                            $cultivos = explode('/',$Row[5]);
+
+                                            for ($i=0; $i < sizeof($cultivos) ; $i++) { 
+
+                                                $dobleCultivo = strpos($cultivos[$i],'-');
+
+                                                if($dobleCultivo){
+                                                
+                                                    $cultivo = explode('-',$cultivos[$i]);
+
+                                                    for ($a=0; $a < sizeof($cultivo) ; $a++) { 
+                                                    
+                                                        $planificado = str_replace(' ','',trim(strtolower($cultivo[$a])));
+                                                        
+                                                        $tipoCultivo = tipoCultivo($planificado);
+                                                        
+                                                        $data[] = "('$campania1','$campania2','$campo','$tipoCultivo','$lote',$has,'$actual','$planificado','$dateTime')";
+
+                                                    }
+                                                
+                                                }else{
+
+                                                    $planificado = str_replace(' ','',trim(strtolower($cultivos[$i])));
+                                                        
+                                                    $tipoCultivo = tipoCultivo($planificado);
+                                                    
+                                                    $data[] = "('$campania1','$campania2','$campo','$tipoCultivo','$lote',$has,'$actual','$planificado','$dateTime')";
+
+                                                }
+
+                                            
+                                            }
+
+                                        }else{
+
+                                            $planificado = str_replace(' ','',trim(strtolower($cultivo[$i])));
                                             
                                             $tipoCultivo = tipoCultivo($planificado);
                                             
@@ -125,13 +187,6 @@ class ControladorAgro{
 
                                         }
 
-                                    }else{
-
-                                        $planificado = trim(strtolower($Row[5]));
-                                        
-                                        $tipoCultivo = tipoCultivo($planificado);
-
-                                        $data[] = "('$campania1','$campania2','$campo','$tipoCultivo','$lote',$has,'$actual','$planificado','$dateTime')";
 
                                     }
                                 
@@ -147,6 +202,9 @@ class ControladorAgro{
                         
                 }
 
+                var_dump($data);
+                die();
+                
                 $respuesta = ModeloAgro::mdlCargarArchivo($tabla,$data);
                 
                 $errors = array($respuesta);
