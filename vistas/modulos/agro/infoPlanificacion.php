@@ -12,14 +12,14 @@
                         | Cultivos Estivales: <span id="hasEstPlanificacion<?php echo $campoId;?>"></span>  Has.</h2>
                     </div>
         
-                    <div class="box-footer">
+                    <div class="box-footer" style="padding-top:0px;padding-bottom:0px;">
         
                         <div class="row"  style="font-size:1.5em;">
         
                             <div class="col-sm-4 border-right">
         
                                 <div class="description-block">
-                                    <h4 class="description-text"><span id="hasTrigoPlanificacion<?php echo $campoId;?>"></span> Has. | <span id="totalCostoTrigoPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
+                                    <h4 class="description-text"><span id="hasTrigoPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoTrigoPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
                                     <span class="description-text">TRIGO</span>
                                 </div>
         
@@ -28,7 +28,7 @@
                             <div class="col-sm-4 border-right">
         
                                 <div class="description-block">
-                                    <h4 class="description-text"><span id="hasCarinataPlanificacion<?php echo $campoId;?>"></span> Has. | <span id="totalCostoCarinataPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
+                                    <h4 class="description-text"><span id="hasCarinataPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoCarinataPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
                                     <span class="description-text">CARINATA</span>
                                 </div>
         
@@ -37,7 +37,7 @@
                             <div class="col-sm-4">
         
                                 <div class="description-block">
-                                    <h4 class="description-text"><span id="hasRestoPlanificacion<?php echo $campoId;?>"></span> Has. | <span id="totalCostoRestoPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
+                                    <h4 class="description-text"><span id="hasRestoPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoRestoPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
                                     <span class="description-text">RESTO</span>
                                 </div>
         

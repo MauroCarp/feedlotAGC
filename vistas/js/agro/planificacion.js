@@ -41,36 +41,38 @@ const cargarGraficoPlanificacion = (props)=>{
       
       respuesta.forEach(registro => {
         
-        
         // DATA PARA GRAFICOS          
-
-          datos.label.push(`${registro.lote} / ${capitalizarPrimeraLetra(registro.planificado)}`)
-
-          datos.has.lote.push(Number(registro.has))
         
-        // DATA PARA INFO
+        if(registro.planificado != ''){
+          
+          datos.label.push(`${registro.lote} / ${capitalizarPrimeraLetra(registro.planificado)}`)
+          datos.has.lote.push(Number(registro.has))
+          
+          // DATA PARA INFO
           if(registro.tipoCultivo == 'Invernal' && registro.tipoCultivo != '')
-            datos.has.invernales.push(Number(registro.has))
+          datos.has.invernales.push(Number(registro.has))
           
           if(registro.tipoCultivo == 'Estival' && registro.tipoCultivo != '')
-            datos.has.estivales.push(Number(registro.has))
-            
+          datos.has.estivales.push(Number(registro.has))
+          
           if(registro.planificado == 'trigo')
-            datos.has.trigo.push(Number(registro.has))
+          datos.has.trigo.push(Number(registro.has))
           
           if(registro.planificado == 'carinata')
-            datos.has.carinata.push(Number(registro.has))
-            
-          if(registro.planificado != 'trigo' && registro.planificado != 'carinata'){
+          datos.has.carinata.push(Number(registro.has))
           
+          if(registro.planificado != 'trigo' && registro.planificado != 'carinata' && registro.planificado != ''){
+            
             let cultivoHas = {
               'cultivo': registro.planificado,
               'has': Number(registro.has)
             }  
-
+            
             datos.has.resto.push(cultivoHas)
-
+            
           }
+        
+        }
         
         
 
@@ -81,7 +83,8 @@ const cargarGraficoPlanificacion = (props)=>{
       data.append('campania1',props.campania1)
       data.append('campania2',props.campania2)
       data.append('seccion','planificacion')
-    
+      console.log(datos);
+      
       fetch(url,{
         method:'post',
         body:data
@@ -92,26 +95,28 @@ const cargarGraficoPlanificacion = (props)=>{
 
             if(reg.cultivo == 'trigo'){
               
-              let totalHas = (datos.has.trigo.length > 0) ? datos.has.trigo.reduce((acc,cur)=> acc + cur) : 0
-              
-              datos.costos.trigo =  totalHas * reg.costo
+                let totalHas = (datos.has.trigo.length > 0) ? datos.has.trigo.reduce((acc,cur)=> acc + cur) : 0
+                
+                datos.costos.trigo =  totalHas * reg.costo
               
             }
             
             if(reg.cultivo == 'carinata'){
               
-              let totalHas = (datos.has.carinata.length > 0) ? datos.has.carinata.reduce((acc,cur)=> acc + cur) : 0
-                
-              datos.costos.carinata =  totalHas * reg.costo
+                let totalHas = (datos.has.carinata.length > 0) ? datos.has.carinata.reduce((acc,cur)=> acc + cur) : 0
+                  
+                datos.costos.carinata =  totalHas * reg.costo
           
             }
 
             for (const cultivo of datos.has.resto) {
-            
-              if(cultivo.cultivo == reg.cultivo){              
 
+              let cult = (cultivo.cultivo == 'soja') ? 'soja1era' : cultivo.cultivo        
+
+              if(cult.replace(' ','') == reg.cultivo){              
+                
                 datos.costos.resto.push( cultivo.has * reg.costo)
-
+                
               }
     
             }
@@ -120,20 +125,19 @@ const cargarGraficoPlanificacion = (props)=>{
           
           for (const lote of respuesta) {
             
-            let cultivo = (lote.planificado == 'soja') ? 'soja 1era' : lote.planificado
+            let cultivo = (lote.planificado == 'soja') ? 'soja1era' : lote.planificado
             
-            for (const reg of costos) {
+            for (const reg of costos) {       
               
-              if(reg.cultivo == cultivo){
-  
+              if(reg.cultivo == cultivo.replace(' ','')){
+                
                 datos.costos.lote.push(reg.costo * lote.has);
   
               }
-
+            
             }
 
           }        
-          console.log(datos);
           
         document.getElementById(`hasInvPlanificacion${props.idInfo}`).innerText = (datos.has.invernales.length > 0) ? datos.has.invernales.reduce((acc,cur)=> acc + cur) : 0;
         document.getElementById(`hasEstPlanificacion${props.idInfo}`).innerText = (datos.has.estivales.length > 0) ? datos.has.estivales.reduce((acc,cur)=> acc + cur) : 0;
@@ -143,7 +147,8 @@ const cargarGraficoPlanificacion = (props)=>{
         
         let totalHasResto = 0
         
-        for(let resto of datos.has.resto) totalHasResto+= resto.has ;
+        for(let resto of datos.has.resto) totalHasResto+= resto.has
+
         document.getElementById(`hasRestoPlanificacion${props.idInfo}`).innerText = totalHasResto
         
         document.getElementById(`hasInvPlanificacion${props.idInfo}`).innerText = (datos.has.invernales.length > 0) ? datos.has.invernales.reduce((acc,cur)=> acc + cur) : 0;
@@ -155,8 +160,8 @@ const cargarGraficoPlanificacion = (props)=>{
  
         document.getElementById(`totalHasPlanificadas${props.idInfo}`).innerText = datos.has.lote.reduce((acc,cur)=> acc + cur)
 
-        document.getElementById(`totalInversionPlanificada${props.idInfo}`).innerText = (datos.costos.lote.reduce((acc,cur)=> acc + cur)).toLocaleString('de-DE')
-
+        document.getElementById(`totalInversionPlanificada${props.idInfo}`).innerText = (datos.costos.lote.reduce((acc,cur)=> acc + cur)).toLocaleString('de-DE')        
+console.log(datos);
 
         let configPlanificacion = {
             type: 'bar',
@@ -215,7 +220,9 @@ const cargarGraficoPlanificacion = (props)=>{
               }
             }
         }
-      
+        
+        console.log(datos);
+        
         generarGraficoBar(props.idGrafico,configPlanificacion,'noOption');
         
   
@@ -232,7 +239,7 @@ const cargarGraficoPlanificacion = (props)=>{
 let campania = getQueryVariable('campania')
 
 if(campania){
-
+  
   campania = campania.split('/')
 
   let props = {
@@ -270,7 +277,7 @@ if(campania){
   props = {
     campo: 'EL PICHI',
     idGrafico: 'graficoPlanifiacionPichi',
-    idInfo:'Bety',
+    idInfo:'Pichi',
     campania1: '',
     campania2: ''
   }

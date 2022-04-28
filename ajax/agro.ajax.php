@@ -41,17 +41,21 @@ class AjaxAgro{
 
 	public function ajaxMostrarCostos(){
 
-		$item = "campania1";
-		
-		$valor = $this->campania1;
+		$item = 'cultivo';
 
-		$item2 = "campania2";
+		$valor = '';
+
+		$item2 = "campania1";
 		
-		$valor2 = $this->campania2;
+		$valor2 = $this->campania1;
+
+		$item3 = "campania2";
+		
+		$valor3 = $this->campania2;
 
 		$tabla = $this->seccion;
 
-		$respuesta = ControladorAgro::ctrMostrarCostos($tabla, $item, $valor, $item2, $valor2);
+		$respuesta = ControladorAgro::ctrMostrarCostos($tabla,$item,$cultivo,$item2,$campania1,$item3,$campania2);
 
 		echo json_encode($respuesta);
 
