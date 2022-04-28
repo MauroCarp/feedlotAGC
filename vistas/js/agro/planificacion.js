@@ -38,10 +38,12 @@ const cargarGraficoPlanificacion = (props)=>{
           'total':0
         },
       }
-
+      
       respuesta.forEach(registro => {
-  
+        
+        
         // DATA PARA GRAFICOS          
+
           datos.label.push(`${registro.lote} / ${capitalizarPrimeraLetra(registro.planificado)}`)
 
           datos.has.lote.push(Number(registro.has))
@@ -53,22 +55,24 @@ const cargarGraficoPlanificacion = (props)=>{
           if(registro.tipoCultivo == 'Estival' && registro.tipoCultivo != '')
             datos.has.estivales.push(Number(registro.has))
             
-            if(registro.planificado == 'trigo')
-              datos.has.trigo.push(Number(registro.has))
+          if(registro.planificado == 'trigo')
+            datos.has.trigo.push(Number(registro.has))
+          
+          if(registro.planificado == 'carinata')
+            datos.has.carinata.push(Number(registro.has))
             
-            if(registro.planificado == 'carinata')
-              datos.has.carinata.push(Number(registro.has))
-              
-            if(registro.planificado != 'trigo' && registro.planificado != 'carinata'){
-            
-              let cultivoHas = {
-                'cultivo': registro.planificado,
-                'has': Number(registro.has)
-              }  
+          if(registro.planificado != 'trigo' && registro.planificado != 'carinata'){
+          
+            let cultivoHas = {
+              'cultivo': registro.planificado,
+              'has': Number(registro.has)
+            }  
 
-              datos.has.resto.push(cultivoHas)
+            datos.has.resto.push(cultivoHas)
 
-            }
+          }
+        
+        
 
       });
       
