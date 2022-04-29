@@ -147,37 +147,34 @@ const cargarGraficoPlanificacion = (props)=>{
             
           }
           
-          for (const lote of respuesta) {
+        for (const lote of respuesta) {
+          
+          let cultivo = (lote.planificado == 'soja') ? 'soja1era' : lote.planificado
+          
+          for (const reg of costos) {       
             
-            let cultivo = (lote.planificado == 'soja') ? 'soja1era' : lote.planificado
-            
-            for (const reg of costos) {       
+            if(reg.cultivo == cultivo.replace(' ','')){
               
-              if(reg.cultivo == cultivo.replace(' ','')){
-                
-                datos.costos.lote.push(reg.costo * lote.has);
-  
-              }
-            
+              datos.costos.lote.push(Number(reg.costo));
+              datos.costos.total.push(reg.costo * lote.has);
+
             }
-
-          }        
           
-          let hasInvernales =  (datos.has.invernales.length > 0) ? datos.has.invernales.reduce((acc,cur)=> acc + cur) : 0
-          let hasEstivales =  (datos.has.estivales.length > 0) ? datos.has.estivales.reduce((acc,cur)=> acc + cur) : 0
+          }
 
-          let hasCobertura = 0  
-          if(datos.has.cobertura.length > 0){
-              for(let cobertura of datos.has.cobertura) hasCobertura+= cobertura.has
-           }
+        }        
+        
+        let hasInvernales =  (datos.has.invernales.length > 0) ? datos.has.invernales.reduce((acc,cur)=> acc + cur) : 0
+        let hasEstivales =  (datos.has.estivales.length > 0) ? datos.has.estivales.reduce((acc,cur)=> acc + cur) : 0
+
+        let hasCobertura = 0  
+        if(datos.has.cobertura.length > 0){
+            for(let cobertura of datos.has.cobertura) hasCobertura+= cobertura.has
+          }
           
-          let ratio = (hasInvernales + hasCobertura) / hasEstivales 
+        let ratio = (hasInvernales + hasCobertura) / hasEstivales 
 
-          
-          // document.getElementById(`hasInvPlanificacion${props.idInfo}`).innerText = (datos.has.invernales.length > 0) ? datos.has.invernales.reduce((acc,cur)=> acc + cur) : 0;
-          // document.getElementById(`hasEstPlanificacion${props.idInfo}`).innerText = (datos.has.estivales.length > 0) ? datos.has.estivales.reduce((acc,cur)=> acc + cur) : 0;
-
-          // HAS -> INV- EST- COB
+        // HAS -> INV- EST- COB
         document.getElementById(`hasInvPlanificacion${props.idInfo}`).innerText = hasInvernales
         document.getElementById(`hasCobPlanificacion${props.idInfo}`).innerText = hasCobertura
         document.getElementById(`hasEstPlanificacion${props.idInfo}`).innerText = hasEstivales
@@ -206,8 +203,8 @@ const cargarGraficoPlanificacion = (props)=>{
  
         // TOTAL ->HAS - COSTO
         document.getElementById(`totalHasPlanificadas${props.idInfo}`).innerText = datos.has.lote.reduce((acc,cur)=> acc + cur)
-        document.getElementById(`totalInversionPlanificada${props.idInfo}`).innerText = (datos.costos.lote.reduce((acc,cur)=> acc + cur)).toLocaleString('de-DE')        
-
+        document.getElementById(`totalInversionPlanificada${props.idInfo}`).innerText = (datos.costos.total.reduce((acc,cur)=> acc + cur)).toLocaleString('de-DE')        
+        
         let configPlanificacion = {
             type: 'bar',
             data: {
@@ -254,8 +251,8 @@ const cargarGraficoPlanificacion = (props)=>{
                 }]
               },
               plugins:{
-                labels:{
-                  render: 'value'
+                labels:{                  
+                    render:'value',
                 }
               },
               legend:{
