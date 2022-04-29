@@ -5,18 +5,23 @@
 
                 <div class="box box-widget widget-user">
         
-                    <div class="widget-user-header bg-aqua-active">
+                    <div class="widget-user-header bg-aqua-active infoPlanificacion">
+
                         <h2 class="widget-user-username">
-                        | <b> <?php echo $campo;?></b><br>
-                        | Cultivos Invernales: <span id="hasInvPlanificacion<?php echo $campoId;?>"></span> Has.<br>
-                        | Cultivos Estivales: <span id="hasEstPlanificacion<?php echo $campoId;?>"></span>  Has.</h2>
+                            | <b> <?php echo $campo;?></b><br>
+                            | Cultivos Invernales: <span id="hasInvPlanificacion<?php echo $campoId;?>"></span> Has.<br>
+                            | Cultivos Cobertura: <span id="hasCobPlanificacion<?php echo $campoId;?>"></span>  Has.<br>
+                            | Cultivos Estivales: <span id="hasEstPlanificacion<?php echo $campoId;?>"></span>  Has.<br>
+                            | Ratio de Cultivo: <span id="ratioPlanificacion<?php echo $campoId;?>"></span>  %.
+                        </h2>
+                    
                     </div>
         
                     <div class="box-footer" style="padding-top:0px;padding-bottom:0px;">
         
                         <div class="row"  style="font-size:1.5em;">
         
-                            <div class="col-sm-4 border-right">
+                            <div class="col-sm-3 border-right">
         
                                 <div class="description-block">
                                     <h4 class="description-text"><span id="hasTrigoPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoTrigoPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
@@ -25,7 +30,16 @@
         
                             </div>
         
-                            <div class="col-sm-4 border-right">
+                            <div class="col-sm-3 border-right">
+        
+                                <div class="description-block">
+                                    <h4 class="description-text"><span id="hasCoberturaPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoCoberturaPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
+                                    <span class="description-text">COBERTURA</span>
+                                </div>
+        
+                            </div>
+        
+                            <div class="col-sm-3 border-right">
         
                                 <div class="description-block">
                                     <h4 class="description-text"><span id="hasCarinataPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoCarinataPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
@@ -34,7 +48,7 @@
         
                             </div>
         
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
         
                                 <div class="description-block">
                                     <h4 class="description-text"><span id="hasRestoPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoRestoPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
