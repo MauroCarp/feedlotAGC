@@ -59,7 +59,7 @@ if( isset($_FILES["nuevosDatos"]) ){
             foreach ($Reader as $Row){
                 
                     $rowNumber++;
-                    
+
                     if($rowNumber == 3){
                         
                         $anio = $Row[1];
@@ -146,6 +146,8 @@ if( isset($_FILES["nuevosDatos"]) ){
             }
 
     }
+
+    die();
 
     echo "<script>
     window.location.href = 'index.php?ruta=inicio';

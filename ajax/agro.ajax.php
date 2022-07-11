@@ -70,7 +70,7 @@ if(isset($_POST["accion"])){
 	
 	$accion = $_POST['accion'];
 
-	if($accion == 'mostrarDataPlanificacion'){
+	if($accion == 'mostrarData'){
 
 		$mostrarData = new AjaxAgro();
         $mostrarData -> campania = $_POST["campania"];

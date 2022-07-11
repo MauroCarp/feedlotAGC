@@ -5,16 +5,14 @@
 
                 <div class="box box-widget widget-user">
     
-                    <button type="button" class="close eliminarArchivoAgro" style="padding:15px;font-size:2.5em;" campo="<?php echo $campo;?>" seccion="planificacion">&times;</button>
-
                     <div class="widget-user-header bg-aqua-active infoAgro">
 
                         <h2 class="widget-user-username">
                             | <b> <?php echo $campo;?></b><br>
-                            | Cultivos Invernales: <span id="hasInvPlanificacion<?php echo $campoId;?>"></span> Has.<br>
-                            | Cultivos Cobertura: <span id="hasCobPlanificacion<?php echo $campoId;?>"></span>  Has.<br>
-                            | Cultivos Estivales: <span id="hasEstPlanificacion<?php echo $campoId;?>"></span>  Has.<br>
-                            | Ratio de Cultivo: <span id="ratioPlanificacion<?php echo $campoId;?>"></span>  %.
+                            | Cultivos Invernales: <span id="hasInvEjecucion<?php echo $campoId;?>"></span> Has.<br>
+                            | Cultivos Cobertura: <span id="hasCobEjecucion<?php echo $campoId;?>"></span>  Has.<br>
+                            | Cultivos Estivales: <span id="hasEstEjecucion<?php echo $campoId;?>"></span>  Has.<br>
+                            | Ratio de Cultivo: <span id="ratioEjecucion<?php echo $campoId;?>"></span>  %.
                         </h2>
                     
                     </div>
@@ -26,7 +24,7 @@
                             <div class="col-sm-3 border-right">
         
                                 <div class="description-block">
-                                    <h4 class="description-text"><span id="hasTrigoPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoTrigoPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
+                                    <h4 class="description-text"><span id="hasTrigoEjecucion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoTrigoEjecucion<?php echo $campoId;?>"></span> U$D</h4>
                                     <span class="description-text">TRIGO</span>
                                 </div>
         
@@ -35,7 +33,7 @@
                             <div class="col-sm-3 border-right">
         
                                 <div class="description-block">
-                                    <h4 class="description-text"><span id="hasCoberturaPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoCoberturaPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
+                                    <h4 class="description-text"><span id="hasCoberturaEjecucion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoCoberturaEjecucion<?php echo $campoId;?>"></span> U$D</h4>
                                     <span class="description-text">COBERTURA</span>
                                 </div>
         
@@ -44,7 +42,7 @@
                             <div class="col-sm-3 border-right">
         
                                 <div class="description-block">
-                                    <h4 class="description-text"><span id="hasCarinataPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoCarinataPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
+                                    <h4 class="description-text"><span id="hasCarinataEjecucion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoCarinataEjecucion<?php echo $campoId;?>"></span> U$D</h4>
                                     <span class="description-text">CARINATA</span>
                                 </div>
         
@@ -53,7 +51,7 @@
                             <div class="col-sm-3">
         
                                 <div class="description-block">
-                                    <h4 class="description-text"><span id="hasRestoPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoRestoPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
+                                    <h4 class="description-text"><span id="hasRestoEjecucion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoRestoEjecucion<?php echo $campoId;?>"></span> U$D</h4>
                                     <span class="description-text">RESTO</span>
                                 </div>
         
@@ -81,7 +79,7 @@
 
                         <span class="info-box-text">Hectareas Totales</span>
                         
-                        <span class="info-box-number"><span id="totalHasPlanificadas<?php echo $campoId;?>"></span> Has.</span>
+                        <span class="info-box-number"><span id="totalHasEjecucion<?php echo $campoId;?>"></span> Has.</span>
 
                     </div>
         
@@ -96,7 +94,7 @@
                     <span class="info-box-icon bg-aqua"><i class="fa fa-dollar"></i></span>
                     <div class="info-box-content">
                     <span class="info-box-text">Inversion <br> Total Proyectada</span>
-                    <span class="info-box-number">U$D <span id="totalInversionPlanificada<?php echo $campoId;?>"></span></span>
+                    <span class="info-box-number">U$D <span id="totalInversionEjecucion<?php echo $campoId;?>"></span></span>
                     </div>
         
                 </div>

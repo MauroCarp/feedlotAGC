@@ -245,6 +245,9 @@ $meses = Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto"
   
   <?php
   }
+
+  if($_SESSION["perfil"] != "Administrador Agro"){
+
   ?>
 
   <section class="content" style="display:inline-block">
@@ -404,7 +407,10 @@ $meses = Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto"
     </div>
 
   </section>
-
+  
+  <?php
+  }
+?>
 
 </div>
 

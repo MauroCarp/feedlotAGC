@@ -37,6 +37,17 @@
 
 }
 
-.infoPlanificacion{
+.infoAgro{
     height: 175px!important;
+}
+
+.cajaContableTitulo{
+
+    font-size:1.5em;
+
+}
+
+.cajaContableNumber{
+    font-size:1.2em;
+    font-weight:bold;
 }

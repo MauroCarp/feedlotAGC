@@ -53,8 +53,29 @@ class ControladorUsuarios{
 
 						if($ultimoLogin == "ok"){
 
-							$inicio = ($_SESSION['perfil'] == 'Agro') ? 'agro' : 'inicio';
+					
+							switch($_SESSION['perfil']){
+								case 'Agro':
+								case 'Administrador Agro':
+								
+									$inicio = 'agro';
 
+									break;
+							
+								case 'Ganadero':
+								case 'Administrador Ganadero':
+									$inicio = 'inicio';
+
+									break;
+							
+								case 'Contable':
+								case 'Administrador Contable':
+									$inicio = 'contable';
+									break;
+							
+								}
+
+								
 							echo '<script>
 
 								window.location = "'.$inicio.'";

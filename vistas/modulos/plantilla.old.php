@@ -2,6 +2,7 @@
 
 session_start();
 
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -142,7 +143,7 @@ CUERPO DOCUMENTO
 
   if(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok"){
 
-    echo '<div class="wrapper">';
+   echo '<div class="wrapper">';
 
     /*=============================================
     CABEZOTE
@@ -160,7 +161,7 @@ CUERPO DOCUMENTO
     CONTENIDO
     =============================================*/
     
-    if($_SESSION["perfil"] == 'Ganadero' OR $_SESSION["perfil"] == 'Administrador Ganadero'){
+    if($_SESSION["perfil"] != 'Agro' AND $_SESSION["perfil"] != 'Administrador Agro'){
 
       if(isset($_GET["ruta"])){
 
@@ -211,13 +212,14 @@ CUERPO DOCUMENTO
 
     }
 
-    if($_SESSION["perfil"] == 'Agro' OR $_SESSION["perfil"] == 'Administrador Agro'){
+    if($_SESSION["perfil"] != 'Ganadero' AND $_SESSION["perfil"] != 'Administrador Ganadero'){
 
       if(isset($_GET["ruta"])){
+        
         if($_GET["ruta"] == "agro/agro" ||
         $_GET["ruta"] == "agro" ||
         $_GET["ruta"] == "salir"){
-          
+
           include "modulos/".$_GET["ruta"].".php";
           
         }else{
@@ -228,34 +230,15 @@ CUERPO DOCUMENTO
         
       }else{
         
-        include "modulos/agro/agro.php";
+        include "agro/agro.php";
 
       }
 
     }
 
-    if($_SESSION["perfil"] == 'Contable' OR $_SESSION["perfil"] == 'Administrador Contable'){
 
-      if(isset($_GET["ruta"])){
-        if($_GET["ruta"] == "contable/contable" ||
-        $_GET["ruta"] == "contable" ||
-        $_GET["ruta"] == "salir"){
-          
-          include "modulos/".$_GET["ruta"].".php";
-          
-        }else{
-          
-          include "modulos/404.php";
-          
-        }
-        
-      }else{
-        
-        include "modulos/contable/contable.php";
 
-      }
 
-    }
 
     /*=============================================
     FOOTER
@@ -280,34 +263,19 @@ CUERPO DOCUMENTO
 <script src="vistas/js/archivos.js"></script>
 
   <?php
-if($_SESSION["perfil"] == 'Administrador Contable' OR $_SESSION["perfil"] == 'Contable'){
-?>
+// <!-- SOLO EN AGRO -->
 
-<script src="vistas/js/contable/contable.js"></script>
-
-<?php
-
-}
-
-// AGRO Y CONTABLE
-if($_SESSION["perfil"] == 'Agro' OR $_SESSION["perfil"] == 'Administrador Agro' OR $_SESSION["perfil"] == 'Administrador Contable' OR $_SESSION["perfil"] == 'Contable'){
+if($_SESSION["perfil"] != 'Ganadero' AND $_SESSION["perfil"] != 'Administrador Ganadero'){
 ?>
 
 <script src="vistas/js/agro/agro.js"></script>
-
-<?php
-}
-// SOLO EN AGRO
-if($_SESSION["perfil"] == 'Agro' OR $_SESSION["perfil"] == 'Administrador Agro'){
-?>
-
 <script src="vistas/js/agro/planificacion.js"></script>
 
 <?php
 }
 
 // SOLO EN GANADERO
-if($_SESSION["perfil"] == 'Ganadero' OR $_SESSION["perfil"] == 'Administrador Ganadero'){
+if($_SESSION["perfil"] != 'Agro' AND $_SESSION["perfil"] != 'Administrador Agro'){
   ?>
 <script src="vistas/js/compras.js"></script>
 <script src="vistas/js/muertes.js"></script>

@@ -282,7 +282,7 @@ if($accion == 'data'){
 
             <tr>
                                     
-                <td>Costo Producción 1 Kg ( Alimentación+ Estructura + Sanidad )</td>
+                <td>Costo Producción 1 Kg ( Alimentación + Sanidad )</td>
                 
                 <td><span class='badge bg-blue'>$ ".formatearNumero2($datos['CProdKgAES'])."</span></td>
 

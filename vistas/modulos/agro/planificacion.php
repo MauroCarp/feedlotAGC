@@ -1,4 +1,4 @@
-<button class="btn btn-secondary" data-toggle="modal" data-target="#modalVerCostosInversion">
+<button id="btnCostosPlanificacion" class="btn btn-secondary" data-toggle="modal" data-target="#modalVerCostosInversion">
 
     <i class="fa fa-dollar" style="color:#3c8dbc;font-size:1.2em;"></i><b>&nbsp;Costos Inversi&oacute;n</b>
 
@@ -9,7 +9,7 @@
 
 <div class="row">
 
-    <div class="col-lg-4">
+    <div class="col-lg-5">
             
         <?php
 
@@ -29,7 +29,7 @@
 
     </div>
 
-    <div class="col-lg-8">
+    <div class="col-lg-7">
 
         <?php include "graficosPlanificacion.php"; ?>
 

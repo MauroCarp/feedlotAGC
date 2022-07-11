@@ -8,9 +8,10 @@ class ControladorArchivos{
 
 	static public function ctrMostrarArchivos($item, $valor,$tabla,$distinct){
 
-		$respuesta = ModeloArchivos::MdlMostrarArchivos($tabla, $item, $valor,$distinct);
+		$respuesta = ModeloArchivos::mdlMostrarArchivos($tabla, $item, $valor,$distinct);
 
 		return $respuesta;
+
 	}
 
 

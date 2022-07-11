@@ -231,6 +231,8 @@ MODAL AGREGAR USUARIO
 
                   <option value="Agro">Agro</option>
 
+                  <option value="Contable">Contable</option>
+
                 </select>
 
               </div>
@@ -361,7 +363,9 @@ MODAL EDITAR USUARIO
 
                   <option value="Ganadero">Ganadero</option>
 
-                  <option value="Vendedor">Vendedor</option>
+                  <option value="Agro">Agro</option>
+
+                  <option value="Contable">Contable</option>
 
                 </select>
 

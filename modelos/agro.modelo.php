@@ -11,16 +11,16 @@ class ModeloAgro{
 		
 		$data = implode(',',$data);
 		
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(campania1,campania2,campo,tipoCultivo,lote,has,actual,planificado,dateTime) VALUES $data");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(campania1,campania2,campo,tipoCultivo,lote,has,actual,cobertura,planificado,periodoTime) VALUES $data");
 		
 		if($stmt->execute()){
 			
 			return "ok";	
 			
 		}else{
-			return 'error';
-
+			
 			return $stmt->errorInfo();
+			return 'error';
 			
 		}
 		
@@ -65,7 +65,9 @@ class ModeloAgro{
 	=============================================*/
 
 	static public function mdlCargarCostos($tabla,$item,$value,$item2,$value2,$item3,$value3,$costo){
-				
+
+		$tabla = 'costo'.$tabla;
+
 		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla($item,$item2,$item3,costo) VALUES (:$item,:$item2,:$item3,:costo)");
 	
 		$stmt->bindParam(":".$item, $value, PDO::PARAM_STR);
@@ -78,8 +80,8 @@ class ModeloAgro{
 			return "ok";	
 			
 		}else{
-			return 'error';
 			return $stmt->errorInfo();
+			return 'error';
 			
 		}
 		
@@ -90,15 +92,16 @@ class ModeloAgro{
 
 	}
 
-
 	/*=============================================
-	CARGAR COSTO
+	EDITAR COSTO
 	=============================================*/
 
-	static public function mdlEditarCostos($tabla,$item,$value,$item2,$value2,$item3,$value3,$costo){
-				
+	static public function mdlEditarCosto($tabla,$item,$value,$item2,$value2,$item3,$value3,$costo){
+
+		$tabla = 'costo'.$tabla;
+
 		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET 
-		$costo = :$costo		
+		costo = :costo		
 		WHERE $item = :$item AND $item2 = :$item2 AND $item3 = :$item3");
 	
 		$stmt->bindParam(":".$item, $value, PDO::PARAM_STR);
@@ -111,8 +114,9 @@ class ModeloAgro{
 			return "ok";	
 			
 		}else{
-			return 'error';
+
 			return $stmt->errorInfo();
+			return 'error';
 			
 		}
 		
@@ -122,6 +126,7 @@ class ModeloAgro{
 	
 
 	}
+
 
 	/*=============================================
 	MOSTRAR DATA
@@ -137,7 +142,7 @@ class ModeloAgro{
 			$stmt -> bindParam(":".$item3, $value3, PDO::PARAM_STR);
 
 			$stmt -> execute();
-			
+
 			return $stmt -> fetchAll();
 			
 		}else{
@@ -149,6 +154,33 @@ class ModeloAgro{
 			$stmt -> execute();
 			
 			return $stmt -> fetchAll();
+
+		}
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
+
+	/*=============================================
+	MOSTRAR DATA
+	=============================================*/
+	static public function mdlEliminarArchivo($tabla,$item,$value, $item2, $value2, $item3, $value3){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $item = :$item AND $item2 = :$item2 AND $item3 = :$item3");
+		
+		$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
+		$stmt -> bindParam(":".$item2, $value2, PDO::PARAM_INT);
+		$stmt -> bindParam(":".$item3, $value3, PDO::PARAM_INT);
+
+		if($stmt -> execute()){
+
+			return "ok";
+		
+		}else{
+			return $stmt->	errorInfo();
+			return "error";	
 
 		}
 

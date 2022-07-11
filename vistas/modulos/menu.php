@@ -6,7 +6,23 @@
 
 		<?php
 
-			$inicio = ($_SESSION['perfil'] == 'Agro') ? 'agro' : 'inicio';
+			switch ($_SESSION['perfil']) {
+				case 'Agro':
+					$inicio = 'agro';
+					break;
+				
+				case 'Ganadero':
+					$inicio = 'inicio';
+					break;
+
+				case 'Contable':
+					$inicio = 'contable';
+					break;
+
+				default:
+					# code...
+					break;
+			}
 
 			echo '<li class="active">
 
@@ -19,7 +35,7 @@
 
 				</li>';
 		
-				if($_SESSION["perfil"] != "Agro"){
+				if($_SESSION["perfil"] == "Ganadero" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 					echo '
 						<li class="treeview">
 
@@ -40,7 +56,7 @@
 							<ul class="treeview-menu">';
 				}
 				
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				if($_SESSION["perfil"] == "Administrador Ganadero"){
 					
 					echo '		
 							<li>
@@ -55,7 +71,7 @@
 							</li>';
 				}
 
-				if($_SESSION["perfil"] != "Agro"){
+				if($_SESSION["perfil"] == "Ganadero" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 
 							echo '
 							<li>
@@ -91,7 +107,7 @@
 						<ul class="treeview-menu">';
 				}
 				
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				if($_SESSION["perfil"] == "Administrador Ganadero"){
 					echo '
 					<li>
 
@@ -105,7 +121,7 @@
 					</li>';
 				}
 
-				if($_SESSION["perfil"] != "Agro"){
+				if($_SESSION["perfil"] == "Ganadero" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 
 					echo '
 							<li>
@@ -140,7 +156,7 @@
 						<ul class="treeview-menu">';
 				}
 
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				if($_SESSION["perfil"] == "Administrador Ganadero"){
 					
 					echo '
 					<li>
@@ -156,7 +172,7 @@
 
 				}
 
-				if($_SESSION["perfil"] != "Agro"){
+				if($_SESSION["perfil"] == "Ganadero" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 
 						echo '<li>
 
@@ -192,7 +208,7 @@
 			
 				}
 				
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				if($_SESSION["perfil"] == "Administrador Ganadero"){
 					echo '
 					<li>
 
@@ -206,7 +222,7 @@
 					</li>';
 				}
 
-				if($_SESSION["perfil"] != "Agro"){
+				if($_SESSION["perfil"] == "Ganadero" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 
 					echo '<li>
 
@@ -243,7 +259,7 @@
 
 				}
 						
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				if($_SESSION["perfil"] == "Administrador Ganadero"){
 					echo '
 					<li>
 
@@ -257,7 +273,7 @@
 					</li>';
 				}
 
-				if($_SESSION["perfil"] != "Agro"){
+				if($_SESSION["perfil"] == "Ganadero" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 
 					echo '<li>
 
@@ -286,7 +302,7 @@
 						</li>';
 				}
 			
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				if($_SESSION["perfil"] == "Administrador Ganadero"){
 
 					echo '<li>
 		
@@ -312,11 +328,11 @@
 					
 				}
 
-				if($_SESSION["perfil"] == "Agro" OR $_SESSION["perfil"] == "Master"){
+				if($_SESSION["perfil"] == "Agro" OR $_SESSION["perfil"] == "Administrador Agro"){
 
 					echo '<li>
 
-						<a href="#" data-toggle="modal" data-target="#modalCargarAgro"  class="menuAgro" data-agro="Planificacion">
+						<a href="#" data-toggle="modal" data-target="#modalCarga"  class="menusCarga" data-carga="Planificacion">
 
 							<i class="fa fa-calendar"></i>
 							<span>Planificación</span>
@@ -327,7 +343,7 @@
 
 					<li>
 
-					<a href="#" data-toggle="modal" data-target="#modalCargarAgro"  class="menuAgro" data-agro="Ejecucion">
+					<a href="#" data-toggle="modal" data-target="#modalCarga"  class="menusCarga" data-carga="Ejecucion">
 
 							<i class="icon-tractor"></i>
 							<span>Ejecución</span>
@@ -338,19 +354,53 @@
 
 					<li>
 
-					<a href="#" data-toggle="modal" data-target="#modalCargarAgro"  class="menuAgro" data-agro="Produccion">
+					<a href="#" data-toggle="modal" data-target="#modalCarga"  class="menusCarga" data-carga="Produccion">
 
 							<i class="icon-fardo"></i>
 							<span>Producción</span>
 
 						</a>
 
-					</li>'
+					</li>';
+
+				}
 
 
-					
-					
-					;
+				if($_SESSION["perfil"] == "Contable" OR $_SESSION["perfil"] == "Administrador Contable"){
+
+					echo '<li>
+
+						<a href="#" data-toggle="modal" data-target="#modalCarga"  class="menusCarga" data-carga="Barlovento">
+
+							<b>1</b>
+							<span><b>Cargar Barlocento</b></span>
+
+						</a>
+
+					</li>
+
+					<li>
+
+					<a href="#" data-toggle="modal" data-target="#modalCarga"  class="menusCarga" data-carga="Barlovento Consolidado">
+
+							<b>2</b>
+							<span><b>Cargar Consolidado</b></span>
+
+						</a>
+
+					</li>
+
+					<li>
+
+					<a href="#" data-toggle="modal" data-target="#modalCarga"  class="menusCarga" data-carga="Paihuen">
+
+							<b>P</b>
+							<span><b>Cargar Paihuen</b></span>
+
+
+						</a>
+
+					</li>';
 
 				}
 				
@@ -369,7 +419,7 @@
 
 // $seccion es la seccion que pertenece el modal
 
-if($_SESSION["perfil"] != "Agro"){
+if($_SESSION["perfil"] == "Ganadero" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 
 	$modalSeccion = 'ventanaModalFechaCompra';
 	
@@ -540,9 +590,9 @@ if($_SESSION["perfil"] != "Agro"){
 
 }
 
-if($_SESSION["perfil"] != "Ganadero"){
-
-	include 'modales/cargarAgro.modal.php';
+if($_SESSION["perfil"] == "Administrador Agro" OR $_SESSION["perfil"] == "Administrador Contable"){
+	
+	include 'modales/agro/cargarAgro.modal.php';
 
 }
 

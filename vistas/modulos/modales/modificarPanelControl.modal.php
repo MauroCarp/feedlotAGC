@@ -277,7 +277,7 @@ MODAL GRAFICO  MUERTES TRATADAS
 
                   <div class="row">
 
-                    <div class="col-md-8">Costo Producción 1 Kg ( Alimentación+ Estructura + Sanidad )</div>
+                    <div class="col-md-8">Costo Producción 1 Kg ( Alimentación + Sanidad )</div>
 
                     <div class="col-md-3"><input type="number" step="0.0001" class="form-control" id="CProdKgAES" name="CProdKgAES" ></div>
 

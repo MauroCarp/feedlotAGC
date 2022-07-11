@@ -6,84 +6,92 @@
 
 		<?php
 
+			$inicio = ($_SESSION['perfil'] == 'Agro' || $_SESSION['perfil'] == 'Administrador Agro') ? 'agro' : 'inicio';
 
 			echo '<li class="active">
 
-				<a href="inicio">
+					<a href="'.$inicio.'">
 
-					<i class="fa fa-home"></i>
-					<span>Inicio</span>
+						<i class="fa fa-home"></i>
+						<span>Inicio</span>
 
-				</a>
+					</a>
 
-			</li>
-	
-			<li class="treeview">
-
-				<a href="#">
-
-					<i class="icon-COW"></i>
-					
-					<span>Compras</span>
-					
-					<span class="pull-right-container">
-					
-						<i class="fa fa-angle-left pull-right"></i>
-
-					</span>
-
-				</a>
-
-				<ul class="treeview-menu">';
-				
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				</li>';
+		
+				if($_SESSION["perfil"] != "Agro" && $_SESSION["perfil"] != "Administrador Agro"){
 					echo '
-					
-					<li>
+						<li class="treeview">
 
-						<a href="datos-compras">
-							
-							<i class="fa fa-circle-o"></i>
-							<span>Cargar Compras</span>
+							<a href="#">
 
-						</a>
+								<i class="icon-COW"></i>
+								
+								<span>Compras</span>
+								
+								<span class="pull-right-container">
+								
+									<i class="fa fa-angle-left pull-right"></i>
 
-					</li>';
+								</span>
+
+							</a>
+
+							<ul class="treeview-menu">';
 				}
-					echo '
-					<li>
+				
+				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador Ganadero"){
+					
+					echo '		
+							<li>
 
-						<a href="#" data-toggle="modal" data-target="#ventanaModalFechaCompra">
-							
-							<i class="fa fa-bar-chart"></i>
-							<span>Generar Reportes</span>
+								<a href="datos-compras">
+									
+									<i class="fa fa-circle-o"></i>
+									<span>Cargar Compras</span>
 
-						</a>
+								</a>
+
+							</li>';
+				}
+
+				if($_SESSION["perfil"] != "Agro" && $_SESSION["perfil"] != "Administrador Agro"){
+
+							echo '
+							<li>
+
+								<a href="#" data-toggle="modal" data-target="#ventanaModalFechaCompra">
+									
+									<i class="fa fa-bar-chart"></i>
+									<span>Generar Reportes</span>
+
+								</a>
+
+							</li>
+						</ul>
 
 					</li>
-				</ul>
-
-			</li>
 
 
-			<li class="treeview">
+					<li class="treeview">
 
-				<a href="#">
+						<a href="#">
 
-					<i class="fa fa-money"></i>
-					<span>Ventas</span>
-					
-					<span class="pull-right-container">
-					
-						<i class="fa fa-angle-left pull-right"></i>
+							<i class="fa fa-money"></i>
+							<span>Ventas</span>
+							
+							<span class="pull-right-container">
+							
+								<i class="fa fa-angle-left pull-right"></i>
 
-					</span>
+							</span>
 
-				</a>
+						</a>
 
-				<ul class="treeview-menu">';
+						<ul class="treeview-menu">';
+				}
 				
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 					echo '
 					<li>
 
@@ -96,39 +104,43 @@
 
 					</li>';
 				}
-					echo '
-					<li>
 
-						<a href="reportes">
+				if($_SESSION["perfil"] != "Agro" && $_SESSION["perfil"] != "Administrador Agro"){
+
+					echo '
+							<li>
+
+								<a href="reportes">
+									
+									<i class="fa fa-bar-chart"></i>
+									<span>Generar Reportes</span>
+
+								</a>
+
+							</li>
+						</ul>
+
+					</li>
+
+					<li class="treeview">
+
+						<a href="#">
+
+							<i class="icon-muerteIco"></i>
+							<span>Muertes</span>
 							
-							<i class="fa fa-bar-chart"></i>
-							<span>Generar Reportes</span>
+							<span class="pull-right-container">
+							
+								<i class="fa fa-angle-left pull-right"></i>
+
+							</span>
 
 						</a>
 
-					</li>
-				</ul>
+						<ul class="treeview-menu">';
+				}
 
-			</li>
-
-			<li class="treeview">
-
-				<a href="#">
-
-					<i class="icon-muerteIco"></i>
-					<span>Muertes</span>
-					
-					<span class="pull-right-container">
-					
-						<i class="fa fa-angle-left pull-right"></i>
-
-					</span>
-
-				</a>
-
-				<ul class="treeview-menu">';
-
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 					
 					echo '
 					<li>
@@ -141,41 +153,46 @@
 						</a>
 
 					</li>';
+
 				}
 
-					echo '<li>
+				if($_SESSION["perfil"] != "Agro" && $_SESSION["perfil"] != "Administrador Agro"){
 
-						<a href="reportes-muertes">
+						echo '<li>
+
+								<a href="reportes-muertes">
+									
+									<i class="fa fa-bar-chart"></i>
+									<span>Generar Reportes</span>
+
+								</a>
+
+							</li>
+						</ul>
+
+					</li>
+
+					<li class="treeview">
+
+						<a href="#">
+
+							<i class="fa fa-tasks"></i>
 							
-							<i class="fa fa-bar-chart"></i>
-							<span>Generar Reportes</span>
+							<span>Panel de Control</span>
+							
+							<span class="pull-right-container">
+							
+								<i class="fa fa-angle-left pull-right"></i>
+
+							</span>
 
 						</a>
 
-					</li>
-				</ul>
-
-			</li>
-
-			<li class="treeview">
-
-				<a href="#">
-
-					<i class="fa fa-tasks"></i>
-					
-					<span>Panel de Control</span>
-					
-					<span class="pull-right-container">
-					
-						<i class="fa fa-angle-left pull-right"></i>
-
-					</span>
-
-				</a>
-
-				<ul class="treeview-menu">';
+						<ul class="treeview-menu">';
+			
+				}
 				
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){
+				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador Ganadero"){
 					echo '
 					<li>
 
@@ -189,62 +206,148 @@
 					</li>';
 				}
 
-			  echo '<li>
+				if($_SESSION["perfil"] != "Agro" && $_SESSION["perfil"] != "Administrador Agro"){
 
-						<a href="#" data-toggle="modal" data-target="#ventanaModalFechaPanelControl">
+					echo '<li>
+
+									<a href="#" data-toggle="modal" data-target="#ventanaModalFechaPanelControl">
+										
+										<i class="fa fa-bar-chart"></i>
+										<span>Generar Reportes</span>
+
+									</a>
+
+								</li>
+
+							</ul>
+
+						</li>
+
+						<li class="treeview">
+
+							<a href="#">
+
+								<i class="fa fa-retweet"></i>
+								
+								<span>Conversi&oacute;n</span>
+								
+								<span class="pull-right-container">
+								
+									<i class="fa fa-angle-left pull-right"></i>
+
+								</span>
+
+							</a>
+
+							<ul class="treeview-menu">';
+
+				}
+						
+				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador Ganadero"){
+					echo '
+					<li>
+
+						<a href="#" data-toggle="modal" data-target="#modalCargarConversion">
 							
-							<i class="fa fa-bar-chart"></i>
-							<span>Generar Reportes</span>
+							<i class="fa fa-circle-o"></i>
+							<span>Cargar Conversion</span>
+
+						</a>
+
+					</li>';
+				}
+
+				if($_SESSION["perfil"] != "Agro" && $_SESSION["perfil"] != "Administrador Agro"){
+
+					echo '<li>
+
+									<a href="#" data-toggle="modal" data-target="#ventanaModalResumenConversion">
+										
+										<i class="fa fa-bar-chart"></i>
+										<span>Generar Reportes</span>
+
+									</a>
+
+								</li>
+
+							</ul>
+
+						</li>
+
+						<li>
+
+							<a href="piri">
+
+								<i class="fa fa-line-chart "></i>
+								<span>P.I.R.I</span>
+
+							</a>
+
+						</li>';
+				}
+			
+				if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador Ganadero"){
+
+					echo '<li>
+		
+						<a href="usuarios">
+		
+							<i class="fa fa-user"></i>
+							<span>Usuarios</span>
+		
+						</a>
+		
+					</li>
+					
+					<li>
+						
+						<a href="archivosCarga">
+						
+						<i class="fa fa-files-o"></i>
+						<span>Lista de Archivos Carga</span>
+						
+						</a>
+					
+					</li>';
+					
+				}
+
+				if($_SESSION["perfil"] != "Ganadero" AND $_SESSION["perfil"] != "Administrador Ganadero"){
+
+					echo '<li>
+
+						<a href="#" data-toggle="modal" data-target="#modalCargarAgro"  class="menuAgro" data-agro="Planificacion">
+
+							<i class="fa fa-calendar"></i>
+							<span>Planificación</span>
 
 						</a>
 
 					</li>
 
-				</ul>
+					<li>
 
-			</li>
+					<a href="#" data-toggle="modal" data-target="#modalCargarAgro"  class="menuAgro" data-agro="Ejecucion">
 
-			<li>
+							<i class="icon-tractor"></i>
+							<span>Ejecución</span>
 
-				<a href="piri">
+						</a>
 
-					<i class="fa fa-line-chart "></i>
-					<span>P.I.R.I</span>
+					</li>
 
-				</a>
+					<li>
 
-			</li>';
-			
-			if($_SESSION["perfil"] == "Master"){
+					<a href="#" data-toggle="modal" data-target="#modalCargarAgro"  class="menuAgro" data-agro="Produccion">
 
-				echo '<li>
-	
-					<a href="usuarios">
-	
-						<i class="fa fa-user"></i>
-						<span>Usuarios</span>
-	
-					</a>
-	
-				</li>';
-			
-			}
+							<i class="icon-fardo"></i>
+							<span>Producción</span>
 
-			if($_SESSION["perfil"] == "Master" OR $_SESSION["perfil"] == "Administrador"){	
-				echo '
-				<li>
-					
-					<a href="archivosCarga">
-					
-					<i class="fa fa-files-o"></i>
-					<span>Lista de Archivos Carga</span>
-					
-					</a>
-				
-				</li>';
-				
-			}
-				
+						</a>
+
+					</li>';
+
+				}
 				
 		?>
 
@@ -261,85 +364,181 @@
 
 // $seccion es la seccion que pertenece el modal
 
+if($_SESSION["perfil"] != "Agro" AND $_SESSION["perfil"] != "Administrador Agro"){
 
-$modalSeccion = 'ventanaModalFechaCompra';
+	$modalSeccion = 'ventanaModalFechaCompra';
+	
+	$idCalendar = 'daterange-btnCompras';
+	
+	$idGenerar = 'generarReporteCompras';
+	
+	$idModal = 'modalFechaCompra';
+	
+	$seccion = 'Compras';
+	
+	include 'modales/filtroFecha.modal.php';
+	
+	$modalSeccion = 'ventanaModalFechaPanelControl';
+	
+	$titulo = 'Panel de Control';
+	
+	$inputID = 'PC';
+	
+	$divBtnPlus = 'btn-plusPC';
+	
+	$btnPlus = 'compararPC';
+	
+	$idGenerar = 'generarPanelControl';
+	
+	include 'modales/filtroMensualAnual.modal.php';
+	
+	$modalSeccion = 'ventanaModalResumenConversion';
+	
+	$titulo = 'Resumen Conversión';
+	
+	$inputID = 'Conv';
+	
+	$divBtnPlus = 'btn-plusConv';
+	
+	$btnPlus = 'compararConversion';
+	
+	$idGenerar = 'generarResumen';
+	
+	include 'modales/filtroMensualAnual.modal.php';
+	?>
 
-$idCalendar = 'daterange-btnCompras';
+	<div id="modalCargarPanelControl" class="modal fade" role="dialog">
+	  
+	  <div class="modal-dialog">
+	
+		<div class="modal-content">
+	
+		  <form role="form" method="post" enctype="multipart/form-data" action="cargar-panelControl.php">
+	
+			<!--=====================================
+			CABEZA DEL MODAL
+			======================================-->
+	
+			<div class="modal-header" style="background:#3c8dbc; color:white">
+	
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+	
+			  <h4 class="modal-title">Cargar Datos</h4>
+	
+			</div>
+	
+			<!--=====================================
+			CUERPO DEL MODAL
+			======================================-->
+	
+			<div class="modal-body">
+	
+			  <div class="box-body">
+	
+				<!-- ENTRADA PARA SUBIR FOTO -->
+	
+				 <div class="form-group">
+				  
+				  <div class="panel">Seleccionar Archivo</div>
+	
+				  <input type="file" class="nuevosDatos" name="nuevosDatos">
+	
+				</div>
+	
+			  </div>
+	
+			</div>
+	
+			<!--=====================================
+			PIE DEL MODAL
+			======================================-->
+	
+			<div class="modal-footer">
+	
+			  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+	
+			  <button type="submit" class="btn btn-primary">Cargar Datos</button>
+	
+			</div>
+	
+		  </form>
+	
+		</div>
+	
+	  </div>
+	
+	</div>
+	
+	<div id="modalCargarConversion" class="modal fade" role="dialog">
+	  
+	  <div class="modal-dialog">
+	
+		<div class="modal-content">
+	
+		  <form role="form" method="post" enctype="multipart/form-data" action="cargar-conversion.php">
+	
+			<!--=====================================
+			CABEZA DEL MODAL
+			======================================-->
+	
+			<div class="modal-header" style="background:#3c8dbc; color:white">
+	
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+	
+			  <h4 class="modal-title">Cargar Datos</h4>
+	
+			</div>
+	
+			<!--=====================================
+			CUERPO DEL MODAL
+			======================================-->
+	
+			<div class="modal-body">
+	
+			  <div class="box-body">
+	
+				<!-- ENTRADA PARA SUBIR FOTO -->
+	
+				 <div class="form-group">
+				  
+				  <div class="panel">Seleccionar Archivo</div>
+	
+				  <input type="file" class="nuevosDatos" name="nuevosDatos">
+	
+				</div>
+	
+			  </div>
+	
+			</div>
+	
+			<!--=====================================
+			PIE DEL MODAL
+			======================================-->
+	
+			<div class="modal-footer">
+	
+			  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+	
+			  <button type="submit" class="btn btn-primary">Cargar Datos</button>
+	
+			</div>
+	
+		  </form>
+	
+		</div>
+	
+	  </div>
+	
+	</div>
 
-$idGenerar = 'generarReporteCompras';
+	<?php
 
-$idModal = 'modalFechaCompra';
+}
 
-$seccion = 'Compras';
+if($_SESSION["perfil"] != "Ganadero" AND $_SESSION["perfil"] != "Administrador Ganadero"){
 
-include 'modales/filtroFecha.modal.php';
+	include 'modales/agro/cargarAgro.modal.php';
 
-$modalSeccion = 'ventanaModalFechaPanelControl';
-
-$idGenerar = 'generarPanelControl';
-
-include 'modales/filtroMensualAnual.modal.php';
+}
 
 ?>
-
-<div id="modalCargarPanelControl" class="modal fade" role="dialog">
-  
-  <div class="modal-dialog">
-
-    <div class="modal-content">
-
-      <form role="form" method="post" enctype="multipart/form-data" action="cargar-panelControl.php">
-
-        <!--=====================================
-        CABEZA DEL MODAL
-        ======================================-->
-
-        <div class="modal-header" style="background:#3c8dbc; color:white">
-
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-          <h4 class="modal-title">Cargar Datos</h4>
-
-        </div>
-
-        <!--=====================================
-        CUERPO DEL MODAL
-        ======================================-->
-
-        <div class="modal-body">
-
-          <div class="box-body">
-
-            <!-- ENTRADA PARA SUBIR FOTO -->
-
-             <div class="form-group">
-              
-              <div class="panel">Seleccionar Archivo</div>
-
-              <input type="file" class="nuevosDatos" name="nuevosDatos">
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <!--=====================================
-        PIE DEL MODAL
-        ======================================-->
-
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
-          <button type="submit" class="btn btn-primary">Cargar Datos</button>
-
-        </div>
-
-      </form>
-
-    </div>
-
-  </div>
-
-</div>
