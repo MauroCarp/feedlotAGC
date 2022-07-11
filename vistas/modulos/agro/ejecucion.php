@@ -1,3 +1,12 @@
+<button id="eliminarEjecucion" type="button" class="btn btn-secondary">
+
+    <i class="fa fa-times" style="color:#3c8dbc;font-size:1.2em;"></i>
+    <b>&nbsp;Borrar Datos</b>
+
+</button>
+
+<br>
+<br>
 <div class="row">
 
     <div class="col-lg-5">

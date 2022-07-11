@@ -80,6 +80,28 @@ class ControladorAgro{
 
                     foreach ($Reader as $Row){
 
+                        if($rowNumber == 3 AND $Row[0] != 'Plan de siembra'){
+
+                            echo'<script>
+
+                                swal({
+                                        type: "error",
+                                        title: "La planilla seleccionada no corresponde a una planilla de Planificación",
+                                        showConfirmButton: true,
+                                        confirmButtonText: "Cerrar"
+                                        }).then(function(result) {
+                                                if (result.value) {
+
+                                                    window.location = "index.php?ruta=agro/agro"
+
+                                                }
+                                            })
+
+                                </script>';
+                            die();
+
+                        }
+
                         if($rowNumber  > 0 AND $Row[8] != ''){
 
                             $costo = trim(str_replace(',','.',str_replace('u$s/ha','',$Row[9])), "\xC2\xA0");
@@ -213,6 +235,28 @@ class ControladorAgro{
 
                     foreach ($Reader as $Row){
 
+                        if($rowNumber == 1 AND $Row[0] != 'PLANILLA EJECUCION'){
+
+                            echo'<script>
+
+                                swal({
+                                        type: "error",
+                                        title: "La planilla seleccionada no corresponde a una planilla de Ejecución",
+                                        showConfirmButton: true,
+                                        confirmButtonText: "Cerrar"
+                                        }).then(function(result) {
+                                                if (result.value) {
+
+                                                    window.location = "index.php?ruta=agro/agro"
+
+                                                }
+                                            })
+
+                                </script>';
+                            die();
+
+                        }
+
                         if($rowNumber == 0)
                             list($campania1,$campania2) = explode('-',$Row[0]);
 
@@ -289,6 +333,7 @@ class ControladorAgro{
                         }).then(function(result) {
                                 if (result.value) {
 
+                                    window.location = "index.php?ruta=agro/agro"
 
                                 }
                             })
@@ -425,25 +470,47 @@ class ControladorAgro{
     
 	static public function ctrEliminarArchivo(){
         
-        if(isset($_GET['campo'])){
-
-            $tabla = $_GET['tabla'];
+        if(isset($_GET['campo']) OR isset($_GET['seccion'])){
             
-            $item = 'campo';
+            if(isset($_GET['campo'])){
+    
+                $tabla = $_GET['tabla'];
+                
+                $item = 'campo';
+                
+                $value = strtoupper($_GET['campo']);
+                
+                $item2 = 'campania1';
+                
+                $value2 = $_GET['campania1'];
+                
+                $item3 = 'campania2';
+                
+                $value3 = $_GET['campania2'];
+                
+                $respuesta = ModeloAgro::mdlEliminarArchivo($tabla,$item,$value, $item2, $value2, $item3, $value3);
+                
+            }
             
-            $value = strtoupper($_GET['campo']);
-            
-            $item2 = 'campania1';
-            
-            $value2 = $_GET['campania1'];
-            
-            $item3 = 'campania2';
-            
-            $value3 = $_GET['campania2'];
-            
-            $respuesta = ModeloAgro::mdlEliminarArchivo($tabla,$item,$value, $item2, $value2, $item3, $value3);
-            // var_dump($respuesta);
-            // die();
+            if(isset($_GET['seccion'])){
+    
+                $tabla = $_GET['seccion'];
+                
+                $item = null;
+                
+                $value = null;
+                
+                $item2 = 'campania1';
+                
+                $value2 = $_GET['campania1'];
+                
+                $item3 = 'campania2';
+                
+                $value3 = $_GET['campania2'];
+                
+                $respuesta = ModeloAgro::mdlEliminarArchivo($tabla,$item,$value, $item2, $value2, $item3, $value3);
+                
+            }
 
             if($respuesta == "ok"){
 

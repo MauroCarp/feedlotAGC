@@ -168,9 +168,18 @@ class ModeloAgro{
 	=============================================*/
 	static public function mdlEliminarArchivo($tabla,$item,$value, $item2, $value2, $item3, $value3){
 
-		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $item = :$item AND $item2 = :$item2 AND $item3 = :$item3");
+		if($item != null){
+
+			$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $item = :$item AND $item2 = :$item2 AND $item3 = :$item3");
+			
+			$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
+			
+		}else{
+			
+			$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $item2 = :$item2 AND $item3 = :$item3");
+
+		}
 		
-		$stmt -> bindParam(":".$item, $value, PDO::PARAM_STR);
 		$stmt -> bindParam(":".$item2, $value2, PDO::PARAM_INT);
 		$stmt -> bindParam(":".$item3, $value3, PDO::PARAM_INT);
 

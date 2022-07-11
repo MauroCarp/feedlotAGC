@@ -358,8 +358,13 @@ const cargarInfoEjecucion = (props)=>{
         'total':0
       },
     }  
-    
     respuesta.forEach(element => {
+
+      if(document.getElementById('campania').innerText == ''){
+
+        document.getElementById('campania').innerText = element.campania1 + '/' + element.campania2
+
+      }
 
       if(element.fina != undefined && element.fina != '' && element.fina != null){
                 
@@ -451,8 +456,6 @@ const cargarInfoEjecucion = (props)=>{
 
     let hasEstivales = (datos.has.estivales.length > 0) ? datos.has.estivales.reduce((acc,cur)=> Number(acc) + Number(cur)) : 0
 
-    console.log(hasInvernales);
-
     // HAS INFO
     document.getElementById(`hasInvEjecucion${props.idInfo}`).innerText = hasInvernales
     
@@ -495,7 +498,7 @@ const cargarInfoEjecucion = (props)=>{
 
     document.getElementById(`totalInversionEjecucion${props.idInfo}`).innerText = (costosTrigo + costosCobertura + costosCarinata + costosResto).toLocaleString('de-DE') 
 
-    let ratio = (hasInvernales + hasCobertura) / hasEstivales 
+    let ratio = (hasInvernales + hasCobertura) / hasEstivales || ''
 
     document.getElementById(`ratioEjecucion${props.idInfo}`).innerText = ratio.toFixed(2)
 
@@ -576,7 +579,15 @@ const eliminarArchivoCampo = (campo,seccion,campania1,campania2)=>{
     cancelButtonColor: '#d33',
     cancelButtonText: 'Cancelar',
     confirmButtonText: 'Si, borrar datos!'
-  })
+  }).then(respuesta=>{
+
+    if(respuesta.value){
+
+        window.location = `index.php?ruta=agro/agro&campo=${campo}&tabla=${seccion}&campania1=${campania1}&campania2=${campania2}`;
+
+    }
+
+})
   
 }
 
@@ -772,6 +783,7 @@ setTimeout(() => {
   
   }
 
+  // ELIMINAR DATOS PLANIFICACION⁄
   document.querySelectorAll('.eliminarArchivoAgro').forEach(btnEliminar => {
 
     btnEliminar.addEventListener('click',()=>{
