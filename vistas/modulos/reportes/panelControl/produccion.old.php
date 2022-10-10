@@ -102,33 +102,6 @@
         </div>
 
     </div>
-    
-    <div class="col-md-4">
-
-        
-    <div class="box box-success">
-
-        <div class="box-header with-border">
-
-            <h3 class="box-title">Margen Tecnico por Kg Producido</h3>
-
-        </div>
-
-
-        <div class="box-body">
-
-            <div class="chart">
-
-                <canvas id="graficoMargenTecnico<?php echo $i + 1;?>"></canvas>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    </div>
  
    
 </div>

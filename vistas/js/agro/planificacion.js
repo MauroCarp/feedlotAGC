@@ -1,10 +1,8 @@
 const cobertura = ['vicia','triticale','avena','avena cobertura','cebada','vicia-triticale','cebadilla','triticale espinillo']
 
 const cargarInfoPlanificacion = (props)=>{
-
-  // Obtener DATA
   
-  let url = 'ajax/agro.ajax.php'
+  // Obtener DATA
   
   let data = new FormData()
   data.append('accion','mostrarData')
@@ -12,13 +10,14 @@ const cargarInfoPlanificacion = (props)=>{
   data.append('campania2',props.campania2)
   data.append('seccion','planificacion')
   data.append('campo',props.campo)
+  let url = 'ajax/agro.ajax.php'
 
   fetch(url,{
       method:'post',
       body:data
   }).then(resp=>resp.json())
   .then(respuesta=>{
-    
+
     if(respuesta.length > 0){
         
       let datos = {
@@ -115,8 +114,8 @@ const cargarInfoPlanificacion = (props)=>{
       let data = new FormData()
       data.append('accion','mostrarCostos')
       data.append('cultivo','')
-      data.append('campania1',props.campania1)
-      data.append('campania2',props.campania2)
+      data.append('campania1',respuesta.campania1)
+      data.append('campania2',respuesta.campania2)
       data.append('seccion','planificacion')
       
       fetch(url,{
@@ -124,13 +123,6 @@ const cargarInfoPlanificacion = (props)=>{
         body:data
       }).then(res=>res.json())
       .then(costos=>{
-        
-        if(props.campania1 == '' || props.campania1 == ''){
-        
-          props.campania1 = costos[0].campania1
-          props.campania2 = costos[0].campania2
-        
-        }
         
         for (const reg of costos) {
 
@@ -200,13 +192,13 @@ const cargarInfoPlanificacion = (props)=>{
         let hasCobertura = 0  
         if(datos.has.cobertura.length > 0){
             for(let cobertura of datos.has.cobertura) hasCobertura+= cobertura.has
-          }
+        }
           
         let ratio = (hasInvernales + hasCobertura) / hasEstivales 
 
 
         // RENDER NUMERO CAMPAÑA
-        let campania = `${props.campania1}/${props.campania2}`
+        let campania = `${costos[0].campania1}/${costos[0].campania2}`
 
         document.getElementById('campania').innerText = campania
 
@@ -237,8 +229,14 @@ const cargarInfoPlanificacion = (props)=>{
         
         document.getElementById(`totalCostoCarinataPlanificacion${props.idInfo}`).innerText = datos.costos.carinata.toLocaleString('de-DE')
         
-        document.getElementById(`totalCostoCoberturaPlanificacion${props.idInfo}`).innerText = (datos.costos.cobertura.length > 0) ? (datos.costos.cobertura.reduce((acc,cur)=> acc + cur)).toLocaleString('de-DE') : 0;
+        let totalCostoCoberturaPlanificacion = datos.costos.cobertura.reduce((acc,cur)=> acc + cur)
+
+        document.getElementById(`totalCostoCoberturaPlanificacion${props.idInfo}`).innerText = (datos.costos.cobertura.length > 0) ? totalCostoCoberturaPlanificacion.toLocaleString('de-DE') : 0;
+
+        let costoHasPlanificacion = totalCostoCoberturaPlanificacion / totalHasCobertura
         
+        document.getElementById(`costoCoberturaPlanificacionHas${props.idInfo}`).innerText = costoHasPlanificacion.toFixed(2)
+
         document.getElementById(`totalCostoRestoPlanificacion${props.idInfo}`).innerText = (datos.costos.resto.length > 0) ? (datos.costos.resto.reduce((acc,cur)=> acc + cur)).toLocaleString('de-DE') : 0;
  
         // TOTAL ->HAS - COSTO
@@ -311,6 +309,7 @@ const cargarInfoPlanificacion = (props)=>{
       })
       .catch(err=>console.log(err))
   
+    }else{
     }
 
   })
@@ -336,7 +335,11 @@ const cargarInfoEjecucion = (props)=>{
       body:data
   }).then(resp=>resp.json())
   .then(respuesta=>{
+    
+    if(respuesta.length == 0)
+      return
 
+    
     let datos = {
       'label': [],
       'costos':{
@@ -591,11 +594,92 @@ const eliminarArchivoCampo = (campo,seccion,campania1,campania2)=>{
   
 }
 
+const mostrarInfoPlanificacion = (campania)=>{
 
-let campania = getQueryVariable('campania')
+  let url = 'ajax/agro.ajax.php'
+  let dataInfo = new FormData()
+  dataInfo.append('accion','mostrarInfo')
+  dataInfo.append('campania',campania)
+  dataInfo.append('seccion','info_planificacion')
+  
+  fetch(url,{
+      method:'post',
+      body:dataInfo
+    }).then(resp=>resp.json())
+    .then(respuesta=>{
+
+      if(respuesta[0].cerrada == 1){
+        document.getElementById('btnCerrarPlanificacion').style.display = 'none'
+        document.getElementById('btnEditarCosto').style.display = 'none'
+
+        let btnsEliminar = document.querySelectorAll('.eliminarArchivoAgro')
+        btnsEliminar.forEach(el => {
+          el.style.display = 'none'
+        })
+
+      }else{
+
+        document.getElementById('btnCerrarPlanificacion').addEventListener('click',()=>{
+
+          swal({
+            title: '¿Está seguro de cerrar la planificación?',
+            text: "¡Si no lo está puede cancelar la acción!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, cerrar Planificación'
+          }).then(function(result){
+       
+            if(result.value){
+
+              let dataUpdate = new FormData()
+              dataUpdate.append('accion','cerrarPlanifiacion')
+              dataUpdate.append('campania',campania)
+              dataUpdate.append('seccion','info_planificacion')
+              
+              fetch(url,{
+                  method:'post',
+                  body:dataUpdate
+                }).then(res=>res.json())
+                .then(close=>{
+
+                  if(close == 'ok'){
+                    window.location = "index.php?ruta=agro/agro";
+                  }else{
+                    swal({
+                      type: "error",
+                      title: "Hubo un error al cerrar la campaña.",
+                      showConfirmButton: true,
+                      confirmButtonText: "Cerrar"
+                      })
+                  }
+
+                })         
+                .catch(err=>console.log(err))
+
+            }
+       
+          })
+
+        })
+
+      }
+
+
+
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+
+}
 
 if(campania){
-  
+
+  mostrarInfoPlanificacion(campania)
+
   // PLANIFICACION
   campania = campania.split('/')
 
@@ -640,51 +724,6 @@ if(campania){
   }
 
   cargarInfoEjecucion(props)
-
-}else{
-
-  // PLANIFICACION
-  let props = {
-    campo: 'LA BETY',
-    idGrafico: 'graficoPlanifiacionBety',
-    idInfo:'Bety',
-    campania1: '',
-    campania2: ''
-  }
-
-  cargarInfoPlanificacion(props)
-
-  props = {
-    campo: 'EL PICHI',
-    idGrafico: 'graficoPlanifiacionPichi',
-    idInfo:'Pichi',
-    campania1: '',
-    campania2: ''
-  }
-
-  cargarInfoPlanificacion(props)
-
-    // EJECUCION
-
-    props = {
-      campo: 'LA BETY',
-      idGrafico: 'graficoEjecucionBety',
-      idInfo:'Bety',
-      campania1: campania[0],
-      campania2: campania[1]
-    }
-  
-    cargarInfoEjecucion(props)
-
-    props = {
-      campo: 'EL PICHI',
-      idGrafico: 'graficoEjecucionPichi',
-      idInfo:'Pichi',
-      campania1: campania[0],
-      campania2: campania[1]
-    }
-  
-    cargarInfoEjecucion(props)
 
 }
 
@@ -801,7 +840,13 @@ setTimeout(() => {
 }, 200);
 
 
+const btnMostrarCampania = document.getElementById('btnMostrarCampania')
 
+btnMostrarCampania.addEventListener('click',(e)=>{
+  e.preventDefault()
+  let campaniaAgro = document.getElementById('campaniaAgro').value
+  localStorage.setItem('campaniaAgro',campaniaAgro)
+})
 
 
 

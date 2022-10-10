@@ -1,6 +1,6 @@
 <?php
 
-if($_SESSION["perfil"] == "Ganadero" || $_SESSION["perfil"] == "Agro"){
+if($_SESSION["perfil"] != "Master" AND $_SESSION["usuario"] != "Gruben" AND $_SESSION["usuario"] != "Aruben" AND $_SESSION["usuario"] != "Cruben"){
 
   echo '<script>
 
@@ -219,7 +219,7 @@ MODAL AGREGAR USUARIO
               
                 <span class="input-group-addon"><i class="fa fa-users"></i></span> 
 
-                <select class="form-control input-lg" name="nuevoPerfil">
+                <select class="form-control input-lg selectPerfil" name="nuevoPerfil">
                   
                   <option value="">Selecionar perfil</option>
 
@@ -234,6 +234,47 @@ MODAL AGREGAR USUARIO
                   <option value="Contable">Contable</option>
 
                 </select>
+
+              </div>
+
+            </div>
+
+            <!-- ELECCION DE PERFIL PLANIFICACION -->
+            <div class="form-group hide">
+
+              <div class="input-group">
+              
+                <span class="input-group-addon"><i class="fa fa-users"></i></span> 
+                
+                <div class="checkbox">
+
+                  <label>
+
+                    <input type="checkbox" name="perfilAgro[]" value="Planificacion">Planificaci&oacute;n
+
+                  </label>
+
+                </div>
+                
+                <div class="checkbox">
+
+                  <label>
+
+                    <input type="checkbox" name="perfilAgro[]" value="Ejecucion">Ejecuci&oacute;n
+
+                  </label>
+
+                </div>
+
+                <div class="checkbox">
+                  
+                  <label>
+
+                    <input type="checkbox" name="perfilAgro[]" value="Produccion">Producci&oacute;n
+
+                  </label>
+
+                </div>
 
               </div>
 
@@ -355,7 +396,7 @@ MODAL EDITAR USUARIO
               
                 <span class="input-group-addon"><i class="fa fa-users"></i></span> 
 
-                <select class="form-control input-lg" name="editarPerfil">
+                <select class="form-control input-lg selectPerfil" name="editarPerfil">
                   
                   <option value="" id="editarPerfil"></option>
 
@@ -368,6 +409,21 @@ MODAL EDITAR USUARIO
                   <option value="Contable">Contable</option>
 
                 </select>
+
+              </div>
+
+            </div>
+
+            <!-- ELECCION DE PERFIL PLANIFICACION -->
+            <div class="form-group hide">
+              
+              <div class="input-group">
+              
+                <span class="input-group-addon"><i class="fa fa-users"></i></span> 
+
+                <input type="checkbox" name="editarPerfilAgro[]" value="Planificacion">
+                <input type="checkbox" name="editarPerfilAgro[]" value="Ejecucion">
+                <input type="checkbox" name="editarPerfilAgro[]" value="Produccion">
 
               </div>
 

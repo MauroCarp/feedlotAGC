@@ -6,13 +6,20 @@ include 'cajasFinanciero.php';
 
 <div class="row">
     
-    <div class="col-lg-4">
+    <div class="col-lg-6">
                 
         <div class="box box-success">
 
             <div class="box-header with-border">
 
                 <h3 class="box-title">Evoluci&oacute;n Endeudamiento</h3>
+
+                <div class="box-tools pull-right" bis_skin_checked="1">
+
+                    <button type="button" class="btn btn-box-tool zoomGraficos" data-modal="zGraficoEndeudamiento" data-widget="zoom"><i class="fa fa-search-plus"></i>
+                    </button>
+
+                </div>
 
             </div>
 
@@ -31,13 +38,13 @@ include 'cajasFinanciero.php';
         
     </div>
             
-    <div class="col-lg-4">
+    <div class="col-lg-6">
                 
         <div class="box box-success">
 
             <div class="box-header with-border">
                 
-                <h3 class="box-title">Endeudamiento</h3>
+                <h3 class="box-title">Deuda Bancaria</h3>
                 
             </div>
             
@@ -45,7 +52,7 @@ include 'cajasFinanciero.php';
                 
                 <div class="chart">
 
-                    <canvas id="endeudamientoPie" style="height:100px"></canvas>
+                    <canvas id="deudaBancariaChart" style="height:100px"></canvas>
                 
                 </div>
 
@@ -55,7 +62,7 @@ include 'cajasFinanciero.php';
 
     </div>
   
-    <div class="col-lg-4">
+    <!-- <div class="col-lg-4">
                 
         <div class="box box-success">
 
@@ -78,7 +85,18 @@ include 'cajasFinanciero.php';
 
         </div>
 
-    </div>
-
-
+    </div> -->
+    
 </div>
+
+<?php
+
+include 'cajasFinancieroFooter.php';
+
+$tituloGrafico = 'Deuda Bancaria';
+$idGraficoModal = 'graficoDeudaBancariaModal';
+$idGrafico = 'idGraficoDeudaBancaria';
+
+include 'graficoContable.modal.php';
+
+?>

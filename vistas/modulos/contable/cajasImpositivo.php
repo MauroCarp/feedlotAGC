@@ -78,7 +78,7 @@
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Sueldos P y C / Ventas Totales</b>
+                <b>Sueldos / Ventas Totales</b>
                 <br>
                 <span class="cajaContableNumber" id="sueldosVentas"></span>
 
@@ -101,9 +101,9 @@
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Sueldos P y C + Honorarios / Ventas</b>
+                <b>Sueldos</b>
                 <br>
-                <span class="cajaContableNumber" id="sueldosHonorariosVentas"></span>
+                <span class="cajaContableNumber" id="sueldosTotal"></span>
 
                 
                 </div>

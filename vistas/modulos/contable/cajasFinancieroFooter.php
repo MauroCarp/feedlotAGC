@@ -2,16 +2,16 @@
     
     <div class="row">
 
-        <!-- Endeudamiento -->
-        <div class="col-lg-2 col-xs-6">
+        <!-- Deuda/Bienes de cambio -->
+        <div class="col-lg-4 col-xs-6">
 
             <div class="small-box bg-yellow">
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Deuda Total</b>
+                <b>Deuda Bancaraia / Bienes de Cambio</b>
                 <br>
-                <span class="cajaContableNumber" id="deudaTotal"></span>
+                <span class="cajaContableNumber" id="duedaBienes"></span>
                 
                 </div>
                 
@@ -25,16 +25,16 @@
 
         </div>
 
-        <!-- Pasivo Total -->
+        <!-- Acivo Circulante/Activo Corriente -->
         <div class="col-lg-3 col-xs-6">
 
             <div class="small-box bg-yellow">
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Pasivo Total</b>
+                <b>Activo Circulante / Activo Corriente</b>
                 <br>
-                <span class="cajaContableNumber" id="pasivoTotal"></span>
+                <span class="cajaContableNumber" id="activoCircActivoCorr"></span>
                 
                 </div>
                 
@@ -48,39 +48,16 @@
 
         </div>
 
-        <!-- Activo Circulante -->
-        <div class="col-lg-2 col-xs-6">
-
-            <div class="small-box bg-yellow">
-                
-                <div class="inner cajaContableTitulo">
-                
-                <b>Activo Circulante</b>
-                <br>
-                <span class="cajaContableNumber" id="activoCirculante"></span>
-                
-                </div>
-                
-                <div class="icon" style="padding-top:10px;font-size:5em;">
-                
-                <i class="fa fa-dollar"></i>
-                
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Patrimonio Neto -->
+        <!-- Pasivo / Patrimonio Neto -->
         <div class="col-lg-3 col-xs-6">
 
             <div class="small-box bg-yellow">
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Patrimonio Neto</b>
+                <b>Pasivo / Patrimonio Neto</b>
                 <br>
-                <span class="cajaContableNumber" id="patrimonioNeto"></span>
+                <span class="cajaContableNumber" id="pasivoPatrimonio"></span>
                 
                 </div>
                 

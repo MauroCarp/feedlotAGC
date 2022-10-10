@@ -4,6 +4,8 @@
 
 </button>
 
+<button class="btn btn-success" id="btnCerrarPlanificacion" style="margin-left:5px;"><b>Cerrar Planificaci&oacute;n</b></button>
+
 <br>
 <br>
 

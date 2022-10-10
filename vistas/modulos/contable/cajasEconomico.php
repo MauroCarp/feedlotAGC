@@ -2,39 +2,85 @@
     
     <div class="row">
 
-        <!-- Margen s/ventas -->
+        <!-- Agricultura 1 -->
         <div class="col-lg-2 col-xs-6">
 
             <div class="small-box bg-yellow">
                 
                 <div class="inner cajaContableTitulo">
                 
-                    <b>Margen s/ Ventas</b>
+                <b>Agricultura 1</b>
                     <br>
-                    <span class="cajaContableNumber" id="margenVentas"></span>
-                    
+                <span class="cajaContableNumber" id="agricultura1"></span>
+                
                 </div>
                 
                 <div class="icon" style="padding-top:10px;font-size:5em;">
                 
-                    <i class="fa fa-dollar"></i>
-
+                <i class="fa fa-dollar"></i>
+                
                 </div>
 
             </div>
 
         </div>
 
-        <!-- Resultado Explotacion -->
-        <div class="col-lg-3 col-xs-6">
+        <!-- Agricultura 2 -->
+        <div class="col-lg-2 col-xs-6">
 
             <div class="small-box bg-yellow">
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Resultado de la explotaci&oacute;n</b>
+                <b>Agricultura 2</b>
                     <br>
-                <span class="cajaContableNumber" id="resultadoExplotacion"></span>
+                <span class="cajaContableNumber" id="agricultura2"></span>
+                
+                </div>
+                
+                <div class="icon" style="padding-top:10px;font-size:5em;">
+                
+                <i class="fa fa-dollar"></i>
+                
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Ganaderia y Resto 1 -->
+        <div class="col-lg-2 col-xs-6">
+
+            <div class="small-box bg-yellow">
+                
+                <div class="inner cajaContableTitulo">
+                
+                <b>Ganaderia y Resto 1</b>
+                    <br>
+                <span class="cajaContableNumber" id="ganaderiaResto1"></span>
+                
+                </div>
+                
+                <div class="icon" style="padding-top:10px;font-size:5em;">
+                
+                <i class="fa fa-dollar"></i>
+                
+                </div>
+
+            </div>
+
+        </div>
+        
+        <!-- Ganaderia y Resto 2 -->
+        <div class="col-lg-2 col-xs-6">
+
+            <div class="small-box bg-yellow">
+                
+                <div class="inner cajaContableTitulo">
+                
+                <b>Ganaderia y Resto 2</b>
+                    <br>
+                <span class="cajaContableNumber" id="ganaderiaResto2"></span>
                 
                 </div>
                 
@@ -49,7 +95,7 @@
         </div>
 
         <!-- Ventas totales -->
-        <div class="col-lg-2 col-xs-6">
+        <div class="col-lg-3 col-xs-6">
 
             <div class="small-box bg-yellow">
                 
@@ -70,31 +116,7 @@
             </div>
 
         </div>
-
-        <!-- Rentabildiad Economica -->
-        <div class="col-lg-3 col-xs-6">
-
-            <div class="small-box bg-yellow">
-                
-                <div class="inner cajaContableTitulo">
-                
-                <b>Rentabilidad Economica</b>
-                    <br>
-                    <span class="cajaContableNumber" id="rentabilidadEconomica"></span>
-                
-                </div>
-                
-                <div class="icon" style="padding-top:10px;font-size:5em;">
-                
-                <i class="fa fa-dollar"></i>
-                
-                </div>
-
-            </div>
-
-        </div>
-
-
+        
     </div>
 
 </section>

@@ -222,6 +222,23 @@ $(".tablas").on("click", ".btnEliminarUsuario", function(){
 
 })
 
+const selectNuevoPerfil = document.querySelectorAll('.selectPerfil')
 
+selectNuevoPerfil.forEach(element=>{
+	element.addEventListener('change',()=>{
 
+		let value = element.value
 
+		if(value == 'Agro'){
+
+			element.parentNode.parentNode.nextElementSibling.classList.remove('hide')
+
+		}else{
+			
+			element.parentNode.parentNode.nextElementSibling.classList.add('hide')
+
+		}
+
+		
+	})
+})

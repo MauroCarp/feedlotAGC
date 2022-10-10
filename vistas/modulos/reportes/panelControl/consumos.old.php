@@ -104,13 +104,6 @@
 
                 <h3 class="box-title">Consumo de Soja y Maiz</h3>
 
-                <div class="box-tools pull-right" bis_skin_checked="1">
-
-                    <button type="button" class="btn btn-box-tool zoomGraficos" data-modal="zGraficoConsumoSojaMaiz" data-id="<?php echo $i + 1;?>" data-widget="zoom"><i class="fa fa-search-plus"></i>
-                    </button>
-
-                </div>
-
             </div>
         
 
@@ -154,12 +147,3 @@
     </div>
 
 </div>
-
-<?php
-
-$id_index = $i + 1;
-
-include 'graficoConsumoSM.modal.php';
-
-?>
-    

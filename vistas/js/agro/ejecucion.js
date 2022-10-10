@@ -1,6 +1,10 @@
  // ELIMINAR DATOS EJECUCION
 
- document.getElementById('eliminarEjecucion').addEventListener('click',()=>{
+ const btnEliminarEjecucion = document.getElementById('eliminarEjecucion')
+ 
+ if(btnEliminarEjecucion != null){
+
+ btnEliminarEjecucion.addEventListener('click',()=>{
 
     let [campania1,campania2] = document.getElementById('campania').innerText.split('/')
 
@@ -24,3 +28,5 @@
     })
 
   })
+  
+}

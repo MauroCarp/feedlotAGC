@@ -137,6 +137,11 @@ class ControladorContable{
                                 if($Row[1] == '2.01.01.02.000')
                                     $data['deudaBancaria'] = formatearNumero($Row[5]); 
     
+                                if($Row[1] == '1.01.03.03.006')
+                                    $data['saldoIvaFavor'] = formatearNumero($Row[5]); 
+
+                                if($Row[1] == '1.01.03.03.008')
+                                    $data['sld'] = formatearNumero($Row[5]); 
                                 
                                 if($Row[1] == '1.01.04.00.000')
                                     $data['bienesDeCambio'] = formatearNumero($Row[5]); 
@@ -670,6 +675,14 @@ class ControladorContable{
     
             $consolidado['perdidas'] = $consolidado['perdidas'] - $principal['perdidas'];
 
+
+            /* ECONOMICO */
+
+
+            // GANADERIAS  Y RESTOS
+            $ganaderiaResto1 = $principal['ganaderia'] + $principal['resto'];
+            $ganaderiaResto2 = $consolidado['ganaderia'] + $consolidado['resto'];
+
             // MARGEN SOBRE VENTAS
     
                 $resultadoExplotacion = ($consolidado['ganancias'] - $consolidado['perdidas']) + ($paihuen['ganancias'] - $paihuen['perdidas']);
@@ -695,6 +708,8 @@ class ControladorContable{
 
                 $rentabilidadEconomica = (($consolidado['activos'] + $paihuen['activos']) != 0) ? ($resultadoExplotacion / ($consolidado['activos'] + $paihuen['activos'])) : $resultadoExplotacion;
 
+            /* FINANCIERO */
+
             // PRESTAMOS
                 $prestamos = $consolidado['prestamos'] - $principal['prestamos'];
                 $tarjetas = $consolidado['tarjetas'] - $principal['tarjetas'];
@@ -702,9 +717,9 @@ class ControladorContable{
                 $seguros = $consolidado['seguros'] - $principal['seguros'];
                 $proveedores = $consolidado['proveedores'] - $principal['proveedores'];
 
-            // ENDEUDAMIENTO
+            // ENDEUDAMIENTO    
     
-                $endeudamiento = array('prestamos'=>$prestamos,'tarjetas'=>$tarjetas,'mutuales'=>$mutuales,'seguros'=>$seguros,'proveedores'=>$proveedores);
+                $endeudamiento = array('prestamos'=>$prestamos,'tarjetas'=>$tarjetas,'mutuales'=>$mutuales,'seguros'=>$seguros,'proveedores'=>$proveedores,'total'=>($prestamos + $tarjetas + $mutuales + $seguros + $proveedores));
 
             // DEUDA TOTAL 
 
@@ -713,6 +728,14 @@ class ControladorContable{
                 $bienesDeCambio = $consolidado['bienesDeCambio'] - $principal['bienesDeCambio'];
                 
                 $deudaTotal = ($bienesDeCambio != 0) ? $deudaBancaria / $bienesDeCambio : $deudaBancaria;
+
+            // PATRIMONIO NETO
+                
+                $patrimonioNeto = $consolidado['patrimonioNeto'] - $principal['patrimonioNeto']; 
+
+            // ACTIVO CORRIENTE
+
+                $activoCorriente = $consolidado['activoCorriente'] - $principal['activoCorriente']; 
 
             // ACTIVO CIRCULANTE
     
@@ -723,12 +746,18 @@ class ControladorContable{
                 $activoCirculante = ($pasivoCorriente != 0) ? $cajaBancos / $pasivoCorriente : $cajaBancos;
     
             // PASIVO PATRIMONIO
-    
+
                 $pasivoTotal = $consolidado['pasivoTotal'] - $principal['pasivoTotal'];
-    
+                
                 $patrimonio = $consolidado['patrimonioNeto'] - $principal['patrimonioNeto'];
-    
+                
                 $pasivoPatrimonio = ($patrimonio != 0) ? $pasivoTotal / $patrimonio : $pasivoTotal;
+            
+            // BIENES DE CAMBIO
+
+                $bienesDeCambio = $consolidado['bienesDeCambio'] - $principal['bienesDeCambio'];
+
+            /* IMPOSITIVO */
 
             // INGRESOS BRUTOS
                 
@@ -750,18 +779,65 @@ class ControladorContable{
                 $cargasSociales = floatval($consolidado['cargasSocialesReales']);
 
             // SUELDOS
-                $sueldos = $consolidado['sueldos'] / $ventas;
+                $sueldosVentas = $consolidado['sueldos'] / $ventas;
             
-            // SUELDOS HONORARIOS
+                $sueldos = floatVal($consolidado['sueldos']);
+            // SUELDOS HONORARIOS / VENTAS
          
-                $sueldosHonorarios = (floatval($consolidado['sueldos']) + floatval($consolidado['honorarios'])) / $ventas;
+                $sueldosHonorariosVentas = ($consolidado['sueldos'] + $consolidado['honorarios']) / $ventas;
 
             return array(
                 'periodo'=>$labelMeses[$ultimoMes + 1],
-                'cajas'=>array(
-                    'margenSobreVentas'=>$margenSobreVentas,'resultadoExplotacion'=>$resultadoExplotacion,'rentabilidadEconomica'=>$rentabilidadEconomica,'deudaTotal'=>$deudaTotal,'activoCirculante'=>$activoCirculante,'ventas'=>$ventas,'pasivoPatrimonio'=>$pasivoPatrimonio,'ingresosBrutos'=>$ingresosBrutos,'inmobiliario'=>$inmobiliario,'cargasSociales'=>$cargasSociales,'sueldos'=>$sueldos,'sueldosHonorarios'=>$sueldosHonorarios),
+                'cajas'=>array('agricultura1'=>floatVal($principal['agricultura']),
+                               'agricultura2'=>floatVal($consolidado['agricultura']),
+                               'ganaderiaResto1'=>$ganaderiaResto1,
+                               'ganaderiaResto2'=>$ganaderiaResto2,
+
+                            //    'rentabilidadEconomica'=>$rentabilidadEconomica,
+                               'deudaTotal'=>$deudaTotal,
+
+                               'patrimonioNeto'=>$patrimonioNeto,
+                               'activoCirculante'=>$activoCirculante,
+                               'activoCorriente'=>$activoCorriente,
+                               'pasivoTotal'=>$pasivoTotal,
+                               'pasivoPatrimonio'=>$pasivoPatrimonio,
+                               'bienesDeCambio'=>$bienesDeCambio,
+                               'ventas'=>$ventas,
+                               'ingresosBrutos'=>$ingresosBrutos,
+                               'inmobiliario'=>$inmobiliario,
+                               'cargasSociales'=>$cargasSociales,
+                               'sueldosVentas'=>$sueldosVentas,
+                               'sueldos'=>$sueldos),
+                                   
                 'graficos'=>array(
-                        'resultadoExplotacion'=>array('ganancias'=>($consolidado['ganancias'] + $paihuen['ganancias']),'perdidas'=>($consolidado['perdidas'] + $paihuen['perdidas'])),'ingresoExplotacion'=>array('Barlovento'=>$consolidado['ganancias'],'Paihuen'=>$paihuen['ganancias']),'agricultura'=>array('principal'=>$principal['agricultura'],'consolidado'=>$consolidado['agricultura'],'paihuen'=>$paihuen['ventasAgricultura']),'ganaderia'=>array('principal'=>$principal['ganaderia'],'consolidado'=>$consolidado['ganaderia']),'resto'=>array('principal'=>$principal['resto'],'consolidado'=>$consolidado['resto']),'activos'=>array('principal'=>$principal['activos'],'consolidado'=>$consolidado['activos'],'paihuen'=>$paihuen['activos']),'endeudamiento'=>$endeudamiento,'cajaBancos'=>array('Principal'=>$principal['cajaBancos'],'Consolidado'=>$consolidado['cajaBancos'])));
+                                  'resultadoExplotacion'=>array('ganancias'=>($consolidado['ganancias'] + $paihuen['ganancias']),
+                                                                'perdidas'=>($consolidado['perdidas'] + $paihuen['perdidas'])),
+                                  'ventas'=>array('agricultura'=>($principal['agricultura'] + $consolidado['agricultura']),
+                                                  'ganaderiaResto'=>($ganaderiaResto1 + $ganaderiaResto2),
+                                                  'total'=>$ventas),
+                                  'margenSobreVentas'=>$margenSobreVentas,
+                                  'resultadoExplotacion'=>$resultadoExplotacion,
+                                  'endeudamiento' => $endeudamiento,
+                                  'deudaBancaria' => $deudaBancaria,
+                                  'sueldosVentas' => $sueldosVentas,
+                                  'sueldosHonorariosVentas' => $sueldosHonorariosVentas
+
+
+                                //   'ingresoExplotacion'=>array('Barlovento'=>$consolidado['ganancias'],
+                                                            //   'Paihuen'=>$paihuen['ganancias']),
+                                //   'agricultura'=>array('principal'=>$principal['agricultura'],
+                                                    //    'consolidado'=>$consolidado['agricultura'],
+                                                    //    'paihuen'=>$paihuen['ventasAgricultura']),
+                                //   'ganaderia'=>array('principal'=>$principal['ganaderia'],
+                                                    //  'consolidado'=>$consolidado['ganaderia']),
+                                //    'resto'=>array('principal'=>$principal['resto'],
+                                                //   'consolidado'=>$consolidado['resto']),
+                                //    'activos'=>array('principal'=>$principal['activos'],
+                                                    // 'consolidado'=>$consolidado['activos'],
+                                                    // 'paihuen'=>$paihuen['activos']),
+                                //    'cajaBancos'=>array('Principal'=>$principal['cajaBancos'],
+                                                    //    'Consolidado'=>$consolidado['cajaBancos'])
+                                                    ));
 
         }
 

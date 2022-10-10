@@ -354,20 +354,3 @@ $('.tabsPanelControl').on('click',function(){
   }
   
 })
-
-
-/*=============================================
-ZOOM GRAFICOS
-=============================================*/
-$('.zoomGraficos').each(function(){
-console.log($(this))
-  $(this)[0].addEventListener('click',function(){
-
-    let id = $(this).attr('data-id')
-
-    $('#modalConsumoSM' + id).modal('show') 
-
-
-  })
-
-})

@@ -31,7 +31,8 @@ class ControladorUsuarios{
 						$_SESSION["usuario"] = $respuesta["usuario"];
 						$_SESSION["foto"] = $respuesta["foto"];
 						$_SESSION["perfil"] = $respuesta["perfil"];
-
+						$_SESSION["perfilAgro"] = json_decode($respuesta["perfilAgro"]);
+						$_SESSION['carga'] = json_decode($respuesta['carga']);
 						/*=============================================
 						REGISTRAR FECHA PARA SABER EL ÚLTIMO LOGIN
 						=============================================*/
@@ -57,7 +58,6 @@ class ControladorUsuarios{
 							switch($_SESSION['perfil']){
 								case 'Agro':
 								case 'Administrador Agro':
-								
 									$inicio = 'agro';
 
 									break;
@@ -119,14 +119,16 @@ class ControladorUsuarios{
 
 				$encriptar = crypt($_POST["nuevoPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
 
+				$perfilAgro = (isset($_POST['perfilAgro'])) ? json_encode($_POST['perfilAgro']) : null;
+
 				$datos = array("nombre" => $_POST["nuevoNombre"],
 					           "usuario" => $_POST["nuevoUsuario"],
 					           "password" => $encriptar,
-							   "perfil" => $_POST["nuevoPerfil"]);
+							   "perfil" => $_POST["nuevoPerfil"],
+							   "perfilAgro" => $perfilAgro);
 							   
 
 				$respuesta = ModeloUsuarios::mdlIngresarUsuario($tabla, $datos);
-
 				
 				if($respuesta == "ok"){
 

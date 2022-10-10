@@ -35,7 +35,11 @@
                             <div class="col-sm-3 border-right">
         
                                 <div class="description-block">
-                                    <h4 class="description-text"><span id="hasCoberturaPlanificacion<?php echo $campoId;?>"></span> Has. <br><span id="totalCostoCoberturaPlanificacion<?php echo $campoId;?>"></span> U$D</h4>
+                                    <h4 class="description-text">
+                                        <span id="hasCoberturaPlanificacion<?php echo $campoId;?>"></span> Has. <br>
+                                        <span id="totalCostoCoberturaPlanificacion<?php echo $campoId;?>"></span> U$D <br>
+                                        <span id="costoCoberturaPlanificacionHas<?php echo $campoId;?>"></span> U$D/Has <br>
+                                    </h4>
                                     <span class="description-text">COBERTURA</span>
                                 </div>
         

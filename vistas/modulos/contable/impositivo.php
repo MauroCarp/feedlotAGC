@@ -12,7 +12,7 @@ include 'cajasImpositivo.php';
 
             <div class="box-header with-border">
 
-                <h3 class="box-title">Evoluci&oacute;n Saldo de IVA</h3>
+                <h3 class="box-title">Saldo Iva - Saldo Tecnico - SLD - Total</h3>
 
             </div>
 
@@ -21,7 +21,7 @@ include 'cajasImpositivo.php';
 
                 <div class="chart">
 
-                    <canvas id="saldoIvaChart"></canvas>
+                    <canvas id="sITLDTChart"></canvas>
 
                 </div>
 
@@ -37,7 +37,7 @@ include 'cajasImpositivo.php';
 
             <div class="box-header with-border">
                 
-                <h3 class="box-title">IVA Saldo a Favor</h3>
+                <h3 class="box-title">Sueldos + Horarios Mes / Ventas</h3>
                 
             </div>
             
@@ -45,7 +45,7 @@ include 'cajasImpositivo.php';
                 
                 <div class="chart">
 
-                    <canvas id="saldoIvaPie" style="height:100px"></canvas>
+                    <canvas id="sueldosHonorariosVentas" style="height:100px"></canvas>
                 
                 </div>
 
@@ -54,31 +54,5 @@ include 'cajasImpositivo.php';
         </div>
 
     </div>
-  
-    <div class="col-lg-4">
-                
-        <div class="box box-success">
-
-
-            <div class="box-header with-border">
-                
-                <h3 class="box-title">IVA Saldo a favor libre disponibilidad</h3>
-                
-            </div>
-            
-            <div class="box-body">
-            
-                <div class="chart">
-                
-                    <canvas id="saldoIvaLibrePie" style="height:100px"></canvas>
-                
-                </div>
-                
-            </div>
-
-        </div>
-
-    </div>
-
 
 </div>

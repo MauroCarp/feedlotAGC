@@ -139,7 +139,6 @@ CUERPO DOCUMENTO
 <body class="hold-transition skin-blue sidebar-collapse sidebar-mini login-page">
  
   <?php
-
   if(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok"){
 
     echo '<div class="wrapper">';
@@ -160,7 +159,7 @@ CUERPO DOCUMENTO
     CONTENIDO
     =============================================*/
     
-    if($_SESSION["perfil"] == 'Ganadero' OR $_SESSION["perfil"] == 'Administrador Ganadero'){
+    if($_SESSION["perfil"] == 'Ganadero'){
 
       if(isset($_GET["ruta"])){
 
@@ -211,11 +210,12 @@ CUERPO DOCUMENTO
 
     }
 
-    if($_SESSION["perfil"] == 'Agro' OR $_SESSION["perfil"] == 'Administrador Agro'){
+    if($_SESSION["perfil"] == 'Agro'){
 
       if(isset($_GET["ruta"])){
         if($_GET["ruta"] == "agro/agro" ||
         $_GET["ruta"] == "agro" ||
+        $_GET["ruta"] == "usuarios" ||
         $_GET["ruta"] == "salir"){
           
           include "modulos/".$_GET["ruta"].".php";
@@ -234,11 +234,12 @@ CUERPO DOCUMENTO
 
     }
 
-    if($_SESSION["perfil"] == 'Contable' OR $_SESSION["perfil"] == 'Administrador Contable'){
+    if($_SESSION["perfil"] == 'Contable'){
 
       if(isset($_GET["ruta"])){
         if($_GET["ruta"] == "contable/contable" ||
         $_GET["ruta"] == "contable" ||
+        $_GET["ruta"] == "usuarios" ||
         $_GET["ruta"] == "salir"){
           
           include "modulos/".$_GET["ruta"].".php";
@@ -264,7 +265,7 @@ CUERPO DOCUMENTO
     include "modulos/footer.php";
 
     echo '</div>';
-
+    
   }else{
 
     include "modulos/login.php";
@@ -279,17 +280,18 @@ CUERPO DOCUMENTO
 <script src="vistas/js/reportes.js"></script>
 <script src="vistas/js/archivos.js"></script>
 
-  <?php
+<?php
 if($_SESSION["perfil"] == 'Administrador Contable' OR $_SESSION["perfil"] == 'Contable'){
 ?>
 
-<script src="vistas/js/contable/contable.js"></script>
+  <script src="vistas/js/contable/contable.js"></script>
 
 <?php
 
 }
 
 // AGRO Y CONTABLE
+
 if($_SESSION["perfil"] == 'Agro' OR $_SESSION["perfil"] == 'Administrador Agro' OR $_SESSION["perfil"] == 'Administrador Contable' OR $_SESSION["perfil"] == 'Contable'){
 ?>
 
@@ -298,6 +300,8 @@ if($_SESSION["perfil"] == 'Agro' OR $_SESSION["perfil"] == 'Administrador Agro' 
 <?php
 }
 // SOLO EN AGRO
+
+
 if($_SESSION["perfil"] == 'Agro' OR $_SESSION["perfil"] == 'Administrador Agro'){
 ?>
 

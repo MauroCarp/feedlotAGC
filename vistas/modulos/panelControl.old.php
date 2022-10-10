@@ -117,8 +117,6 @@ function formatearNumero($number){
       $dataGraficos['KgProd'][] = $costoKgProd[$i][0];
       
       $dataGraficos['MargenTec'][] = number_format(($margenTec[$i][0] * $cabSalidas[$i][0]) * $kgGanPeriodoTraz[$i][0],2,'.','');     
-
-      $dataGraficos['MargenTecnico'][] = $margenTec[$i][0];     
       
       $dataGraficos['ConsumoSoja'][] = $consumoSoja[$i][0];
       
@@ -291,13 +289,17 @@ function generarColores(cantidad,tipo){
 
 function format(number){
 
-  let num = number.toLocaleString('en-US')
+  let num = number.replace(/\./g,'');
 
-  num = num.replace(',','.')
+  num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+
+  num = num.split('').reverse().join('').replace(/^[\.]/,'');
 
   return num;
 
 }
+
+
 function generarGraficoBarSimple(registros,divId,labels,tituloLabel){
 
   let coloresBg = generarColores(registros.length,'bg');
@@ -322,10 +324,7 @@ function generarGraficoBarSimple(registros,divId,labels,tituloLabel){
                                   scales: {
                                       yAxes: [{
                                           ticks: {
-                                              beginAtZero: true,
-                                              callback: function(value, index, ticks) {
-                                                  return  format(value);
-                                              }
+                                              beginAtZero: true
                                           }
                                       }]
                                     },
@@ -583,7 +582,6 @@ let url = 'ajax/datosPanelControl.ajax.php';
         dataGraficos['Estadia'].push(Math.round(response['Estadia']));
         dataGraficos['KgProd'].push(response['KgProd']);
         dataGraficos['MargenTec'].push((response['MargenTec'] * response['CabSalidas'] * response['KgGanPerTraz']).toFixed(2));
-        dataGraficos['MargenTecnico'].push(response['MargenTec']);
         dataGraficos['ConsumoSoja'].push(response['ConsumoSoja']);
         dataGraficos['ConsumoMaiz'].push(response['ConsumoMaiz']);
 
@@ -632,22 +630,10 @@ let url = 'ajax/datosPanelControl.ajax.php';
         let graficoMargenTec = generarGraficoBarSimple(dataGraficos['MargenTec'],divId,dataGraficos['Labels'],'Margen Tec. x Cab Salidas');
         graficoMargenTec.options.plugins.labels.render =  () => {return;} 
         
-        // MARGEN TECNICO
-        divId = 'graficoMargenTecnico' + (index + 1);
-        
-        let graficoMargenTecnico = generarGraficoBarSimple(dataGraficos['MargenTecnico'],divId,dataGraficos['Labels'],'Margen Tecnico');
-        // graficoMargenTec.options.plugins.labels.render =  () => {return;} 
-        
         // CONSUMOS SOJA Y MAIZ
         divId = 'graficoSojaMaiz' + (index + 1);    
 
         let graficoConsumoSojaMaiz = generarGraficoBarDoble(divId,dataGraficos['Labels'],dataGraficos['ConsumoSoja'],dataGraficos['ConsumoMaiz']);        
-
-        // CONSUMOS SOJA Y MAIZ ZOOM
-        divId = ' ' + (index + 1);    
-
-        let graficoZConsumoSojaMaiz = generarGraficoBarDoble(divId,dataGraficos['Labels'],dataGraficos['ConsumoSoja'],dataGraficos['ConsumoMaiz']);        
-
 
       }
 
@@ -659,106 +645,106 @@ let url = 'ajax/datosPanelControl.ajax.php';
 
   for (let index = 0; index < periodos.length; index++) {
 
-    let data = 'accion=estadisticas&periodo=' + periodos[index];
+      let data = 'accion=estadisticas&periodo=' + periodos[index];
 
-    $.ajax({
-      
-      method: 'POST',
-      
-      url: url,
-      
-      data: data,
-      
-      success: function(respuesta){
-
-        let response = JSON.parse(respuesta);
-                            
+      $.ajax({
         
-        console.log(response);
+        method: 'POST',
         
-        let divAnual = `tasaMSPrecioVentaAnual${index + 1}`
-
-        let precioKgMSAnual = response.precioKgMSAnual
-
-        let precioVentaAnual = response.precioVentaAnual
-
-        let tasaAnual = (precioKgMSAnual / precioVentaAnual)
+        url: url,
         
-        $(`#${divAnual}`).html(tasaAnual.toFixed(2))
-
-        let divId = `graficoTasaMsPrecioVenta${index + 1}`
+        data: data,
         
-        let precioKgMS = response.precioKgMS;
+        success: function(respuesta){
 
-        let precioVenta = response.precioVenta
+          let response = JSON.parse(respuesta);
+                              
+          
+          console.log(response);
+          
+          let divAnual = `tasaMSPrecioVentaAnual${index + 1}`
 
-        let tasa = {}
+          let precioKgMSAnual = response.precioKgMSAnual
+
+          let precioVentaAnual = response.precioVentaAnual
+
+          let tasaAnual = (precioKgMSAnual / precioVentaAnual)
+          
+          $(`#${divAnual}`).html(tasaAnual.toFixed(2))
+
+          let divId = `graficoTasaMsPrecioVenta${index + 1}`
+          
+          let precioKgMS = response.precioKgMS;
+
+          let precioVenta = response.precioVenta
+
+          let tasa = {}
+          
+          for (const key in precioKgMS) {
+
+            let valor = (precioKgMS[key] / precioVenta[key]).toFixed(3)
+
+            tasa[key] = valor
+              
+          }
+
+          generarGraficoLinea(tasa,divId,meses,'$ MS / $  Venta')
+          
+          // 
+
+          divAnual = `conversionMSAnual${index + 1}`
+
+          $(`#${divAnual}`).html(response.conversionMSAnual.toFixed(2))
+
+          divId = `graficoConversionMS${index + 1}`
+          
+          generarGraficoLinea(response.conversionMS,divId,meses,'Conversión de MS')
+          
+          // 
+
+          divAnual = `ADPVAnual${index + 1}`
+
+          $(`#${divAnual}`).html(response.adpvAnual.toFixed(2))
+
+          divId = `graficoADPV${index + 1}`
+          
+          generarGraficoLinea(response.adpv,divId,meses,'A.D.P.V')
+          
+          // 
+          
+          divAnual = `poblacionPromAnual${index + 1}`
+
+          $(`#${divAnual}`).html(response.poblacionPromAnual.toFixed(2))
+
+          divId = `graficoPoblacionProm${index + 1}`
+          
+          generarGraficoLinea(response.poblacionProm,divId,meses,'Población Promedio')
+          
+          // 
+          
+          divAnual = `estadiaPromAnual${index + 1}`
+
+          $(`#${divAnual}`).html(response.estadiaPromAnual.toFixed(2))
+          
+          divId = `graficoEstadiaProm${index + 1}`
+          
+          generarGraficoLinea(response.estadiaProm,divId,meses,'Estadia Promedio')
         
-        for (const key in precioKgMS) {
+          //
 
-          let valor = (precioKgMS[key] / precioVenta[key]).toFixed(3)
+          divAnual = `indiceReposicionAnual${index + 1}`
 
-          tasa[key] = valor
-            
+          $(`#${divAnual}`).html(response.indiceReposicionAnual.toFixed(2))
+          
+          divId = `graficoIR${index + 1}`
+                                            
+          generarGraficoLinea(response.indiceReposicion,divId,meses,'Indice Reposicion')
+
         }
 
-        generarGraficoLinea(tasa,divId,meses,'$ MS / $  Venta')
-        
-        // 
-
-        divAnual = `conversionMSAnual${index + 1}`
-
-        $(`#${divAnual}`).html(response.conversionMSAnual.toFixed(2))
-
-        divId = `graficoConversionMS${index + 1}`
-        
-        generarGraficoLinea(response.conversionMS,divId,meses,'Conversión de MS')
-        
-        // 
-
-        divAnual = `ADPVAnual${index + 1}`
-
-        $(`#${divAnual}`).html(response.adpvAnual.toFixed(2))
-
-        divId = `graficoADPV${index + 1}`
-        
-        generarGraficoLinea(response.adpv,divId,meses,'A.D.P.V')
-        
-        // 
-        
-        divAnual = `poblacionPromAnual${index + 1}`
-
-        $(`#${divAnual}`).html(response.poblacionPromAnual.toFixed(2))
-
-        divId = `graficoPoblacionProm${index + 1}`
-        
-        generarGraficoLinea(response.poblacionProm,divId,meses,'Población Promedio')
-        
-        // 
-        
-        divAnual = `estadiaPromAnual${index + 1}`
-
-        $(`#${divAnual}`).html(response.estadiaPromAnual.toFixed(2))
-        
-        divId = `graficoEstadiaProm${index + 1}`
-        
-        generarGraficoLinea(response.estadiaProm,divId,meses,'Estadia Promedio')
+      })
       
-        //
-
-        divAnual = `indiceReposicionAnual${index + 1}`
-
-        $(`#${divAnual}`).html(response.indiceReposicionAnual.toFixed(2))
-        
-        divId = `graficoIR${index + 1}`
-                                          
-        generarGraficoLinea(response.indiceReposicion,divId,meses,'Indice Reposicion')
-
-      }
-
-    })
-      
-  }
+    }
 
 
 </script>
