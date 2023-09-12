@@ -291,9 +291,55 @@
 
 							</ul>
 
-						</li>
+						</li>';
 
-						<li>
+					if($_SESSION['usuario'] == 'tecnicoGanadero'){
+					echo '<li class="treeview">
+
+							<a href="#">
+
+								<i class="icon-fardo"></i>
+								
+								<span>Pastoreo</span>
+								
+								<span class="pull-right-container">
+								
+									<i class="fa fa-angle-left pull-right"></i>
+
+								</span>
+
+							</a>
+
+							<ul class="treeview-menu">
+							
+								<li>
+									
+									<a href="#" data-toggle="modal" data-target="#planificacionPastoreo">
+												
+										<i class="fa fa-circle-o"></i>
+										<span>Cargar Planificaci&oacute;n</span>
+										
+									</a>
+								
+								</li>
+								
+								<li>
+								
+									<a href="diasPastoreo">
+									
+										<i class="fa fa-line-chart "></i>
+										<span>Tabla Pastoreo</span>
+										
+									</a>
+								
+								</li>	
+							
+							</ul>
+
+						</li>';
+				}
+
+				echo '<li>
 
 							<a href="piri">
 
@@ -487,7 +533,7 @@
 						<a href="#" data-toggle="modal" data-target="#modalCarga"  class="menusCarga" data-carga="Barlovento">
 
 							<b>1</b>
-							<span><b>Cargar Barlovento</b></span>
+							<span><b>Cargar Principal</b></span>
 
 						</a>
 
@@ -505,11 +551,11 @@
 					</li>
 
 					<li>
+					
+						<a href="archivosContable">
 
-					<a href="#" data-toggle="modal" data-target="#modalCarga"  class="menusCarga" data-carga="Paihuen">
-
-							<b>P</b>
-							<span><b>Cargar Paihuen</b></span>
+							<b><i class="fa fa-file"></i></b>
+							<span><b>Archivos Cargados</b></span>
 
 
 						</a>
@@ -518,7 +564,7 @@
 
 				}
 
-				if($_SESSION["perfil"] == "Master" OR $_SESSION["usuario"] == "Gruben" OR $_SESSION["usuario"] == "Aruben" OR $_SESSION["usuario"] == "Cruben"){
+				if($_SESSION["perfil"] == "Master" OR $_SESSION["usuario"] == "Gruben" OR $_SESSION["usuario"] == "Aruben" OR $_SESSION["usuario"] == "Cruben" OR $_SESSION["usuario"] == "tecnicoAgro" OR $_SESSION["usuario"] == "tecnicoGanadero" OR $_SESSION["usuario"] == "tecnicoContable"){
 
 					echo '<li>
 			
@@ -589,6 +635,19 @@ if($_SESSION["perfil"] == "Ganadero"){
 	$idGenerar = 'generarResumen';
 	
 	include 'modales/filtroMensualAnual.modal.php';
+
+	$modalSeccion = 'ventanaModalFechaPastoreoEntrada';
+	
+	$titulo = 'Cargar Fecha Entrada';
+				
+	$idGenerar = 'entrada';
+	
+	include 'modales/fechaPastoreo.modal.php';
+
+	include 'modales/planificacionPastoreo.modal.php';
+
+	include 'modales/fechaPastoreo.modal.php';
+
 	?>
 
 	<div id="modalCargarPanelControl" class="modal fade" role="dialog">

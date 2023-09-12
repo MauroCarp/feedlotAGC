@@ -15,8 +15,6 @@ class AjaxAgro{
 
     public $campo;
 
-    public $etapa;
-
     public $seccion;
 
 	public function ajaxMostrarData(){
@@ -28,23 +26,12 @@ class AjaxAgro{
 		$item2 = "campania2";
 
 		$valor2 = $this->campania2;
+		
+        $item3 = "campo";
+
+		$valor3= $this->campo;
 
 		$tabla = $this->seccion;
-		
-		if($tabla == 'planificacion'){
-
-			$item3 = "campo";
-	
-			$valor3= $this->campo;
-			
-		}else{
-
-			$item3 = "etapa";
-	
-			$valor3= $this->etapa;
-
-		}
-
 
 		$respuesta = ControladorAgro::ctrMostrarData($tabla, $item, $valor, $item2, $valor2, $item3, $valor3);
 		
@@ -113,14 +100,8 @@ if(isset($_POST["accion"])){
 
 		$mostrarData = new AjaxAgro();
         $mostrarData -> campania = $_POST["campania"];
+        $mostrarData -> campo = $_POST["campo"];
         $mostrarData -> seccion = $_POST["seccion"];
-
-		if($_POST['seccion'] == 'planificacion'){
-			$mostrarData -> campo = $_POST["campo"];
-		}else{
-			$mostrarData -> etapa = $_POST["etapa"];
-		}
-
         $mostrarData -> ajaxMostrarData();
 
     }

@@ -30,6 +30,28 @@ function tipoCultivo($cultivo){
 
 }
 
+function getEtapa($etapa){
+
+    switch ($etapa) {
+        case 'Al 31 de Mayo':
+            $value = 1;
+            break;
+
+        case 'Al 31 de Agosto':
+            $value = 2;
+            break;
+
+        case 'Al 31 de Diciembre':
+            $value = 3;
+            break;
+        
+        default:
+            $value = 1;
+            break;
+    }
+    return $value;
+}
+
 class ControladorAgro{
 
 	/*=============================================
@@ -138,17 +160,17 @@ class ControladorAgro{
                                     
                                     $campo = $Row[0];
 
-                                     // VALIDAR SI YA ESTA CARGADA⁄
+                                    // VALIDAR SI YA ESTA CARGADA⁄
 
-                                     $tabla = 'planificacion';
+                                    $tabla = 'planificacion';
 
-                                     $item = 'campania1';
-                                     
-                                     $item2 = 'campania2';
-                                     
-                                     $item3 = 'campo';
- 
-                                     $resultado = ControladorAgro::ctrMostrarData($tabla,$item,$campania1,$item2,$campania2,$item3,$campo);
+                                    $item = 'campania1';
+                                    
+                                    $item2 = 'campania2';
+                                    
+                                    $item3 = 'campo';
+
+                                    $resultado = ControladorAgro::ctrMostrarData($tabla,$item,$campania1,$item2,$campania2,$item3,$campo);
  
                                     if(sizeof($resultado) > 0){
                                         echo'<script>
@@ -170,7 +192,6 @@ class ControladorAgro{
                                             die();
                                     }
 
-                                
                                 }else{
 
                                     $lote = $Row[0];
@@ -278,7 +299,7 @@ class ControladorAgro{
                     $Reader->ChangeSheet($i);
 
                     foreach ($Reader as $Row){
-
+                        
                         if($rowNumber == 1 AND $Row[0] != 'PLANILLA EJECUCION'){
 
                             echo'<script>
@@ -303,7 +324,14 @@ class ControladorAgro{
 
                         if($rowNumber == 0){
 
-                            list($campania1,$campania2) = explode('-',$Row[0]);
+                            $campania = trim(str_replace('EJECUCION','',$Row[4]));
+
+                            list($campania1,$campania2) = explode('-',$campania);
+
+                        }
+
+                        if($rowNumber == 1){
+                            $etapa = getEtapa($Row[4]);
                         
                             // VALIDAR SI YA ESTA CARGADA⁄
 
@@ -313,16 +341,16 @@ class ControladorAgro{
                             
                             $item2 = 'campania2';
                             
-                            $item3 = 'campo';
+                            $item3 = 'etapa';
 
-                            $resultado = ControladorAgro::ctrMostrarData($tabla,$item,$campania1,$item2,$campania2,$item3,'EL PICHI');
+                            $resultado = ControladorAgro::ctrMostrarData($tabla,$item,$campania1,$item2,$campania2,$item3,$etapa);
                             
                            if(sizeof($resultado) > 0){
                                echo'<script>
 
                                    swal({
                                            type: "error",
-                                           title: "La planilla del campo '.$campo.' en la campaña '.$campania1.'-'.$campania2.' ya ha sido cargada.",
+                                           title: "La planilla de la campaña '.$campania1.'-'.$campania2.' , etapa '. $Row[4].' ya ha sido cargada.",
                                            showConfirmButton: true,
                                            confirmButtonText: "Cerrar"
                                            }).then(function(result) {
@@ -338,6 +366,10 @@ class ControladorAgro{
                            }
                         }
 
+                        if($Row[0] == 'TOTAL'){
+                            $rowValida = false;
+                        }
+
                         if($rowValida){
 
                             if($Row[0] == ''){
@@ -346,9 +378,10 @@ class ControladorAgro{
 
                             }else{
 
-                                $data = array('campania1'=>$campania1,'campania2'=>$campania2,'campo'=>$campo,'lote'=>$Row[0],'has'=>$Row[1],'fina'=>strtolower(trim($Row[2])),'precioFina'=>$Row[3],'gruesa'=>strtolower($Row[4]),'precioGruesa'=>$Row[5],'periodoTime'=>$dateTime);
-                                $respuesta = ModeloAgro::mdlCargarArchivo($tabla,$data);                               
+                                $data = array('campania1'=>$campania1,'campania2'=>$campania2,'etapa'=>$etapa,'campo'=>$campo,'lote'=>$Row[0],'has'=>$Row[1],'cultivo'=>strtolower(trim($Row[2])),'actividad'=>strtolower(trim($Row[3])),'costoActividad'=>$Row[4],'actividad2'=>strtolower($Row[5]),'costoActividad2'=>$Row[6],'periodoTime'=>$dateTime);
 
+                                $respuesta = ModeloAgro::mdlCargarArchivo($tabla,$data);                               
+                                
                                 $errors = array($respuesta);
                             }
 
@@ -370,12 +403,15 @@ class ControladorAgro{
                             }
 
                         }
+
+                        
                         $rowNumber++;
 
                     }
-                        
-                }
 
+                    
+                }
+                
             }
 
         // VALIDA PROGRAMA DE CARGA                    

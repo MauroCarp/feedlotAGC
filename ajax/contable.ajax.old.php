@@ -12,25 +12,25 @@ class AjaxContable{
 
 	public function ajaxMostrarData(){
         
-        $periodo = $this->periodo;
+        $ultimoPeriodo = $this->periodo;
 
-        if($periodo == 'last'){
+        if($ultimoPeriodo == 'last'){
             
-            $periodo = ControladorContable::ctrUltimoPeriodo();
+            $ultimoPeriodoValido = ControladorContable::ctrUltimoPeriodo();
                 
         
         }
 
-        if(isset($periodo['error'])){
+        if(isset($ultimoPeriodoValido['error'])){
 
-            echo json_encode($periodo);
+            echo json_encode($ultimoPeriodoValido);
 
             die();
 
         }
         
 
-		$respuesta = ControladorContable::ctrCalcularData($periodo);
+		$respuesta = ControladorContable::ctrCalcularData($ultimoPeriodoValido);
 
         echo json_encode($respuesta);
 

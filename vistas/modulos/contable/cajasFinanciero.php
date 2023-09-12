@@ -2,16 +2,18 @@
     
     <div class="row">
 
-        <!-- Endeudamiento -->
-        <div class="col-lg-2 col-xs-6">
+
+
+        <!-- Pasivo Total -->
+        <div class="col-lg-3 col-xs-6">
 
             <div class="small-box bg-yellow">
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Deuda Total</b>
+                <b>Pasivo Total</b>
                 <br>
-                <span class="cajaContableNumber" id="deudaTotal"></span>
+                <span class="cajaContableNumber" id="pasivoTotal"></span>
                 
                 </div>
                 
@@ -25,16 +27,16 @@
 
         </div>
 
-        <!-- Pasivo Total -->
-        <div class="col-lg-3 col-xs-6">
+        <!-- Endeudamiento -->
+        <div class="col-lg-2 col-xs-6">
 
             <div class="small-box bg-yellow">
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Pasivo Total</b>
+                <b>Deuda Financiera</b>
                 <br>
-                <span class="cajaContableNumber" id="pasivoTotal"></span>
+                <span class="cajaContableNumber" id="deudaTotal"></span>
                 
                 </div>
                 

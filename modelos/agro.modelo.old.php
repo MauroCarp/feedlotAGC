@@ -8,34 +8,29 @@ class ModeloAgro{
 	CARGAR ARCHIVO AGRO
 	=============================================*/
 	static public function mdlCargarArchivo($tabla,$data){
-		
+
 		if($tabla == 'planificacion'){
-	
+
 			$data = implode(',',$data);
 			
-			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(campania1,campania2,campo,tipoCultivo,lote,has,actual,cobertura,planificado,periodoTime) VALUES $data");
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(campania1,campania2,campo,tipoCultivo,lote,has,actual,cobertura,planificado,periodoTime) VALUES $data");	
 			
 		}else{
 			
-			$stmt = Conexion::conectar()->prepare("INSERT INTO 
-			$tabla(campania1,campania2,etapa,campo,lote,has,cultivo,actividad,costoActividad,actividad2,costoActividad2,periodoTime) 
-			VALUES (:campania1,:campania2,:etapa,:campo,:lote,:has,:cultivo,:actividad,:costoActividad,:actividad2,:costoActividad2,:periodoTime)");
-			
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(campania1,campania2,campo,lote,has,fina,costoFina,gruesa,costoGruesa) VALUES (:campania1,:campania2,:campo,:lote,:has,:fina,:costoFina,:gruesa,:costoGruesa)");
+
 			$stmt -> bindParam(":campania1", $data['campania1'], PDO::PARAM_STR);
 			$stmt -> bindParam(":campania2", $data['campania2'], PDO::PARAM_STR);
-			$stmt -> bindParam(":etapa", $data['etapa'], PDO::PARAM_STR);
 			$stmt -> bindParam(":campo", $data['campo'], PDO::PARAM_STR);
 			$stmt -> bindParam(":lote", $data['lote'], PDO::PARAM_STR);
 			$stmt -> bindParam(":has", $data['has'], PDO::PARAM_STR);
-			$stmt -> bindParam(":cultivo", $data['cultivo'], PDO::PARAM_STR);
-			$stmt -> bindParam(":actividad", $data['actividad'], PDO::PARAM_STR);
-			$stmt -> bindParam(":costoActividad", $data['costoActividad'], PDO::PARAM_STR);
-			$stmt -> bindParam(":actividad2", $data['actividad2'], PDO::PARAM_STR);
-			$stmt -> bindParam(":costoActividad2", $data['costoActividad2'], PDO::PARAM_STR);
-			$stmt -> bindParam(":periodoTime", $data['periodoTime'], PDO::PARAM_STR);
-			
+			$stmt -> bindParam(":fina", $data['fina'], PDO::PARAM_STR);
+			$stmt -> bindParam(":costoFina", $data['precioFina'], PDO::PARAM_STR);
+			$stmt -> bindParam(":gruesa", $data['gruesa'], PDO::PARAM_STR);
+			$stmt -> bindParam(":costoGruesa", $data['precioGruesa'], PDO::PARAM_STR);
+
 		}
-	
+		
 		if($stmt->execute()){
 			
 			return "ok";	
@@ -46,7 +41,9 @@ class ModeloAgro{
 			return 'error';
 			
 		}
-				
+		
+		$stmt->close();
+		
 		$stmt = null;
 	
 	}
@@ -75,6 +72,7 @@ class ModeloAgro{
 		
 		return $stmt -> fetchAll();
 
+		$stmt -> close();
 
 		$stmt = null;
 
@@ -105,6 +103,7 @@ class ModeloAgro{
 			
 		}
 		
+		$stmt->close();
 		
 		$stmt = null;
 	
@@ -139,6 +138,7 @@ class ModeloAgro{
 			
 		}
 		
+		$stmt->close();
 		
 		$stmt = null;
 	
@@ -196,6 +196,7 @@ class ModeloAgro{
 
 		}
 
+		$stmt -> close();
 
 		$stmt = null;
 
@@ -222,6 +223,7 @@ class ModeloAgro{
 			
 		}
 		
+		$stmt->close();
 		
 		$stmt = null;
 	
@@ -258,6 +260,7 @@ class ModeloAgro{
 
 		}
 
+		$stmt -> close();
 
 		$stmt = null;
 

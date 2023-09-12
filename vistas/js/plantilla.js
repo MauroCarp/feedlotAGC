@@ -103,5 +103,24 @@ function getQueryVariable(variable) {
 	
 	return false;
 	
-  }
+}
   
+
+/*=============================================
+REDIRIGIR SI ES MOBILE
+=============================================*/
+// Redirigir a la URL específica si se accede desde un dispositivo móvil
+function redirectToMobileURL() {
+	const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+	const mobileURL = "index.php?ruta=diasPastoreo";
+	const currentPage = window.location.pathname.split('/').pop();
+	console.log(currentPage)
+
+	if (isMobileDevice && currentPage == '') {
+	  window.location.href = mobileURL;
+	}
+
+}
+
+// Llamar a la función para redirigir al cargar la página
+window.onload = redirectToMobileURL;

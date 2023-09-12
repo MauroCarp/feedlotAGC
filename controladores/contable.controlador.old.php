@@ -1,12 +1,11 @@
 <?php
 
-// require('../modelos/log.modelo.php');
-
 class ControladorContable{
 
 	/*=============================================
 	CARGAR ARCHIVO
 	=============================================*/
+    
 	static public function ctrCargarArchivo(){
 
         function formatearNumero($number){
@@ -19,7 +18,7 @@ class ControladorContable{
         }
 
         function numberPaihuen($number){
-            return str_replace('(','',str_replace(')','',str_replace('*','-',str_replace(',','.',str_replace('?','',$number)))));
+            return str_replace('(','',str_replace(')','',str_replace('*','',str_replace(',','',str_replace('?','',$number)))));
         }
         // VALIDAR INGRESOS REPETIDOS⁄
         
@@ -56,7 +55,6 @@ class ControladorContable{
                     
                     $data = array('archivo'=>$_FILES['nuevosDatosBarlovento']['name'],'libro'=>'Principal','prestamos' => array(),'tarjetas' => array(),'honorarios' => array());
     
-                   
                     for($i=0;$i<$sheetCount;$i++){
     
                         $Reader->ChangeSheet($i);
@@ -70,7 +68,7 @@ class ControladorContable{
                                 $mes = substr(substr($Row[4],-7),0,2);
     
                                 $date = "$año-$mes-01";
-
+                            
                                 $data['periodo'] = $date;
     
                                 $item = 'libro';
@@ -82,7 +80,7 @@ class ControladorContable{
                                 $valor2 = $data['periodo'];
                                                        
                                 $cargaValida = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$valor2);
-                             
+    
                                 if($cargaValida){
                                     
                                     echo'<script>
@@ -134,24 +132,16 @@ class ControladorContable{
                             
                                 if($Row[1] == '2.01.01.01.000')
                                     $data['proveedores'] = $Row[5]; 
-
-                                if($Row[1] == '2.01.01.06.002')
-                                    $data['cerealPL'] = $Row[5];                            
-
+            
+                            
                                 if($Row[1] == '5.01.01.14.004' || $Row[1] == '5.01.01.14.005' || $Row[1] == '5.01.01.14.006' || $Row[1] == '5.02.01.02.017' || $Row[1] == '5.02.01.05.003' || $Row[1] == '5.02.01.06.011')
                                     $data['seguros'][] = $Row[5]; 
-    
-                                if($Row[1] == '2.01.01.09.000')
-                                    $data['sgr'] = ($Row[5] != null) ? $data['sgr'] : 0;                
     
                                 if($Row[1] == '4.00.00.00.000')
                                     $data['ganancias'] = $Row[5]; 
     
                                 if($Row[1] == '5.00.00.00.000')
                                     $data['perdidas'] = $Row[5]; 
-                                
-                                if($Row[1] == '5.01.00.00.000')
-                                    $data['perdidasDirectas'] = $Row[5]; 
     
                                 if($Row[1] == '2.01.01.02.000')
                                     $data['deudaBancaria'] = $Row[5]; 
@@ -180,10 +170,10 @@ class ControladorContable{
                                 if($Row[1] == '4.01.01.00.000')
                                     $data['agricultura'] = $Row[5]; 
                                 
-                                if($Row[1] == '4.01.00.00.000' || $Row[1] == '4.01.01.01.000')
-                                    $data['ganaderia'][$Row[1]] = $Row[5]; 
+                                if($Row[1] == '4.01.02.00.000')
+                                    $data['ganaderia'] = $Row[5]; 
     
-                                if($Row[1] == '4.01.05.00.000' || $Row[1] == '4.01.05.02.000')
+                                if($Row[1] == '4.01.05.00.000' || $Row[1] == '4.02.00.00.000')
                                     $data['resto'][] = $Row[5]; 
     
                                 if($Row[1] == '5.02.01.01.001')
@@ -200,9 +190,7 @@ class ControladorContable{
                             
                                 if($Row[1] == '5.02.01.06.006' || $Row[1] == '5.02.01.06.007' || $Row[1] == '5.02.01.06.008' || $Row[1] == '5.02.01.06.009')
                                     $data['honorarios'][] = $Row[5]; 
-
-                                if($Row[1] == '5.03.01.01.004')
-                                    $data['interesesPagados'] = $Row[5];
+    
                         
                             }
                                 
@@ -212,32 +200,24 @@ class ControladorContable{
                             
                     }
                 
-                    $data['sgr'] = ($data['sgr'] != null) ? $data['sgr'] : 0; 
-                    $data['cerealPL'] = ($data['cerealPL'] != null) ? $data['cerealPL'] : 0; 
-                    $data['inmobiliario'] = ($data['inmobiliario'] != null) ? $data['inmobiliario'] : 0; 
-                    $data['resto'] = 0;
+
+                    $data['resto'] = array_sum($data['resto']);
                     $data['prestamos'] = array_sum($data['prestamos']);
                     $data['tarjetas'] = array_sum($data['tarjetas']);
                     $data['seguros'] = array_sum($data['seguros']);
                     $data['honorarios'] = array_sum($data['honorarios']);
-                    $data['ganaderia'] = $data['ganaderia']['4.01.00.00.000'] - $data['ganaderia']['4.01.01.01.000'];
-
                     
                     $respuesta = ModeloContable::mdlCargarArchivo($tabla,$data);
-             
-                    if($respuesta != 'ok'){
+    
+                    $errors = array($respuesta);
+                
+                    if(in_array('error',$respuesta)){
     
                         echo'<script>
         
                             swal({
                                     type: "error",
-                                    title: `¡No se pudo cargar la planilla!';
-
-                                    if($_SESSION['usuario'] == 'tecnicoContable'){
-                                        echo json_encode($respuesta);
-                                    }
-
-                                    echo '`,
+                                    title: "¡No se pudo cargar la planilla!",
                                     showConfirmButton: true,
                                     confirmButtonText: "Cerrar"
                                     }).then(function(result) {
@@ -368,34 +348,29 @@ class ControladorContable{
 
                                 if($Row[1] == '2.01.01.02.010' || $Row[1] == '2.01.01.02.011' || $Row[1] == '2.01.01.02.015' || $Row[1] == '2.01.01.02.016' || $Row[1] == '2.01.01.08.000')
                                     $data['prestamos'][] = $Row[5];
+    
                                 
                                 if($Row[1] == '2.01.01.02.012' || $Row[1] == '2.01.01.02.013' || $Row[1] == '2.01.01.02.014')
-                                    $data['tarjetas'][] = $Row[5];
+                                    $data['tarjetas'][] = $Row[5]; 
+    
                                 
                                 if($Row[1] == '2.01.01.07.000')
                                     $data['mutuales'] = $Row[5]; 
-
-                                if($Row[1] == '2.01.01.06.002')
-                                    $data['cerealPL'] = $Row[5];   
+    
                             
                                 if($Row[1] == '2.01.01.01.000')
                                     $data['proveedores'] = $Row[5]; 
+            
                             
                                 if($Row[1] == '5.01.01.14.004' || $Row[1] == '5.01.01.14.005' || $Row[1] == '5.01.01.14.006' || $Row[1] == '5.02.01.02.017' || $Row[1] == '5.02.01.05.003' || $Row[1] == '5.02.01.06.011')
-                                    $data['seguros'][] = $Row[5]; 
-    
-                                if($Row[1] == '2.01.01.09.000')
-                                    $data['sgr'] = $Row[5];
+                                    $data['seguros'][] = $Row[5];     
     
                                 if($Row[1] == '4.00.00.00.000')
                                     $data['ganancias'] = $Row[5]; 
     
                                 if($Row[1] == '5.00.00.00.000')
                                     $data['perdidas'] = $Row[5]; 
-                                
-                                if($Row[1] == '5.01.00.00.000')
-                                    $data['perdidasDirectas'] = $Row[5]; 
-                                
+    
                                 if($Row[1] == '2.01.01.02.000')
                                     $data['deudaBancaria'] = $Row[5]; 
     
@@ -423,8 +398,11 @@ class ControladorContable{
                                 if($Row[1] == '4.01.01.00.000')
                                     $data['agricultura'] = $Row[5]; 
                                 
-                                if($Row[1] == '4.01.00.00.000' || $Row[1] == '4.01.01.01.000')
-                                    $data['ganaderia'][$Row[1]] = $Row[5]; 
+                                if($Row[1] == '4.01.02.00.000')
+                                    $data['ganaderia'] = $Row[5]; 
+    
+                                if($Row[1] == '4.01.05.00.000' || $Row[1] == '4.02.00.00.000')
+                                    $data['resto'][] = $Row[5]; 
     
                                 if($Row[1] == '5.02.01.01.001')
                                     $data['ingresoBrutoMensual'] = $Row[5]; 
@@ -440,10 +418,8 @@ class ControladorContable{
                             
                                 if($Row[1] == '5.02.01.06.006' || $Row[1] == '5.02.01.06.007' || $Row[1] == '5.02.01.06.008' || $Row[1] == '5.02.01.06.009')
                                     $data['honorarios'][] = $Row[5]; 
-
-                                if($Row[1] == '5.03.01.01.004')
-                                    $data['interesesPagados'] = $Row[5];
     
+                        
                             }
                                 
                             $rowNumber++;
@@ -451,44 +427,35 @@ class ControladorContable{
                         }
                             
                     }
-                    
-                    $data['sgr'] = ($data['sgr'] != null) ? $data['sgr'] : 0; 
-                    $data['cerealPL'] = ($data['cerealPL'] != null) ? $data['cerealPL'] : 0; 
-                    $data['inmobiliario'] = ($data['inmobiliario'] != null) ? $data['inmobiliario'] : 0; 
-                    $data['ganaderia'] = $data['ganaderia']['4.01.00.00.000'] - $data['ganaderia']['4.01.01.01.000'];
+                
+                    $data['resto'] = array_sum($data['resto']);
                     $data['prestamos'] = array_sum($data['prestamos']);
                     $data['tarjetas'] = array_sum($data['tarjetas']);
                     $data['seguros'] = array_sum($data['seguros']);
                     $data['honorarios'] = array_sum($data['honorarios']);
-                    $data['resto'] = 0;
-
+                    
                     $respuesta = ModeloContable::mdlCargarArchivo($tabla,$data);
-             
+
+                    $errors = array($respuesta);
                 
-                    if($respuesta != 'ok'){
+                    if(in_array('error',$respuesta)){
     
                         echo'<script>
         
-                        swal({
-                                type: "error",
-                                title: `¡No se pudo cargar la planilla!';
-
-                                if($_SESSION['usuario'] == 'tecnicoContable'){
-                                    echo json_encode($respuesta);
-                                }
-
-                                echo '`,
-                                showConfirmButton: true,
-                                confirmButtonText: "Cerrar"
-                                }).then(function(result) {
-                                if (result.value) {
-                                    
-                                    
-    
-                                }
-                            })
-    
-                        </script>';
+                            swal({
+                                    type: "error",
+                                    title: "¡No se pudo cargar la planilla!",
+                                    showConfirmButton: true,
+                                    confirmButtonText: "Cerrar"
+                                    }).then(function(result) {
+                                    if (result.value) {
+                                        
+                                        
+        
+                                    }
+                                })
+        
+                            </script>';
     
                     }else{
     
@@ -586,28 +553,32 @@ class ControladorContable{
                                 $rowValida = true;
     
                             if($rowValida){
-                                if($rowNumber >= 69 AND $rowNumber <= 76){
-                                    $data['ganancias'][] = (trim(numberPaihuen($Row[1])) != '-') ? trim(numberPaihuen($Row[1])) : 0;  
+                                if($rowNumber >= 70 AND $rowNumber <= 77){
+                                    $data['ganancias'][] = floatval(str_replace('*','-',$Row[1]));
                                 }
 
-                                if($rowNumber >= 77 AND $rowNumber <= 106){
-                                    $data['perdidas'][] = (trim(numberPaihuen($Row[1])) != '-') ? trim(numberPaihuen($Row[1])) : 0;
+                                if($rowNumber >= 78 AND $rowNumber <= 107){
+                                    $data['perdidas'][] =  floatval(str_replace('*','-',$Row[1]));
                                 }
     
                                 if($Row[0] == 'Venta de Cereales y Oleaginosas'){
-                                    $data['ventaAgricultura'] = (trim(numberPaihuen($Row[1])) != '-') ? floatval(trim(numberPaihuen($Row[1]))) : 0;
+                                    $data['ventaAgricultura'] = floatval(str_replace('*','-',$Row[1]));
                                 }
     
                                 if($rowNumber >= 1 AND $rowNumber <= 43){   
-                                    $data['activos'][] = (trim(numberPaihuen($Row[1])) != '-') ? trim(numberPaihuen($Row[1])) : 0;                            
+                                    $data['activos'][] =  floatval(str_replace('*','-',$Row[1]));
                                 }
     
-                                if($Row[0] == 'IMP. PROVINCIALES' || $Row[0] == 'API'){                                    
-                                    $data['inmobiliario'][] = (trim(numberPaihuen($Row[1])) != '-') ? trim(numberPaihuen($Row[1])) : 0;
+                                if($Row[0] == 'IMP. PROVINCIALES'){                                    
+                                    $data['inmobiliario'] = floatval(str_replace('*','-',$Row[1]));
                                 }
                                 
                                 if($Row[0] == 'COMUNA DE BOUQUET'){                                   
-                                    $data['comuna'] = (trim(numberPaihuen($Row[1])) != '-') ? floatval(trim(numberPaihuen($Row[1]))) : 0;
+                                    $data['comuna'] = floatval(str_replace('*','-',$Row[1]));
+                                }
+                                
+                                if($Row[0] == 'SALDO A FAVOR SEGUNDO PARRAFO'){                                   
+                                    $data['sld'] = floatval(str_replace('*','-',$Row[1]));
                                 }
  
                             }
@@ -618,16 +589,16 @@ class ControladorContable{
                             
                     }
 
-                    $data['ganancias'] = floatval(array_sum($data['ganancias']));
-                    $data['perdidas'] = floatval(array_sum($data['perdidas']));
-                    $data['activos'] = floatval(array_sum($data['activos']));
-                    $data['inmobiliario'] = floatval(array_sum($data['inmobiliario']));
+                    $data['ganancias'] = array_sum($data['ganancias']);
+                    $data['perdidas'] = array_sum($data['perdidas']);
+                    $data['activos'] = array_sum($data['activos']);
+        
 
                     $respuesta = ModeloContable::mdlCargarArchivo($tabla,$data);
-
+                    
                     $errors = array($respuesta);
                 
-                    if(in_array('error',$errors)){
+                    if(in_array('error',$respuesta)){
     
                         echo'<script>
         
@@ -695,9 +666,9 @@ class ControladorContable{
         
         $principal = ModeloContable::mdlUltimoPeriodo('Principal','contable');        
         $consolidado = ModeloContable::mdlUltimoPeriodo('Consolidado','contable');
-        // $paihuen = ModeloContable::mdlUltimoPeriodo(null,'contablePaihuen');
+        $paihuen = ModeloContable::mdlUltimoPeriodo(null,'contablePaihuen');
 
-        $periodos = array($principal[0],$consolidado[0]);
+        $periodos = array($principal[0],$consolidado[0],$paihuen[0]);
 
         if(count(array_unique($periodos)) == 1){
 
@@ -705,7 +676,7 @@ class ControladorContable{
 
         }else{
 
-            return array('error'=>true,'principal'=>$principal[0],'consolidado'=>$consolidado[0]);
+            return array('error'=>true,'principal'=>$principal[0],'consolidado'=>$consolidado[0],'paihuen'=>$paihuen[0]);
 
         }
         
@@ -716,9 +687,8 @@ class ControladorContable{
     =============================================*/
     
     static public function ctrCalcularData($periodo){
-        
-        
-        function calcularData($consolidado,$principal,$ultimoMes){
+
+        function calcularData($consolidado,$principal,$paihuen,$ultimoMes){
             
             $labelMeses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
             $anio = explode('-',$consolidado['periodo']);
@@ -728,11 +698,11 @@ class ControladorContable{
 
                     // AGRICULTURA
                         $agricultura1 = $principal['agricultura'];
-                        $agricultura2 = $consolidado['agricultura'] - $agricultura1;
+                        $agricultura2 = $consolidado['agricultura'] - $principal['agricultura'];
                     
                     // GANADERIAS  Y RESTOS
-                        $ganaderiaResto1 = $principal['ganaderia'];
-                        $ganaderiaResto2 = $consolidado['ganaderia'] - $ganaderiaResto1;
+                        $ganaderiaResto1 = $principal['ganaderia'] + $principal['resto'];
+                        $ganaderiaResto2 = ($consolidado['ganaderia'] + $consolidado['resto']) - $ganaderiaResto1;
 
                     // VENTAS TOTALES
                         $ventasTotales = $agricultura1 + $agricultura2 + $ganaderiaResto1 + $ganaderiaResto2; 
@@ -751,7 +721,7 @@ class ControladorContable{
                         $activoCirculante = $cajaBancos;
                     
                     // PATRIMONIO NETO
-                        $patrimonioNeto = floatVal($consolidado['patrimonioNeto']) + (floatVal($consolidado['ganancias']) - floatVal($consolidado['perdidas']));
+                        $patrimonioNeto = floatVal($consolidado['patrimonioNeto']);
 
                     // DEUDA BANCARIA
                         $deudaBancaria = floatVal($consolidado['deudaBancaria']);
@@ -768,20 +738,15 @@ class ControladorContable{
                         $ingresosBrutos = floatVal($consolidado['ingresoBrutoMensual']);
                     
                     // INMOBILIARIO / COMUNA
-                        $inmobiliarioBarlovento = floatVal($consolidado['inmobiliario']);
-                        // $inmobiliarioPaihuen = $paihuen['inmobiliario'];
-                        // $comuna = $paihuen['comuna'];
-
-                        // $inmobiliarioComuna = ($inmobiliarioBarlovento + $inmobiliarioPaihuen) / $comuna;
-                        // $inmobiliarioComuna =  $inmobiliarioPaihuen + $comuna;
+                        $inmobiliarioPaihuen = $paihuen['inmobiliario'];
+                        $comuna = $paihuen['comuna'];
+                        $inmobiliarioComuna =  $inmobiliarioPaihuen + $comuna;
                     
                     // CARGAS SOCIALES REALES
                         $cargasSociales = floatVal($consolidado['cargasSocialesReales']);
                     
                     // SUELDOS 
                         $sueldos = floatVal($consolidado['sueldos']);
-                        $sueldos12 = floatVal($consolidado['sueldos']);
-                        $sueldos12Honorarios = floatVal($consolidado['sueldos'] + $consolidado['honorarios'] );
                     
 
             // GRAFICOS
@@ -789,16 +754,16 @@ class ControladorContable{
 
                     // MARGEN SOBRE VENTAS
 
-                        $resultadoExplotacion = (floatVal($consolidado['ganancias']) - floatVal($consolidado['perdidas']));
-                        $resultadoExplotacion2 = (floatVal($consolidado['ganancias']) - floatVal($consolidado['perdidasDirectas']));
+                        $resultadoExplotacion = (floatVal($consolidado['ganancias']) - floatVal($consolidado['perdidas'])) + (floatVal(str_replace('-','',$paihuen['ganancias'])) - floatVal($paihuen['perdidas']));
             
                         $ingresosExplotacion = $consolidado['ganancias'];
+                        //  + $paihuen['ganancias'];
             
-                        $margenSobreVentas = ($ingresosExplotacion != 0) ? ($resultadoExplotacion2 / $ingresosExplotacion) * 100 : 0;
+                        $margenSobreVentas = ($ingresosExplotacion != 0) ? $resultadoExplotacion / $ingresosExplotacion : $resultadoExplotacion;
 
                     // RENTABILIDAD ECONOMICA
 
-                        $rentabilidadEconomica = ($consolidado['activos'] != 0) ? ($resultadoExplotacion / ($consolidado['activos'])) * 100 : 0;
+                        $rentabilidadEconomica = ($consolidado['activos'] != 0) ? ($resultadoExplotacion / ($consolidado['activos'])) : $resultadoExplotacion;
 
                 /* FINANCIERO */
 
@@ -806,13 +771,12 @@ class ControladorContable{
                         $prestamos = $consolidado['prestamos'];
                         $tarjetas = $consolidado['tarjetas'];
                         $mutuales = $consolidado['mutuales'];
-                        $sgr = $consolidado['sgr'];
+                        $seguros = $consolidado['seguros'];
                         $proveedores = $consolidado['proveedores'];
-                        $cerealPL = $consolidado['cerealPL'];
 
                     // ENDEUDAMIENTO    
     
-                        $endeudamiento = array('prestamos'=>$prestamos,'tarjetas'=>$tarjetas,'mutuales'=>$mutuales,'sgr'=>$sgr,'proveedores'=>$proveedores,'cerealPL'=>$cerealPL,'total'=>($prestamos + $tarjetas + $mutuales + $sgr + $proveedores + $cerealPL));
+                        $endeudamiento = array('prestamos'=>$prestamos,'tarjetas'=>$tarjetas,'mutuales'=>$mutuales,'seguros'=>$seguros,'proveedores'=>$proveedores,'total'=>($prestamos + $tarjetas + $mutuales + $seguros + $proveedores));
 
                     // DEUDA BANCARIA 
 
@@ -821,7 +785,7 @@ class ControladorContable{
                 /* IMPOSITIVO */
 
                     // SALDOS
-                        $saldos = array('sld'=>$consolidado['sld'],'saldoTecnico'=>$consolidado['saldoTecnico']);
+                        $saldos = array('sld'=>($consolidado['sld'] + $paihuen['sld']),'saldoTecnico'=>$consolidado['saldoTecnico']);
                         
                     // SUELDOS HONORARIOS
                 
@@ -829,47 +793,42 @@ class ControladorContable{
 
                     // SUELDOS HONORARIOS / VENTAS
                 
-                        $sueldos12Ventas = $sueldos12 / $ventasTotales;
-                        $sueldos12HonorariosVentas = $sueldos12Honorarios / $ventasTotales;           
+                        $sueldosHonorariosVentas = ($consolidado['sueldos'] + $consolidado['honorarios']) / $ventasTotales;
 
             return array(
                 'periodo'=>$labelMeses[$ultimoMes - 1],
                 'periodoVisible'=> $labelMeses[$ultimoMes - 1] . ' ' . $anio,
                 'cajas'=>array('agricultura1'=>floatVal($agricultura1),
                                'agricultura2'=>floatVal($agricultura2),
-                               'ganaderiaResto1'=>floatVal($ganaderiaResto1),
-                               'ganaderiaResto2'=>floatVal($ganaderiaResto2),
-                               'deudaTotal'=>($mutuales + $sgr + $deudaBancaria),
+                               'ganaderiaResto1'=>$ganaderiaResto1,
+                               'ganaderiaResto2'=>$ganaderiaResto2,
+                               'deudaTotal'=>$deudaTotal,
                                'deudaBancaria'=>$deudaBancaria,
                                'patrimonioNeto'=>floatVal($patrimonioNeto),
                                'activoCirculante'=>$activoCirculante,
                                'activoCorriente'=>$consolidado['activoCorriente'],
                                'pasivoTotal'=>$pasivoTotal,
-                               'pasivoCorriente' => $consolidado['pasivoCorriente'],
                                'bienesDeCambio'=>$bienesDeCambio,
                                'ingresosBrutos'=>$ingresosBrutos,
-                               'inmobiliarioComuna'=>0,
+                               'inmobiliarioComuna'=>$inmobiliarioComuna,
                                'cargasSociales'=>$cargasSociales,
-                               'sueldos12'=>$sueldos12,
-                               'sueldos12Honorarios'=>$sueldos12Honorarios,
                                'sueldos'=>$sueldos),     
                 'graficos'=>array('ventasTotales'=>$ventasTotales,
-                                  'agricultura1'=>(floatVal($agricultura1)),
-                                  'ganaderiaResto1'=>floatVal($ganaderiaResto1),  
-                                  'agricultura2'=>(floatVal($agricultura2)),
-                                  'ganaderiaResto2'=>floatVal($ganaderiaResto2),
+                                  'agricultura'=>(floatVal($principal['agricultura']) + floatVal($consolidado['agricultura'])),
+                                  'ganaderiaResto'=>($ganaderiaResto1 + $ganaderiaResto2),
                                   'margenSobreVentas'=>$margenSobreVentas,
                                   'resultadoExplotacion'=>$resultadoExplotacion,
-                                  'resultadoExplotacion2'=>$resultadoExplotacion2,
                                   'rentabilidadEconomica'=>$rentabilidadEconomica,
                                   'endeudamiento' => $endeudamiento,
                                   'deudaBancaria' => $deudaBancaria,
-                                  'interesesPagados' => $consolidado['interesesPagados'],
                                   'saldos'=>$saldos,
-                                  'sueldos12' => $sueldos12,
-                                  'sueldos12Honorarios' => $sueldos12Honorarios,
-                                  'sueldos12Ventas' => $sueldos12Ventas,
-                                  'sueldos12HonorariosVentas' => $sueldos12HonorariosVentas)
+                                  'sueldosHonorarios' => $sueldosHonorarios,
+                                  'sueldosHonorariosVentas' => $sueldosHonorariosVentas),
+                'test'=>array('gananciasB'=>floatVal($consolidado['ganancias']),
+                'perdidasB'=>floatVal($consolidado['perdidas']),
+                'gananciasP'=>$paihuen['ganancias'],
+                'perdidasP'=>$paihuen['perdidas'])
+                
             );
 
         }
@@ -883,18 +842,15 @@ class ControladorContable{
 
         $principal = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$periodo);        
 
-        // if(!$principal)
-        //     return false;
-            
         $valor = 'Consolidado';
         
         $consolidado = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$periodo);
         
-        // $item = null;
+        $item = null;
         
-        // $valor = 'Paihuen';
+        $valor = 'Paihuen';
         
-        // $paihuen = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$periodo);
+        $paihuen = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$periodo);
                 
         // MESES ANTERIORES
         
@@ -903,15 +859,14 @@ class ControladorContable{
         $ultimoMes = intval($dateExplode[1]);
         $ultimoAnio = intval($dateExplode[0]);
         
-        $data = array(calcularData($consolidado,$principal,$ultimoMes));
+        $data = array(calcularData($consolidado,$principal,$paihuen,$ultimoMes));
 
         for ($i=0; $i < 6; $i++) { 
-            
             
             if($ultimoMes == 1){
     
                 $ultimoMes = 12;
-                $ultimoAnio = $ultimoAnio - 1;
+                $ultimoAnio = $ultimoAnio--;
     
             }else{
     
@@ -930,27 +885,25 @@ class ControladorContable{
             $principal = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$valor2);        
 
             if(!$principal){
-                
+
                 return $data;
+                
+            }else{
+
+                $valor = 'Consolidado';
+                
+                $consolidado = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$valor2);
+                
+                $item = null;
+        
+                $valor = 'Paihuen';
+        
+                $paihuen = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$valor2);
+
+                $data[] = calcularData($consolidado,$principal,$paihuen,$ultimoMes);
+
             }
-            
-            $valor = 'Consolidado';
-            
-            $consolidado = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$valor2);
-            
-            // $item = null;
-    
-            // $valor = 'Paihuen';
-    
-            // $paihuen = ControladorContable::ctrMostrarDatos($item,$valor,$item2,$valor2);
-
-            $data[] = calcularData($consolidado,$principal,$ultimoMes);
-            
-
         }
-
-    
-        // Cierra el archivo de log
 
         return $data;
     }

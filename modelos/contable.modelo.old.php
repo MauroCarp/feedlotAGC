@@ -10,8 +10,8 @@ class ModeloContable{
 	static public function mdlCargarArchivo($tabla,$data){
 				
 		if($data['planilla'] == 'paihuen'){
-			
-			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(archivo,periodo,ganancias,perdidas,ventasAgricultura,activos,inmobiliario,comuna) VALUES(:archivo,:periodo,:ganancias,:perdidas,:ventasAgricultura,:activos,:inmobiliario,:comuna)");
+
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(archivo,periodo,ganancias,perdidas,ventasAgricultura,activos,inmobiliario,comuna,sld) VALUES(:archivo,:periodo,:ganancias,:perdidas,:ventasAgricultura,:activos,:inmobiliario,:comuna,:sld)");
 			
 			$stmt -> bindParam(":archivo", $data['archivo'], PDO::PARAM_STR);
 			$stmt -> bindParam(":periodo", $data['periodo'], PDO::PARAM_STR);
@@ -21,80 +21,16 @@ class ModeloContable{
 			$stmt -> bindParam(":activos", $data['activos'], PDO::PARAM_STR);
 			$stmt -> bindParam(":inmobiliario", $data['inmobiliario'], PDO::PARAM_STR);
 			$stmt -> bindParam(":comuna", $data['comuna'], PDO::PARAM_STR);
+			$stmt -> bindParam(":sld", $data['sld'], PDO::PARAM_STR);
+			
 		}else{
 			
-			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(archivo,
-			libro,
-			periodo,
-			activos,
-			activoCorriente,
-			ganancias,
-			perdidas,
-			perdidasDirectas,
-			agricultura,
-			ganaderia,
-			resto,
-			prestamos,
-			tarjetas,
-			mutuales,
-			proveedores,
-			seguros,
-			deudaBancaria,
-			deudaTotal,
-			bienesDeCambio,
-			cajaBancos,
-			pasivoCorriente,
-			pasivoTotal,
-			sld,
-			saldoTecnico,
-			patrimonioNeto,
-			ingresoBrutoMensual,
-			cargasSocialesReales,
-			inmobiliario,
-			sueldos,
-			honorarios,
-			sgr,
-			cerealPL,
-			interesesPagados
-			) VALUES(:archivo,
-			:libro,
-			:periodo,
-			:activos,
-			:activoCorriente,
-			:ganancias,
-			:perdidas,
-			:perdidasDirectas,
-			:agricultura,
-			:ganaderia,
-			:resto,
-			:prestamos,
-			:tarjetas,
-			:mutuales,
-			:proveedores,
-			:seguros,
-			:deudaBancaria,
-			:deudaTotal,
-			:bienesDeCambio,
-			:cajaBancos,
-			:pasivoCorriente,
-			:pasivoTotal,
-			:sld,
-			:saldoTecnico,
-			:patrimonioNeto,
-			:ingresoBrutoMensual,
-			:cargasSocialesReales,
-			:inmobiliario,
-			:sueldos,
-			:honorarios,
-			:sgr,
-			:cerealPL,
-			:interesesPagados)");
+			$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(archivo,libro,periodo,activos,activoCorriente,ganancias,perdidas,agricultura,ganaderia,resto,prestamos,tarjetas,mutuales,proveedores,seguros,deudaBancaria,deudaTotal,bienesDeCambio,cajaBancos,pasivoCorriente,pasivoTotal,sld,saldoTecnico,patrimonioNeto,ingresoBrutoMensual,cargasSocialesReales,inmobiliario,sueldos,honorarios) VALUES(:archivo,:libro,:periodo,:activos,:activoCorriente,:ganancias,:perdidas,:agricultura,:ganaderia,:resto,:prestamos,:tarjetas,:mutuales,:proveedores,:seguros,:deudaBancaria,:deudaTotal,:bienesDeCambio,:cajaBancos,:pasivoCorriente,:pasivoTotal,:sld,:saldoTecnico,:patrimonioNeto,:ingresoBrutoMensual,:cargasSocialesReales,:inmobiliario,:sueldos,:honorarios)");
 			
 			$stmt -> bindParam(":archivo", $data['archivo'], PDO::PARAM_STR);
 			$stmt -> bindParam(":libro", $data['libro'], PDO::PARAM_STR);
 			$stmt -> bindParam(":ganancias", $data['ganancias'], PDO::PARAM_STR);
 			$stmt -> bindParam(":perdidas", $data['perdidas'], PDO::PARAM_STR);
-			$stmt -> bindParam(":perdidasDirectas", $data['perdidasDirectas'], PDO::PARAM_STR);
 			$stmt -> bindParam(":periodo", $data['periodo'], PDO::PARAM_STR);
 			$stmt -> bindParam(":activos", $data['activos'], PDO::PARAM_STR);
 			$stmt -> bindParam(":activoCorriente", $data['activoCorriente'], PDO::PARAM_STR);
@@ -120,12 +56,10 @@ class ModeloContable{
 			$stmt -> bindParam(":inmobiliario", $data['inmobiliario'], PDO::PARAM_STR);
 			$stmt -> bindParam(":sueldos", $data['sueldos'], PDO::PARAM_STR);
 			$stmt -> bindParam(":honorarios", $data['honorarios'], PDO::PARAM_STR);
-			$stmt -> bindParam(":sgr", $data['sgr'], PDO::PARAM_STR);
-			$stmt -> bindParam(":cerealPL", $data['cerealPL'], PDO::PARAM_STR);
-			$stmt -> bindParam(":interesesPagados", $data['interesesPagados'], PDO::PARAM_STR);
 			
 
 		}
+
 
 		if($stmt->execute()){
 			

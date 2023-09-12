@@ -8,7 +8,7 @@
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Ingreso Bruto</b>
+                <b>Ingresos Brutos</b>
                 <br>
                 <br>
                 <span class="cajaContableNumber" id="ingresoBruto"></span>
@@ -78,7 +78,7 @@
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Sueldos / Ventas Totales</b>
+                <b>Sueldos 1 + 2</b>
                 <br>
                 <span class="cajaContableNumber" id="sueldosVentas"></span>
 
@@ -101,7 +101,7 @@
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Sueldos</b>
+                <b>Sueldos 1 + 2 + Honorarios</b>
                 <br>
                 <span class="cajaContableNumber" id="sueldosTotal"></span>
 

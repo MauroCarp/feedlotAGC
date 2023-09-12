@@ -6,7 +6,7 @@ include 'cajasFinanciero.php';
 
 <div class="row">
     
-    <div class="col-lg-6">
+    <div class="col-lg-4">
                 
         <div class="box box-success">
 
@@ -38,7 +38,7 @@ include 'cajasFinanciero.php';
         
     </div>
             
-    <div class="col-lg-6">
+    <div class="col-lg-4">
                 
         <div class="box box-success">
 
@@ -53,6 +53,30 @@ include 'cajasFinanciero.php';
                 <div class="chart">
 
                     <canvas id="deudaBancariaChart" style="height:100px"></canvas>
+                
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+                
+        <div class="box box-success">
+
+            <div class="box-header with-border">
+                
+                <h3 class="box-title">Intereses Pagados</h3>
+                
+            </div>
+            
+            <div class="box-body">
+                
+                <div class="chart">
+
+                    <canvas id="interesesPagadosChart" style="height:100px"></canvas>
                 
                 </div>
 

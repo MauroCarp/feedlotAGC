@@ -93,7 +93,7 @@
 
                     <span class="info-box-icon bg-aqua"><i class="fa fa-dollar"></i></span>
                     <div class="info-box-content">
-                    <span class="info-box-text">Inversion <br> Total Proyectada</span>
+                    <span class="info-box-text">Inversion <br> Total Ejecutada</span>
                     <span class="info-box-number">U$D <span id="totalInversionEjecucion<?php echo $campoId;?>"></span></span>
                     </div>
         

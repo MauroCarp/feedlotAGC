@@ -14,6 +14,7 @@ class ControladorArchivos{
 
 	}
 
+
 	/*=============================================
 	BORRAR ARCHIVOS
 	=============================================*/
@@ -26,14 +27,9 @@ class ControladorArchivos{
 			$datos = $_GET["nombreArchivo"];
 
 			$respuesta = ModeloArchivos ::mdlBorrarArchivo($tabla, $datos);
-
+			var_dump($respuesta);
 			if($respuesta == "ok"){
 
-				if($tabla != 'contable' AND $tabla != 'contablePaihuen'){
-					$redireccion = 'archivosCarga';
-				}else{
-					$redireccion = 'contable/archivos';
-				}
 				echo'<script>
 
 				swal({
@@ -45,7 +41,7 @@ class ControladorArchivos{
 					  }).then(function(result) {
 								if (result.value) {
 
-								window.location = "index.php?ruta='.$redireccion.'";
+								window.location = "archivosCarga";
 
 								}
 							})

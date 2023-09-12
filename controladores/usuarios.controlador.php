@@ -33,6 +33,22 @@ class ControladorUsuarios{
 						$_SESSION["perfil"] = $respuesta["perfil"];
 						$_SESSION["perfilAgro"] = json_decode($respuesta["perfilAgro"]);
 						$_SESSION['carga'] = json_decode($respuesta['carga']);
+
+
+						$userAgent = $_SERVER['HTTP_USER_AGENT'];
+						$isMobile = false;
+						// Lista de cadenas que suelen estar presentes en el agente de usuario de dispositivos móviles
+						$mobileKeywords = array('mobile', 'android', 'iphone', 'ipad', 'blackberry', 'webos', 'iemobile');
+					
+						// Comprobamos si alguna de las cadenas está presente en el agente de usuario
+						foreach ($mobileKeywords as $keyword) {
+							if (stripos($userAgent, $keyword) !== false) {
+								$isMobile = true; // Es un dispositivo móvil
+							}
+						}
+						
+						$_SESSION['mobile'] = $isMobile;
+
 						/*=============================================
 						REGISTRAR FECHA PARA SABER EL ÚLTIMO LOGIN
 						=============================================*/

@@ -16,7 +16,7 @@ function fechaExcel($fecha){
 
 function validarRegistro($conexion,$anio,$mes){
 
-    $sql = "SELECT COUNT(*) FROM conversion WHERE anio = '$anio' AND mes = '$mes'";
+    $sql = "SELECT COUNT(*) FROM conversion WHERE YEAR(periodoTime) = '$anio' AND MONTH(periodoTime) = '$mes'";
 
     $query = mysqli_query($conexion,$sql);
 
@@ -55,11 +55,10 @@ if( isset($_FILES["nuevosDatos"]) ){
 
             $Reader->ChangeSheet($i);
                 
-            
             foreach ($Reader as $Row){
                 
                     $rowNumber++;
-
+                    
                     if($rowNumber == 3){
                         
                         $anio = $Row[1];
@@ -69,7 +68,8 @@ if( isset($_FILES["nuevosDatos"]) ){
                     if($rowValida == TRUE){   
                         
                         $mes = $Row[1];
-                        if($mes == 'promedio'){
+                        
+                        if($mes == 'promedio anual'){
                             
                             echo "<script>
                             window.location.href = 'index.php?ruta=inicio';
@@ -78,11 +78,18 @@ if( isset($_FILES["nuevosDatos"]) ){
 
                         }
                         
-                        $mes = (array_search($mes,$meses) + 1 < 10) ? '0'.(array_search($mes,$meses) + 1) : array_search($mes,$meses) + 1  ;
+                        
 
+                        $mes = str_pad(array_search($mes,$meses) + 1, 2, '0', STR_PAD_LEFT);
+        
                         $periodoTime = $anio."-".$mes."-01";
                         
                         $periodo = $anio."-".$mes;
+                        // var_dump('AÑO = ' . $anio);
+                        // var_dump('MES = ' . $mes);
+                        // var_dump('VALIDO = ' . validarRegistro($conexion,$anio,$mes));
+                        // var_dump("SQL =  SELECT COUNT(*) FROM conversion WHERE YEAR(periodoTime) = '$anio' AND MONTH(periodoTime) = '$mes'");
+                        // var_dump('ROW 2 = ' . $Row[2]);
 
                         if(validarRegistro($conexion,$anio,$mes) == 0 AND $Row[2] != ''){
 
@@ -114,6 +121,7 @@ if( isset($_FILES["nuevosDatos"]) ){
                             $adpvT = $Row[32];
                             $conversionT = $Row[33];
                         
+
                             $sql = "INSERT INTO conversion(archivo,periodo,periodoTime,kgIngCC,kgEgrCC,kgProdCC,diasCC,adpvCC,convMsCC,kgIngRP,kgEgrRP,kgProdRP,diasRP,adpvRP,convMsRP,kgIngRC,kgEgrRC,kgProdRC,diasRC,adpvRC,convMsRC,kgIngT,kgEgrT,kgProdT,diasT,adpvT,convMsT) VALUES('$nombreArchivo','$periodo','$periodoTime','$kgIngCC','$kgEgrCC','$kgProdCC','$diasCC','$adpvCC','$conversionCC','$kgIngRP','$kgEgrRP','$kgProdRP','$diasRP','$adpvRP','$conversionRP','$kgIngRC','$kgEgrRC','$kgProdRC','$diasRC','$adpvRC','$conversionRC','$kgIngT','$kgEgrT','$kgProdT','$diasT','$adpvT','$conversionT')";
                     
                             mysqli_query($conexion,$sql);
@@ -125,13 +133,13 @@ if( isset($_FILES["nuevosDatos"]) ){
                     }
 
 
-					if ($rowNumber == 2) {
+					if ($rowNumber == 3) {
  
                         $rowValida = TRUE;
 
                     }
-                    
-                    if($rowNumber == 14){
+
+                    if($rowNumber == 15){
                         
                         $rowValida = FALSE;
 
@@ -140,15 +148,10 @@ if( isset($_FILES["nuevosDatos"]) ){
 
 			}
                 
-
-
-
-            }
+        }
 
     }
-
-    die();
-
+    // die();
     echo "<script>
     window.location.href = 'index.php?ruta=inicio';
     </script>";

@@ -33,19 +33,10 @@ class ModeloArchivos{
 			}
 			
 		}else{
-			$order = 'periodoTime';
-			$campos = '*';
 			
-			if($tabla == 'contable' OR $tabla == 'contablePaihuen'){
-				$order = 'periodo';
-				$campos = 'id,archivo,libro,periodo';
-			}
-
-			if($tabla == 'contablePaihuen') $campos = 'id,archivo,periodo';
-
 			if($item != null){
 				
-				$stmt = Conexion::conectar()->prepare("SELECT $campos FROM $tabla WHERE $item = :$item ORDER BY $order DESC");
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item ORDER BY periodoTime DESC");
 				
 				$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
 				
@@ -55,7 +46,7 @@ class ModeloArchivos{
 				
 			}else{
 				
-				$stmt = Conexion::conectar()->prepare("SELECT $campos FROM $tabla ORDER BY $order DESC"); 
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY periodoTime DESC"); 
 				
 				$stmt -> execute();
 	
@@ -77,14 +68,9 @@ class ModeloArchivos{
 
 	static public function mdlBorrarArchivo($tabla, $datos){
 
-		if($tabla != 'contable' AND $tabla != 'contablePaihuen'){
-			$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE archivo = :nombreArchivo");
-			
-			$stmt -> bindParam(":nombreArchivo", $datos, PDO::PARAM_STR);
-		}else{
-			$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
-			$stmt -> bindParam(":id", $datos, PDO::PARAM_STR);
-		}
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE archivo = :nombreArchivo");
+
+		$stmt -> bindParam(":nombreArchivo", $datos, PDO::PARAM_STR);
 
 		if($stmt -> execute()){
 

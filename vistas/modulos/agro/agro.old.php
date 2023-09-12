@@ -6,7 +6,7 @@
 
           <div class="widget-user-header bg-aqua-active">
 
-              <button class="btn btn-info" style="padding:10px;margin:5px;font-size:1.3em;" data-toggle="modal" data-target="#modalSelectCampania"><b>Campa&ntilde;a: <span id="campania"></span></b></button>
+              <button class="btn btn-info" style="padding:10px;margin-top:5px;margin-left:5px;font-size:1.3em;" data-toggle="modal" data-target="#modalSelectCampania"><b>Campa&ntilde;a: <span id="campania"></span></b></button>
 
           </div>
 

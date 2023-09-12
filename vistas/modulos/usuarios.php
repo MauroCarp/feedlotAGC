@@ -1,6 +1,6 @@
 <?php
 
-if($_SESSION["perfil"] != "Master" AND $_SESSION["usuario"] != "Gruben" AND $_SESSION["usuario"] != "Aruben" AND $_SESSION["usuario"] != "Cruben"){
+if($_SESSION["perfil"] != "Master" AND $_SESSION["usuario"] != "Gruben" AND $_SESSION["usuario"] != "Aruben" AND $_SESSION["usuario"] != "Cruben" AND $_SESSION["usuario"] != "tecnicoAgro" AND $_SESSION["usuario"] != "tecnicoGanadero" AND $_SESSION["usuario"] != "tecnicoContable"){
 
   echo '<script>
 

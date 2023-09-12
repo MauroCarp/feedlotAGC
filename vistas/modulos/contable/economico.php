@@ -18,7 +18,7 @@ include 'cajasEconomico.php';
 
                     <div class="box-header with-border">
 
-                        <h3 class="box-title">Ventas</h3>
+                        <h3 class="box-title">Ventas Agricultura</h3>
 
                         <div class="box-tools pull-right" bis_skin_checked="1">
 
@@ -57,7 +57,7 @@ include 'cajasEconomico.php';
 
                     <div class="box-header with-border">
 
-                        <h3 class="box-title">Margen s/Ventas</h3>
+                        <h3 class="box-title">M/V | BAAI</h3>
 
                         <div class="box-tools pull-right" bis_skin_checked="1">
 
@@ -97,7 +97,7 @@ include 'cajasEconomico.php';
 
                     <div class="box-header with-border">
 
-                        <h3 class="box-title">Rentabilidad Economica</h3>
+                        <h3 class="box-title">Renta/Activo</h3>
 
                     </div>
 
@@ -159,14 +159,62 @@ include 'cajasEconomico.php';
     </div>
 
 </div>
+<div class="row">
+
+
+    <div class="col-lg-4">
+        
+        <div class="row">
+
+            <div class="col-lg-12">
+                
+                <div class="box box-success">
+
+                    <div class="box-header with-border">
+
+                        <h3 class="box-title">Ventas Ganaderia</h3>
+
+                        <div class="box-tools pull-right" bis_skin_checked="1">
+
+                            <button type="button" class="btn btn-box-tool zoomGraficos" data-modal="zGraficoVentas2" data-widget="zoom"><i class="fa fa-search-plus"></i>
+                            </button>
+
+                        </div>
+                    </div>
+
+
+                    <div class="box-body">
+
+                        <div class="chart">
+
+                            <canvas id="ventasChart2"></canvas>
+
+                        </div>
+
+                    </div>
+                
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <?php
 
-$tituloGrafico = 'Ventas';
+$tituloGrafico = 'Ventas Agricultura';
 $idGraficoModal = 'graficoVentaModal';
 $idGrafico = 'idGraficoVentas';
 include 'graficoContable.modal.php';
 
-$tituloGrafico = 'Margen/Ventas - Result. Explotación';
+$tituloGrafico = 'Ventas Ganaderia';
+$idGraficoModal = 'graficoVenta2Modal';
+$idGrafico = 'idGraficoVentas2';
+include 'graficoContable.modal.php';
+
+$tituloGrafico = 'M/V - BAAI';
 $idGraficoModal = 'graficoMargenVentaModal';
 $idGrafico = 'idGraficoMargenVentas';
 include 'graficoContable.modal.php';

@@ -49,7 +49,7 @@ $meses = Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto"
   
 
   <?php 
-  if($_SESSION["perfil"] == "Master"){ ?> 
+  if($_SESSION["perfil"] != "Administrador Agro"){ ?> 
   
   <section class="content" style="display:inline-block">
     <h2>Compras</h2>
@@ -297,16 +297,13 @@ $meses = Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto"
                   <td>'.$meses[$mes - 1].' - '.$anio.'</td>
                   <td>';
 
+                  echo '<a href="#" class="btn btn-warning modalEditar btn-block"  data-toggle="modal" data-target="#modificarPanelControl" archivo="'.$value['archivo'].'" periodo="'.$value['periodo'].'"><i class="fa fa-pencil"></i></a>';
           
 
-                  if($_SESSION["perfil"] == "Master"){ 
+                  if($_SESSION["usuario"] == "tecnicoGanadero"){ 
                     
                     echo '<button class="btn btn-danger btnEliminarArchivo btn-block" nombreArchivo="'.$value["archivo"].'" tablaDB="controlpanel"><i class="fa fa-times"></i></button>';
                     
-                  }else{
-
-                    echo '<a href="#" class="btn btn-warning modalEditar btn-block"  data-toggle="modal" data-target="#modificarPanelControl" archivo="'.$value['archivo'].'" periodo="'.$value['periodo'].'"><i class="fa fa-pencil"></i></a>';
-                
                   }
 
                 echo '

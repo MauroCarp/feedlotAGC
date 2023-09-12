@@ -29,7 +29,12 @@ const tipoCultivo = (cultivo)=>{
 
 }
 
+let chartEjecucionBety, chartEjecucionPichi = undefined
+console.log(chartEjecucionBety)
+console.log(chartEjecucionPichi)
+
 const cargarInfoEjecucion = (props)=>{
+console.log(props)
   // Obtener DATA
   let url = 'ajax/agro.ajax.php'
   
@@ -45,57 +50,9 @@ const cargarInfoEjecucion = (props)=>{
       body:data
   }).then(resp=>resp.json())
   .then(respuesta=>{
-    console.log(respuesta)
-    if(respuesta.length == 0){
-      document.getElementById(`hasInvEjecucionBety`).innerText = '-'
-      document.getElementById(`hasInvEjecucionPichi`).innerText = '-'
-      
-      document.getElementById(`hasCobEjecucionBety`).innerText = '-'
-      document.getElementById(`hasCobEjecucionPichi`).innerText = '-'
-      
-      document.getElementById(`hasEstEjecucionBety`).innerText = '-'
-      document.getElementById(`hasEstEjecucionPichi`).innerText = '-'
-  
-      document.getElementById(`hasTrigoEjecucionBety`).innerText = '-'
-      document.getElementById(`hasTrigoEjecucionPichi`).innerText = '-'
-  
-      document.getElementById(`hasCoberturaEjecucionBety`).innerText = '-'
-      document.getElementById(`hasCoberturaEjecucionPichi`).innerText = '-'
-      
-      document.getElementById(`hasCarinataEjecucionBety`).innerText = '-'
-      document.getElementById(`hasCarinataEjecucionPichi`).innerText = '-'
-  
-      document.getElementById(`hasRestoEjecucionBety`).innerText = '-'
-      document.getElementById(`hasRestoEjecucionPichi`).innerText = '-'
 
-      document.getElementById(`totalCostoTrigoEjecucionBety`).innerText = '-'
-      document.getElementById(`totalCostoTrigoEjecucionPichi`).innerText = '-'
-
-      document.getElementById(`totalCostoCoberturaEjecucionBety`).innerText = '-'
-      document.getElementById(`totalCostoCoberturaEjecucionPichi`).innerText = '-'
-      
-      document.getElementById(`totalCostoCarinataEjecucionBety`).innerText = '-'
-      document.getElementById(`totalCostoCarinataEjecucionPichi`).innerText = '-'
-
-      document.getElementById(`totalCostoRestoEjecucionBety`).innerText = '-'
-      document.getElementById(`totalCostoRestoEjecucionPichi`).innerText = '-'
-      
-      document.getElementById(`totalHasEjecucionBety`).innerText = '-'
-      document.getElementById(`totalHasEjecucionPichi`).innerText = '-'
-
-      document.getElementById(`totalInversionEjecucionBety`).innerText = '-'
-      document.getElementById(`totalInversionEjecucionPichi`).innerText = '-'
-
-      document.getElementById(`ratioEjecucionBety`).innerText = '-'
-      document.getElementById(`ratioEjecucionPichi`).innerText = '-'
-
-      if(typeof(chartEjecucionBety) != 'undefined' || typeof(chartEjecucionPichi) != 'undefined') {
-        chartEjecucionBety.clear();
-        chartEjecucionPichi.clear();
-      }
-
+    if(respuesta.length == 0)
       return
-    }
     
     let dataBety = {
       'label': [],
@@ -117,8 +74,6 @@ const cargarInfoEjecucion = (props)=>{
         'resto':[],
         'total':0
       },
-      'actividad':{
-      }
     }  
 
     let dataPichi = JSON.parse(JSON.stringify(dataBety))
@@ -133,9 +88,6 @@ const cargarInfoEjecucion = (props)=>{
       dataCampos[element.campo].costos.lote.push((parseInt(element.costoActividad) + parseInt(element.costoActividad2)))
       dataCampos[element.campo].has.total += parseInt(element.has)
       dataCampos[element.campo].costos.total += parseInt(element.has)
-      dataCampos[element.campo].actividad[element.lote] = []
-      dataCampos[element.campo].actividad[element.lote].push([element.actividad,element.costoActividad])
-      dataCampos[element.campo].actividad[element.lote].push([element.actividad2,element.costoActividad2])
 
       if(tipoCultivo(element.cultivo) == 'Invernal'){}
         dataCampos[element.campo].has.invernales.push(element.has)
@@ -301,7 +253,7 @@ const cargarInfoEjecucion = (props)=>{
     configEjecucionPichi.data.labels = dataCampos['EL PICHI'].label
     configEjecucionPichi.data.datasets[0].data = dataCampos['EL PICHI'].costos.lote
     configEjecucionPichi.data.datasets[1].data = dataCampos['EL PICHI'].has.lote
-    
+
     let graficoEjecucionBety = document.getElementById('graficoEjecucionBety').getContext('2d');
     
     let graficoEjecucionPichi = document.getElementById('graficoEjecucionPichi').getContext('2d');
@@ -313,53 +265,14 @@ const cargarInfoEjecucion = (props)=>{
       chartEjecucionPichi.destroy();
     }
 
-    chartEjecucionPichi = new Chart(graficoEjecucionPichi, configEjecucionPichi)
-    chartEjecucionBety = new Chart(graficoEjecucionBety, configEjecucionBety)
-  
-    // LOTES ACTIVIDAD
-    for (const key in dataCampos['LA BETY'].actividad) {
-      $('#actividadLotesBety').append(generarLoteActividad(key,dataCampos['LA BETY'].actividad[key]))
-    }
-    
-    for (const key in dataCampos['EL PICHI'].actividad) {
-      $('#actividadLotesPichi').append(generarLoteActividad(key,dataCampos['EL PICHI'].actividad[key]))
-    }
-      
-  })
+      chartEjecucionPichi = new Chart(graficoEjecucionPichi, configEjecucionPichi)
+      chartEjecucionBety = new Chart(graficoEjecucionBety, configEjecucionBety)
+
+    })
   .catch( err=>console.log(err))
 
 }
 
-const generarLoteActividad = (lote,actividades)=>{
-  let divRow = document.createElement('DIV')
-  let divCollapsedBox = divRow.cloneNode(true)
-  let divBoxHeader = divRow.cloneNode(true)
-  let divBoxTitle = document.createElement('H3')
-  let divBoxBody = divRow.cloneNode(true)
-  divRow.setAttribute('class','col-md-4')
-  divCollapsedBox.setAttribute('class','box box-default box-solid')
-  divBoxHeader.setAttribute('class','box-header with-border bg-aqua-active')
-  divBoxTitle.setAttribute('class','box-title')
-  divBoxTitle.innerText = lote
-  divBoxBody.setAttribute('class','box-body')
-
-  let actividadesHTML = []
-
-  for (let index = 0; index < actividades.length; index++) {
-    if(actividades[index][0] != '')
-      actividadesHTML.push(`<b>- ${capitalizarPrimeraLetra(actividades[index][0])} | ${actividades[index][1]} u$s/Has</b><br>`)
-  }
-
-  divBoxBody.innerHTML = actividadesHTML.join('')
-
-  divBoxHeader.append(divBoxTitle)
-
-  divCollapsedBox.append(divBoxHeader)
-  divCollapsedBox.append(divBoxBody)
-
-  divRow.append(divCollapsedBox)
-  return divRow
-}
 // ELIMINAR DATOS EJECUCION
 
  const btnEliminarEjecucion = document.getElementById('eliminarEjecucion')
@@ -393,20 +306,20 @@ const generarLoteActividad = (lote,actividades)=>{
   
 }
 
+
 const selectEtapaEjecucion = document.getElementById('etapaEjecucion')
 
 if(selectEtapaEjecucion != null){
   selectEtapaEjecucion.addEventListener('change',()=>{
-    $('#actividadLotesBety').html('')
-    $('#actividadLotesPichi').html('')
     let etapa = selectEtapaEjecucion.value
-
+    console.log(etapa)
     props = {
       etapa,
       campania1: campania[0],
       campania2: campania[1]
     }
 
+    // VACIAMOS GRAFICOS
     cargarInfoEjecucion(props)
 
   })

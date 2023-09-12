@@ -9,7 +9,7 @@
                 
                 <div class="inner cajaContableTitulo">
                 
-                <b>Deuda Bancaraia / Bienes de Cambio</b>
+                <b>Deuda Operativa / Bienes de Cambio</b>
                 <br>
                 <span class="cajaContableNumber" id="duedaBienes"></span>
                 
@@ -17,7 +17,7 @@
                 
                 <div class="icon" style="padding-top:10px;font-size:5em;">
                 
-                <i class="fa fa-dollar"></i>
+                <i class="fa fa-percent"></i>
                 
                 </div>
 
@@ -40,7 +40,7 @@
                 
                 <div class="icon" style="padding-top:10px;font-size:5em;">
                 
-                <i class="fa fa-dollar"></i>
+                <i class="fa fa-percent"></i>
                 
                 </div>
 
@@ -63,7 +63,30 @@
                 
                 <div class="icon" style="padding-top:10px;font-size:5em;">
                 
-                <i class="fa fa-dollar"></i>
+                <i class="fa fa-percent"></i>
+                
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Indice Activo Corriente / Pasivo Corriente -->
+        <div class="col-lg-2 col-xs-6">
+
+            <div class="small-box bg-yellow">
+                
+                <div class="inner cajaContableTitulo">
+                
+                <b>Indice A.C/P.C</b>
+                <br>
+                <span class="cajaContableNumber" id="indiceActPasCorriente"></span>
+                
+                </div>
+                
+                <div class="icon" style="padding-top:10px;font-size:5em;">
+                
+                <i class="fa fa-percent"></i>
                 
                 </div>
 

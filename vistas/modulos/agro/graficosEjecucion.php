@@ -19,7 +19,8 @@
                 include 'graficos/ejecucion.php';
                 
             ?>
-
+        
+        <div id="actividadLotesBety" class="row"></div>
         </div>
 
         <div class='tab-pane' id='tab_2Ejecucion'>
@@ -32,6 +33,7 @@
             
         ?>
 
+        <div id="actividadLotesPichi" class="row"></div>
         </div>
     
     </div>
