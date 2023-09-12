@@ -10,6 +10,7 @@ function tipoCultivo($cultivo){
         case 'triticale':
         case 'vicia-triticale':
         case 'triticale-vicia':
+        case 'avena':
             $tipo = 'Invernal';
             break;
 
@@ -109,32 +110,66 @@ class ControladorAgro{
                             $cultivo = strtolower(str_replace('&nbsp;','',$cultivo));
 
                             $cultivoCosto[$cultivo] = trim($costo);
-                        
-                        }
 
+                            
+                        }
+                        
                         if($rowNumber == 1){
                             
                             $rowValida = true;
-
+                            
                             $campania = explode('/',$Row[0]);
                             $campania1 = substr($campania[0],-4,4);
                             $campania2 = $campania[1];
                             
                         }
-
+                        
                         if($Row[0] == 'TOTAL'){
-
+                            
                             $rowValida = false;
 
                         }
-
+                        
                         if($rowValida){
-
+                            
                             if($rowNumber != 1 AND $rowNumber != 2 AND $rowNumber != 3 AND $rowNumber != 6 AND $rowNumber != 5){
-
+                                
                                 if($rowNumber == 4){
-
+                                    
                                     $campo = $Row[0];
+
+                                     // VALIDAR SI YA ESTA CARGADA⁄
+
+                                     $tabla = 'planificacion';
+
+                                     $item = 'campania1';
+                                     
+                                     $item2 = 'campania2';
+                                     
+                                     $item3 = 'campo';
+ 
+                                     $resultado = ControladorAgro::ctrMostrarData($tabla,$item,$campania1,$item2,$campania2,$item3,$campo);
+ 
+                                    if(sizeof($resultado) > 0){
+                                        echo'<script>
+
+                                            swal({
+                                                    type: "error",
+                                                    title: "La planilla del campo '.$campo.' en la campaña '.$campania1.'-'.$campania2.' ya ha sido cargada.",
+                                                    showConfirmButton: true,
+                                                    confirmButtonText: "Cerrar"
+                                                    }).then(function(result) {
+                                                    if (result.value) {
+                                                        
+                                                        window.location = "index.php?ruta=agro/agro"
+
+                                                    }
+                                                })
+
+                                            </script>';
+                                            die();
+                                    }
+
                                 
                                 }else{
 
@@ -150,14 +185,23 @@ class ControladorAgro{
 
                                         $cultivos = explode('/',$Row[6]);
 
+                                        $first = true;
+
                                         for ($i=0; $i < sizeof($cultivos) ; $i++) { 
-                                            
+
                                             $planificado = str_replace(' ','',trim(strtolower($cultivos[$i])));
                                             
                                             $tipoCultivo = tipoCultivo($planificado);
                                             
-                                            $data[] = "('$campania1','$campania2','$campo','$tipoCultivo','$lote',$has,'$actual','$cobertura','$planificado','$dateTime')";
+                                            $coberturaValida = '';
 
+                                            if($first){
+                                                $coberturaValida = $cobertura;
+                                                $first = false;
+                                            }
+                                            
+                                            $data[] = "('$campania1','$campania2','$campo','$tipoCultivo','$lote',$has,'$actual','$coberturaValida','$planificado','$dateTime')";
+                                        
                                         }
 
                                     }else{
@@ -257,8 +301,42 @@ class ControladorAgro{
 
                         }
 
-                        if($rowNumber == 0)
+                        if($rowNumber == 0){
+
                             list($campania1,$campania2) = explode('-',$Row[0]);
+                        
+                            // VALIDAR SI YA ESTA CARGADA⁄
+
+                            $tabla = 'ejecucion';
+
+                            $item = 'campania1';
+                            
+                            $item2 = 'campania2';
+                            
+                            $item3 = 'campo';
+
+                            $resultado = ControladorAgro::ctrMostrarData($tabla,$item,$campania1,$item2,$campania2,$item3,'EL PICHI');
+                            
+                           if(sizeof($resultado) > 0){
+                               echo'<script>
+
+                                   swal({
+                                           type: "error",
+                                           title: "La planilla del campo '.$campo.' en la campaña '.$campania1.'-'.$campania2.' ya ha sido cargada.",
+                                           showConfirmButton: true,
+                                           confirmButtonText: "Cerrar"
+                                           }).then(function(result) {
+                                           if (result.value) {
+                                               
+                                               window.location = "index.php?ruta=agro/agro"
+
+                                           }
+                                       })
+
+                                   </script>';
+                                   die();
+                           }
+                        }
 
                         if($rowValida){
 
@@ -269,8 +347,7 @@ class ControladorAgro{
                             }else{
 
                                 $data = array('campania1'=>$campania1,'campania2'=>$campania2,'campo'=>$campo,'lote'=>$Row[0],'has'=>$Row[1],'fina'=>strtolower(trim($Row[2])),'precioFina'=>$Row[3],'gruesa'=>strtolower($Row[4]),'precioGruesa'=>$Row[5],'periodoTime'=>$dateTime);
-
-                                $respuesta = ModeloAgro::mdlCargarArchivo($tabla,$data);
+                                $respuesta = ModeloAgro::mdlCargarArchivo($tabla,$data);                               
 
                                 $errors = array($respuesta);
                             }
@@ -458,9 +535,21 @@ class ControladorAgro{
 	VER DATA
 	=============================================*/
     
-	static public function ctrMostrarData($tabla, $item, $valor, $item2, $valor2, $item3, $valor3){
+	static public function ctrMostrarData($tabla, $item, $valor, $item2 = null, $valor2 = null, $item3 = null, $valor3 = null){
 
         return $respuesta = ModeloAgro::mdlMostrarData($tabla, $item, $valor, $item2, $valor2, $item3, $valor3);
+
+	}
+
+    /*=============================================
+	CERRAR CAMPAÑA
+	=============================================*/
+
+	static public function ctrCerrarCampania($item,$valor){
+
+        $tabla = 'info_planificacion';
+                
+        return $respuesta = ModeloAgro::mdlCerrarCampania($tabla,$item,$valor);
 
 	}
 
@@ -471,7 +560,7 @@ class ControladorAgro{
 	static public function ctrEliminarArchivo(){
         
         if(isset($_GET['campo']) OR isset($_GET['seccion'])){
-            
+
             if(isset($_GET['campo'])){
     
                 $tabla = $_GET['tabla'];

@@ -39,6 +39,32 @@ class AjaxAgro{
 
 	}
 
+	public function ajaxMostrarInfo(){
+
+		$item = "campania";
+
+		$valor = $this->campania;
+
+		$tabla = $this->seccion;
+
+		$respuesta = ControladorAgro::ctrMostrarData($tabla, $item, $valor, $item2, $valor2, $item3, $valor3);
+		
+		echo json_encode($respuesta);
+
+	}
+
+	public function ajaxCerrarCampania(){
+
+		$item = "campania";
+
+		$valor = $this->campania;
+
+		$respuesta = ControladorAgro::ctrCerrarCampania($item, $valor);
+
+		echo json_encode($respuesta);
+
+	}
+
 	public function ajaxMostrarCostos(){
 
 		$item = 'cultivo';
@@ -67,7 +93,7 @@ class AjaxAgro{
 EDITAR USUARIO
 =============================================*/
 if(isset($_POST["accion"])){
-	
+
 	$accion = $_POST['accion'];
 
 	if($accion == 'mostrarData'){
@@ -80,6 +106,15 @@ if(isset($_POST["accion"])){
 
     }
 
+	if($accion == 'mostrarInfo'){
+
+		$mostrarInfo = new AjaxAgro();
+        $mostrarInfo -> campania = $_POST["campania"];
+        $mostrarInfo -> seccion = $_POST["seccion"];
+        $mostrarInfo -> ajaxMostrarInfo();
+
+    }
+
 	if($accion == 'mostrarCostos'){
 
 		$mostrarData = new AjaxAgro();
@@ -87,6 +122,14 @@ if(isset($_POST["accion"])){
         $mostrarData -> campania2 = $_POST["campania2"];
         $mostrarData -> seccion = $_POST["seccion"];
         $mostrarData -> ajaxMostrarCostos();
+
+    }
+
+	if($accion == 'cerrarPlanifiacion'){
+
+		$mostrarData = new AjaxAgro();
+        $mostrarData -> campania = $_POST["campania"];
+        $mostrarData -> ajaxCerrarCampania();
 
     }
 
